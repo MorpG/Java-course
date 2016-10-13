@@ -2,25 +2,24 @@ package ru.agolovin;
 
 public class Calculate{
 	public double result;
+	public double getResult(){
+		return this.result;
+	}
 
-	public double add(double first, double second) {
+	public void add(double first, double second) {
 		result = first + second;
-		return result;
 	}
 
-	public double substruct(double first, double second) {
+	public void substruct(double first, double second) {
 		result = first - second;
-		return result;
 	}
 
-	public double div(double first, double second) {
+	public void div(double first, double second) {
 		result = first / second;
-		return result;
 	}
 
-	public double multiple(double first, double second) {
+	public void multiple(double first, double second) {
 		result = first * second;
-		return result;
 	}
 
 }
