@@ -3,6 +3,7 @@ package ru.agolovin;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.hamcrest.number.IsCloseTo.*;
 
 public class TriangleTest {
 
@@ -13,7 +14,7 @@ public class TriangleTest {
         Point point3 = new Point(6, 10);
         Triangle triangle = new Triangle(point1, point2, point3);
         double area = triangle.area();
-        assertThat(Math.rint(100 * area) / 100, is(5.500));
+        assertThat(area, is(closeTo(5.500, 0.0005)));
     }
 
     @Test
