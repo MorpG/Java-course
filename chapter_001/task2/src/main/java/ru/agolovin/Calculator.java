@@ -1,6 +1,6 @@
 package ru.agolovin;
 
-public class Calculate{
+public class Calculator{
 	public double result;
 	public double getResult(){
 		return this.result;

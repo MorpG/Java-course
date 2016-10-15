@@ -4,10 +4,10 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-public class CalculateTest{
+public class CalculatorTest{
 	@Test
 	public void whenUseAddThenReturnResultAdd() {
-		Calculate calc = new Calculate();
+		Calculator calc = new Calculator();
 		calc.add(5, 3);
 		double result = calc.getResult();
 		assertThat(result, is(8.0));
@@ -15,7 +15,7 @@ public class CalculateTest{
 
 	@Test
 	public void whenUseSubStructThenReturnResultSubstruct() {
-		Calculate calc = new Calculate();
+		Calculator calc = new Calculator();
 		calc.substruct(2, 4);
 		double result = calc.getResult();
 		assertThat(result, is(-2.0));
@@ -23,7 +23,7 @@ public class CalculateTest{
 
 	@Test
 	public void whenUseDivThenReturnResultDiv() {
-		Calculate calc = new Calculate();
+		Calculator calc = new Calculator();
 		calc.div(6 , 2);
 		double result = calc.getResult();
 		assertThat(result, is(3.0));
@@ -31,7 +31,7 @@ public class CalculateTest{
 
 	@Test
 	public void whenUseMultipleThenReturnResultMultiple() {
-		Calculate calc = new Calculate();
+		Calculator calc = new Calculator();
 		calc.multiple(5 , 2);
 		double result = calc.getResult();
 		assertThat(result, is(10.0));
