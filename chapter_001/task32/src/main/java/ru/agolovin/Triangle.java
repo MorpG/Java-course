@@ -15,11 +15,15 @@ public class Triangle {
         this.c = c;
     }
 
-    public double area() {
-        double area;
+    public void sideLength() {
         this.ab = a.distanceTo(b);
         this.ac = a.distanceTo(c);
         this.bc = b.distanceTo(c);
+    }
+
+    public double area() {
+        double area;
+        sideLength();
         if ((ab + ac > bc) && (ac + bc > ab) && (bc + ab > ac)) {
             double per = (ab + ac + bc) / 2;
             area = Math.sqrt(per * (per - ab) * (per - ac) * (per - bc));
