@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class MaxTriangleSideTest {
 
     @Test
-    public void whenMaxTriangleSideExistTheResult() {
+    public void whenMaxTriangleSideExistThenResult() {
         double result = MaxTriangleSide.maxSide(5.0, 4.0, 10.0);
         assertThat(result, is(10.0));
     }
