@@ -12,6 +12,9 @@
 		<module>task41</module>
 		<module>task42</module>
 		<module>task51</module>
+<<<<<<< HEAD
 		<module>task52</module>
+=======
+>>>>>>> ad40b8b18ab8a4d7e8e6d2743f18edb7096d2ea1
 	</modules> 
 </project>
