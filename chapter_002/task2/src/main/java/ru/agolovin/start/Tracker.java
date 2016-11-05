@@ -15,9 +15,9 @@ public class Tracker {
         return item;
     }
 
-    public void updateItem (Item item, Item updateItem) {
+    public void updateItem (String id, Item updateItem) {
         for (int i = 0; i < this.position; i++) {
-            if (this.items[i].getId().equals(item.getId())) {
+            if (this.items[i].getId().equals(id)) {
                 this.items[i] = updateItem;
                 break;
             }
