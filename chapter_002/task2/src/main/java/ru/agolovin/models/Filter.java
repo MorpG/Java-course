@@ -1,17 +1,48 @@
 package ru.agolovin.models;
 
-public class Filter{
-	private String filter;
+/**
+ * Filter methods.
+ *
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 
-	public Filter (String filter) {
-		this.filter = filter;
-	}
+public class Filter {
 
-	public String getFilter() {
-		return this.filter;
-	}
+    /**
+     * variable class filter.
+     *
+     * @param filter
+     */
+    private String filter;
 
-	public void setFIlter(String filter) {
-		this.filter = filter;
-	}
+    /**
+     * filter set.
+     *
+     * @param outFilter outFilter
+     *
+     */
+
+    public Filter(final String outFilter) {
+        this.filter = outFilter;
+    }
+
+    /**
+     * @return filter
+     */
+
+    public final String getFilter() {
+        return this.filter;
+    }
+
+    /**
+     * filter set.
+     *
+     * @param outFilter outFilter
+     */
+
+    public final void setFilter(final String outFilter) {
+        this.filter = outFilter;
+    }
 }

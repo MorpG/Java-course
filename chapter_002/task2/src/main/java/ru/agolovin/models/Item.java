@@ -1,51 +1,132 @@
 package ru.agolovin.models;
 
-public class Item{
-	private String id;
-	
-	public String name;
+/**
+ * Base Item methods.
+ *
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 
-	public String description;
-	
-	public long timeCreate;
+public class Item {
+    /**
+     * variable class Item.
+     *
+     * @param id String
+     */
 
-	public Item() {}
+    private String id;
 
-	public Item(String name, String description, long timeCreate) {
-		this.name = name;
-		this.description = description;
-		this.timeCreate = timeCreate;
-	}
+    /**
+     * variable class Item.
+     *
+     * @param name String
+     */
 
-	public String getName() {
-		return this.name;
-	}
+    private String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * variable class Item.
+     *
+     * @param description String
+     */
 
-	public String getDescription() {
-		return this.description;
-	}
+    private String description;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    /**
+     * variable class Item.
+     *
+     * @param timeCreate long
+     */
 
-	public long getTimeCreate() {
-		return this.timeCreate;
-	}
+    private long timeCreate;
 
-	public void setTimeCreate(long timeCreate) {
-		this.timeCreate = timeCreate;
-	}
+    /**
+     * base method Item.
+     *
+     */
 
-	public String getId() {
-		return this.id;
-	}
+    public Item() {
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
-} 
+    /**
+     * base method Item.
+     *
+     * @param sName name
+     * @param sDescription description
+     * @param sTimeCreate timeCreate
+     */
+
+    public Item(
+            final String sName,
+            final String sDescription,
+            final long sTimeCreate) {
+        this.name = sName;
+        this.description = sDescription;
+        this.timeCreate = sTimeCreate;
+    }
+
+    /**
+     * @return name
+     */
+
+    public final String getName() {
+        return this.name;
+    }
+
+    /**
+     * @param sName name
+     */
+
+    public final void setName(final String sName) {
+        this.name = sName;
+    }
+
+    /**
+     * @return description
+     */
+
+    public final String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * @param sDescription description
+     */
+
+    public final void setDescription(final String sDescription) {
+        this.description = sDescription;
+    }
+
+    /**
+     * @return timeCreate
+     */
+
+    public final long getTimeCreate() {
+        return this.timeCreate;
+    }
+
+    /**
+     * @param sTimeCreate timeCreate
+     */
+
+    public final void setTimeCreate(final long sTimeCreate) {
+        this.timeCreate = sTimeCreate;
+    }
+
+    /**
+     * @return id
+     */
+
+    public final String getId() {
+        return this.id;
+    }
+
+    /**
+     * @param sId id
+     */
+
+    public final void setId(final String sId) {
+        this.id = sId;
+    }
+}
