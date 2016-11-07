@@ -24,7 +24,8 @@ public class TrackerTest{
         Item updateItem = new Item("updateName", "updateDescription", 2);
         Item[] result = new Item[1];
         tracker.add(item);
-        tracker.updateItem(item.getId(), updateItem);
+	updateItem.setId(tracker.findById(item.getId()).getId());
+        tracker.updateItem(updateItem);
         result[0] = updateItem;
         assertThat(tracker.getAll(), is(result));
     }
