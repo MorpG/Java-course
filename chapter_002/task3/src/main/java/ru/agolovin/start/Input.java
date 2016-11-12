@@ -1,5 +1,15 @@
 package ru.agolovin.start;
 
+/**
+ * interface for input.
+ */
+
 public interface Input {
-	String ask(String qestion);
+
+    /**
+     * @param question String
+     * @return ask User answer String
+     */
+
+    String ask(String question);
 }
