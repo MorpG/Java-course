@@ -140,8 +140,9 @@ public class Tracker {
         Item[] tmp = new Item[this.position];
         int length = 0;
         for (int i = 0; i < this.position; i++) {
-            if (items[i].getName().equals(filter.getFilter())
-                    || items[i].getDescription().equals(filter.getFilter())) {
+            if (items[i] != null
+                    && ((items[i].getName().equals(filter.getFilter()))
+                    || items[i].getDescription().equals(filter.getFilter()))) {
                 tmp[i] = items[i];
                 length++;
             }

@@ -33,7 +33,7 @@ public final class StartUI {
      */
 
 
-    private StartUI(final Input sInput) {
+    StartUI(final Input sInput) {
         this.input = sInput;
     }
 
@@ -43,19 +43,23 @@ public final class StartUI {
      * @param args String[]
      */
     public static void main(final String[] args) {
-        new StartUI(new ConsoleInput()).init();
+        Tracker tracker = new Tracker();
+        new StartUI(new ConsoleInput()).init(tracker);
     }
 
     /**
      * Initialization.
+     *
+     *@param sTracker Tracker
      */
 
-    private void init() {
+    void init(final Tracker sTracker) {
+        this.tracker = sTracker;
         boolean flag = true;
         while (flag) {
             showMenu();
             int number = Integer.parseInt(input.ask("Enter the number:"));
-            int position = 0;
+            int position = 1;
             if (number == position++) {
                 addMenu();
             } else if (number == position++) {
@@ -69,9 +73,9 @@ public final class StartUI {
             } else if (number == position++) {
                 flag = false;
             } else {
-                position = 0;
+                position = 1;
                 System.out.println("Number out of range");
-                System.out.println("Please repeat");
+                System.out.println("Please repeat/n");
             }
         }
     }
@@ -148,5 +152,14 @@ public final class StartUI {
         System.out.println("4. Find by filter");
         System.out.println("5. Get all");
         System.out.println("6. Exit");
+    }
+
+    /**
+    * Accessor methods for tracker.
+    *
+    * @return tracker Tracker
+    */
+    public Tracker getTracker() {
+        return this.tracker;
     }
 }

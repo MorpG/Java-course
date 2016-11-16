@@ -1,16 +1,41 @@
 package ru.agolovin.start;
 
+/**
+ * Method to input from case.
+ *
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
+ */
+
 public class StubInput implements Input {
+
+    /**
+     * @param answers String array
+     */
 
     private String[] answers;
 
+    /**
+     * @param position int
+     */
+
     private int position = 0;
 
-    public StubInput(String[] answers) {
-        this.answers = answers;
+    /**
+     * @param sAnswers String array
+     */
+
+    public StubInput(final String[] sAnswers) {
+        this.answers = sAnswers;
     }
 
-    public String ask (String question) {
+    /**
+     * @param question String
+     * @return answers String
+     */
+
+    public final String ask(final String question) {
         return answers[position++];
     }
 
