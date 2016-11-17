@@ -23,7 +23,6 @@ public class Filter {
      * @param outFilter outFilter
      *
      */
-
     public Filter(final String outFilter) {
         this.filter = outFilter;
     }
@@ -31,7 +30,6 @@ public class Filter {
     /**
      * @return filter
      */
-
     public final String getFilter() {
         return this.filter;
     }
@@ -41,7 +39,6 @@ public class Filter {
      *
      * @param outFilter outFilter
      */
-
     public final void setFilter(final String outFilter) {
         this.filter = outFilter;
     }

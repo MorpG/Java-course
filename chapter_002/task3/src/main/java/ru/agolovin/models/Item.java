@@ -14,7 +14,6 @@ public class Item {
      *
      * @param id String
      */
-
     private String id;
 
     /**
@@ -22,7 +21,6 @@ public class Item {
      *
      * @param name String
      */
-
     private String name;
 
     /**
@@ -30,7 +28,6 @@ public class Item {
      *
      * @param description String
      */
-
     private String description;
 
     /**
@@ -38,14 +35,12 @@ public class Item {
      *
      * @param timeCreate long
      */
-
     private long timeCreate;
 
     /**
      * base method Item.
      *
      */
-
     public Item() {
     }
 
@@ -56,7 +51,6 @@ public class Item {
      * @param sDescription description
      * @param sTimeCreate timeCreate
      */
-
     public Item(
             final String sName,
             final String sDescription,
@@ -69,7 +63,6 @@ public class Item {
     /**
      * @return name
      */
-
     public final String getName() {
         return this.name;
     }
@@ -77,7 +70,6 @@ public class Item {
     /**
      * @param sName name
      */
-
     public final void setName(final String sName) {
         this.name = sName;
     }
@@ -85,7 +77,6 @@ public class Item {
     /**
      * @return description
      */
-
     public final String getDescription() {
         return this.description;
     }
@@ -93,7 +84,6 @@ public class Item {
     /**
      * @param sDescription description
      */
-
     public final void setDescription(final String sDescription) {
         this.description = sDescription;
     }
@@ -101,7 +91,6 @@ public class Item {
     /**
      * @return timeCreate
      */
-
     public final long getTimeCreate() {
         return this.timeCreate;
     }
@@ -109,7 +98,6 @@ public class Item {
     /**
      * @param sTimeCreate timeCreate
      */
-
     public final void setTimeCreate(final long sTimeCreate) {
         this.timeCreate = sTimeCreate;
     }
@@ -117,7 +105,6 @@ public class Item {
     /**
      * @return id
      */
-
     public final String getId() {
         return this.id;
     }
@@ -125,7 +112,6 @@ public class Item {
     /**
      * @param sId id
      */
-
     public final void setId(final String sId) {
         this.id = sId;
     }

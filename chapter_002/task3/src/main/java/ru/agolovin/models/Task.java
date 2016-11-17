@@ -16,7 +16,6 @@ public class Task extends Item {
      * @param name name
      * @param desc desc
      */
-
     public Task(final String name, final String desc) {
         this.setName(name);
         this.setDescription(desc);

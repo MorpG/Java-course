@@ -9,13 +9,11 @@ import java.util.Scanner;
  * @version $Id$
  * @since 0.1
  */
-
 public class ConsoleInput implements Input {
 
 /**
 * @param scanner System input
 */
-
     private Scanner scanner = new Scanner(System.in);
 
     /**
@@ -23,7 +21,6 @@ public class ConsoleInput implements Input {
     *
     * @return ask User answer
     */
-
     public final String ask(final String question) {
         System.out.println(question);
         return scanner.nextLine();

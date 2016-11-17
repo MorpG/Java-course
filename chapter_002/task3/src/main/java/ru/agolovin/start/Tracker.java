@@ -15,32 +15,26 @@ import java.util.Random;
  * @version $Id$
  * @since 0.1
  */
-
-
 public class Tracker {
 
     /**
      * @param size int
      */
-
     private final int size = 10;
 
     /**
      * @param size int
      */
-
     private Item[] items = new Item[size];
 
     /**
      * @param position int
      */
-
     private int position = 0;
 
     /**
      * @param RN Random
      */
-
     private static final Random RN = new Random();
 
     /**
@@ -49,7 +43,6 @@ public class Tracker {
      * @param item Item
      * @return item Item
      */
-
     public final Item add(final Item item) {
         item.setId(this.generateId());
         this.items[position++] = item;
@@ -61,8 +54,6 @@ public class Tracker {
      *
      * @param item Item
      */
-
-
     public final void updateItem(final Item item) {
         for (int i = 0; i < this.position; i++) {
             if (this.items[i].getId().equals(item.getId())) {
@@ -77,7 +68,6 @@ public class Tracker {
      *
      * @param item Item
      */
-
     public final void deleteItem(final Item item) {
         for (int i = 0; i < this.position; i++) {
             if (this.items[i].getId().equals(item.getId())) {
@@ -93,7 +83,6 @@ public class Tracker {
      * @param id String
      * @return item Item
      */
-
     final Item findById(final String id) {
         Item result = null;
         for (Item item : items) {
@@ -110,7 +99,6 @@ public class Tracker {
      *
      * @return id String
      */
-
     final String generateId() {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
     }
@@ -120,7 +108,6 @@ public class Tracker {
      *
      * @return result Array of Items
      */
-
     public final Item[] getAll() {
         Item[] result = new Item[this.position];
         for (int i = 0; i < this.position; i++) {
@@ -135,7 +122,6 @@ public class Tracker {
      * @param filter Filter
      * @return result Array of Items
      */
-
     public final Item[] getByFilter(final Filter filter) {
         Item[] tmp = new Item[this.position];
         int length = 0;
@@ -155,7 +141,5 @@ public class Tracker {
         }
 
         return result;
-
     }
-
 }

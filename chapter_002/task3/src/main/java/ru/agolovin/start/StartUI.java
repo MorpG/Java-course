@@ -11,19 +11,16 @@ import ru.agolovin.models.Item;
  * @version $Id$
  * @since 0.1
  */
-
 public final class StartUI {
 
     /**
      * @param tracker Tracker
      */
-
     private Tracker tracker = new Tracker();
 
     /**
      * input Input.
      */
-
     private Input input;
 
     /**
@@ -31,8 +28,6 @@ public final class StartUI {
      *
      * @param sInput Input
      */
-
-
     StartUI(final Input sInput) {
         this.input = sInput;
     }
@@ -52,7 +47,6 @@ public final class StartUI {
      *
      *@param sTracker Tracker
      */
-
     void init(final Tracker sTracker) {
         this.tracker = sTracker;
         boolean flag = true;
@@ -83,7 +77,6 @@ public final class StartUI {
     /**
      * implementation paragraph menu Add.
      */
-
     private void addMenu() {
         tracker.add(new Item(input.ask("Enter name"),
                 input.ask("Enter description"),
@@ -93,7 +86,6 @@ public final class StartUI {
     /**
      * implementation paragraph menu Delete.
      */
-
     private void delMenu() {
         String id = input.ask("Enter id to delete: ");
         tracker.deleteItem(tracker.findById(id));
@@ -102,7 +94,6 @@ public final class StartUI {
     /**
      * implementation paragraph menu Update.
      */
-
     private void updMenu() {
         String id = input.ask("Enter id to update: ");
         Item updateItem = new Item(input.ask("Enter name: "),
@@ -115,7 +106,6 @@ public final class StartUI {
     /**
      * implementation paragraph menu Find by filter.
      */
-
     private void fndByFilterMenu() {
         Filter filter = new Filter(input.ask("Enter filter: "));
         Item[] result = tracker.getByFilter(filter);
@@ -130,7 +120,6 @@ public final class StartUI {
     /**
      * implementation paragraph menu Get all.
      */
-
     private void getAllMenu() {
         Item[] result = tracker.getAll();
         for (Item item : result) {
@@ -144,7 +133,6 @@ public final class StartUI {
     /**
      * Menu.
      */
-
     private void showMenu() {
         System.out.println("1. Add");
         System.out.println("2. Delete");

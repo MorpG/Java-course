@@ -15,13 +15,11 @@ import static org.junit.Assert.assertThat;
  * @version $Id$
  * @since 0.1
  */
-
 public class StartUITest {
 
     /**
      * Test for paragraph 1 in menu StartUI.
      */
-
     @Test
     public final void whenUserSet1inMenuThenResultIs() {
         final long timeCreate = 15;
@@ -38,7 +36,6 @@ public class StartUITest {
     /**
      * Test for paragraph 2 in menu StartUI.
      */
-
     @Test
     public final void whenUserSet2inMenuThenResultIs() {
         final long timecreate1 = 9;
@@ -60,7 +57,6 @@ public class StartUITest {
     /**
      * Test for paragraph 2 in menu StartUI.
      */
-
     @Test
     public final void whenUserSet3inMenuThenResultIs() {
         Tracker tracker = new Tracker();
@@ -83,7 +79,6 @@ public class StartUITest {
     /**
      * Test for paragraph 4 in menu StartUI.
      */
-
     @Test
     public final void whenUserSet4inMenuThenResultIs() {
         Tracker tracker = new Tracker();
@@ -101,7 +96,6 @@ public class StartUITest {
     /**
      * Test for paragraph 5 in menu StartUI.
      */
-
     @Test
     public final void whenUserSet5inMenuThenResultIs() {
         Tracker tracker = new Tracker();

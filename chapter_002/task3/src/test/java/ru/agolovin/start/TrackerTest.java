@@ -15,13 +15,11 @@ import static org.junit.Assert.assertThat;
  * @version $Id$
  * @since 0.1
  */
-
 public class TrackerTest {
 
     /**
      * Test for adding new Item in tracker.
      */
-
     @Test
     public final void whetAddNewItemThenResultIs() {
         Tracker tracker = new Tracker();
@@ -36,7 +34,6 @@ public class TrackerTest {
     /**
      * Test for update exist Item in tracker.
      */
-
     @Test
     public final void whenUpdateItemThenResultIs() {
         Tracker tracker = new Tracker();
@@ -54,7 +51,6 @@ public class TrackerTest {
     /**
      * Test for delete exist Item in tracker.
      */
-
     @Test
     public final void whenDeleteItemThenResultIs() {
         Tracker tracker = new Tracker();
@@ -72,7 +68,6 @@ public class TrackerTest {
     /**
      * Test for find by filter Item in tracker.
      */
-
     @Test
     public final void whenFindByFilterThenResultIs() {
         Tracker tracker = new Tracker();
