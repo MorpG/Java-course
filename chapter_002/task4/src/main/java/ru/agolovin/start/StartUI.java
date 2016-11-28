@@ -25,7 +25,7 @@ public final class StartUI {
      *
      * @param sInput Input
      */
-    private StartUI(final Input sInput) {
+    StartUI(final Input sInput) {
         this.input = sInput;
     }
 
@@ -35,16 +35,19 @@ public final class StartUI {
      * @param args String[]
      */
     public static void main(final String[] args) {
+        Tracker tracker = new Tracker();
         Input input = new ConsoleInput();
-        new StartUI(input).init();
+        new StartUI(input).init(tracker);
     }
 
     /**
      * Initialization.
+     *
+     * @param nTracker Tracker
      */
-    private void init() {
-        Tracker sTracker = new Tracker();
-        MenuTracker menu = new MenuTracker(this.input, sTracker);
+    void init(final Tracker nTracker) {
+        this.tracker = nTracker;
+        MenuTracker menu = new MenuTracker(this.input, tracker);
         menu.fillActions();
         do {
             menu.show();
@@ -56,7 +59,7 @@ public final class StartUI {
     /**
      * @return tracker
      */
-    public Tracker getTracker() {
+    Tracker getTracker() {
         return this.tracker;
     }
 }

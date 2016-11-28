@@ -12,44 +12,43 @@ public class Item {
     /**
      * variable class Item.
      *
-     * @param id String
+     * id String.
      */
     private String id;
 
     /**
      * variable class Item.
      *
-     * @param name String
+     * name String.
      */
     private String name;
 
     /**
      * variable class Item.
      *
-     * @param description String
+     * description String.
      */
     private String description;
 
     /**
      * variable class Item.
      *
-     * @param timeCreate long
+     * timeCreate long.
      */
     private long timeCreate;
 
     /**
      * base method Item.
-     *
      */
-    public Item() {
+    Item() {
     }
 
     /**
      * base method Item.
      *
-     * @param sName name
+     * @param sName        name
      * @param sDescription description
-     * @param sTimeCreate timeCreate
+     * @param sTimeCreate  timeCreate
      */
     public Item(
             final String sName,
@@ -70,7 +69,7 @@ public class Item {
     /**
      * @param sName name
      */
-    public final void setName(final String sName) {
+    final void setName(final String sName) {
         this.name = sName;
     }
 
@@ -84,7 +83,7 @@ public class Item {
     /**
      * @param sDescription description
      */
-    public final void setDescription(final String sDescription) {
+    final void setDescription(final String sDescription) {
         this.description = sDescription;
     }
 
@@ -93,13 +92,6 @@ public class Item {
      */
     public final long getTimeCreate() {
         return this.timeCreate;
-    }
-
-    /**
-     * @param sTimeCreate timeCreate
-     */
-    public final void setTimeCreate(final long sTimeCreate) {
-        this.timeCreate = sTimeCreate;
     }
 
     /**
