@@ -111,4 +111,20 @@ public class StartUITest {
         Item[] res = stUI.getTracker().getByFilter(new Filter("ss"));
         assertThat(res[0].getName(), is(item.getName()));
     }
+
+    /**
+     * Test for paragraph 0 and 1 in menu StartUI(MenuTracker).
+     */
+    @Test
+    public final void whenUserSet0And1inMenuThenResultIs() {
+        final long timeCreate = 15;
+        Tracker tracker = new Tracker();
+        String[] answer = {"0", "ss", "d", "15", "n", "1", "y"};
+        StartUI stUI = new StartUI(new StubInput(answer));
+        stUI.init(tracker);
+
+        Item item = new Item("ss", "d", timeCreate);
+        Item[] res = stUI.getTracker().getByFilter(new Filter("ss"));
+        assertThat(res[0].getName(), is(item.getName()));
+    }
 }
