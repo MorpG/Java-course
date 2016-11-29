@@ -1,13 +1,15 @@
 <project>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>ru.agolovin</groupId>
-	<artifactId>chapter_002</artifactId>
-	<version>1.0</version>
-	<packaging>pom</packaging>
+    <parent>
+        <groupId>ru.agolovin</groupId>
+        <artifactId>Java-course_test</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>chapter_002</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
 
-	<modules>
-		<module>task2</module>
-		<module>task3</module>
-		<module>task4</module>
-	</modules>
+    <modules>
+        <module>task4</module>
+    </modules>
 </project>
