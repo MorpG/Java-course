@@ -50,17 +50,14 @@ class MenuTracker {
      * size userActions array.
      */
     private final int lengthUserActions = 6;
-
     /**
      * input Input.
      */
     private Input input;
-
     /**
      * tracker Tracker.
      */
     private Tracker tracker;
-
     /**
      * actions User actions array.
      */
@@ -73,6 +70,14 @@ class MenuTracker {
     MenuTracker(final Input sInput, final Tracker sTracker) {
         this.input = sInput;
         this.tracker = sTracker;
+    }
+
+    /**
+     *
+     * @return lengthUserActions int
+     */
+    public int getLengthUserActions() {
+        return this.lengthUserActions;
     }
 
     /**
@@ -196,13 +201,13 @@ class MenuTracker {
         }
 
         /**
-         * @param sInput Input
+         * @param sInput   Input
          * @param sTracker Tracker
          */
         public void execute(final Input sInput, final Tracker sTracker) {
             Filter filter = new Filter(
-                sInput.ask("Enter filter description: ")
-                );
+                    sInput.ask("Enter filter description: ")
+            );
             Item[] result = sTracker.getByFilter(filter);
             for (Item item : result) {
                 System.out.println("Id: " + item.getId() + " Name: "
@@ -233,7 +238,7 @@ class MenuTracker {
         }
 
         /**
-         * @param sInput Input
+         * @param sInput   Input
          * @param sTracker Tracker
          */
         public void execute(final Input sInput, final Tracker sTracker) {
@@ -263,7 +268,7 @@ class MenuTracker {
         }
 
         /**
-         * @param sInput Input
+         * @param sInput   Input
          * @param sTracker Tracker
          */
         public void execute(final Input sInput, final Tracker sTracker) {

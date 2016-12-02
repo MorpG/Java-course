@@ -34,12 +34,4 @@ public class Filter {
         return this.filter;
     }
 
-    /**
-     * filter set.
-     *
-     * @param outFilter outFilter
-     */
-    public final void setFilter(final String outFilter) {
-        this.filter = outFilter;
-    }
 }

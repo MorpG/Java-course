@@ -9,44 +9,23 @@ package ru.agolovin.start;
  * @since 0.1
  */
 public final class StartUI {
-    /**
-     * Array of possible range for input.
-     */
-    private final int lineZ = 0;
-    /**
-     * Array of possible range for input.
-     */
-    private final int lineO = 1;
-    /**
-     * Array of possible range for input.
-     */
-    private final int lineTw = 2;
-    /**
-     * Array of possible range for input.
-     */
-    private final int lineTh = 3;
-    /**
-     * Array of possible range for input.
-     */
-    private final int lineFo = 4;
-    /**
-     * Array of possible range for input.
-     */
-    private final int lineFv = 5;
-    /**
-     * Array of possible range for input.
-     */
-    private int[] ranges = new int[]{lineZ, lineO, lineTw, lineTh, lineFo, lineFv};
 
     /**
      * tracker Tracker.
      */
     private Tracker tracker = new Tracker();
-
     /**
      * input Input.
      */
     private Input input;
+    /**
+     * len user menu.
+     */
+    private int len;
+    /**
+     * Array of possible range for input.
+     */
+    private int[] ranges = fillRanges();
 
     /**
      * Base method.
@@ -75,12 +54,15 @@ public final class StartUI {
      */
     void init(final Tracker nTracker) {
         this.tracker = nTracker;
-        MenuTracker menu = new MenuTracker(this.input, tracker);
+        MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
+        len = menu.getLengthUserActions();
+        ranges = fillRanges();
         do {
             menu.show();
             menu.select(input.ask("Select: ", ranges));
         } while (!"y".equals(this.input.ask("Exit? y ")));
+
     }
 
     /**
@@ -88,5 +70,18 @@ public final class StartUI {
      */
     Tracker getTracker() {
         return this.tracker;
+    }
+
+    /**
+     * @return array of length user menu
+     */
+    private int[] fillRanges() {
+
+        int ln = len;
+        int[] array = new int[ln];
+        for (int i = 0; i < ln; i++) {
+            array[i] = i;
+        }
+        return array;
     }
 }

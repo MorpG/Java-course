@@ -40,13 +40,13 @@ public class StubInput implements Input {
      * @return new UnsupportedOperationException
      */
     public int ask(String question, int[] range) {
-        //throw new UnsupportedOperationException("Unsupported exception");
-        //return -1;
         int key = Integer.valueOf(this.ask(question));
         boolean exist = false;
         for (int value : range) {
-            exist = true;
-            break;
+            if (value == key) {
+                exist = true;
+                break;
+            }
         }
         return exist ? key : -1;
     }

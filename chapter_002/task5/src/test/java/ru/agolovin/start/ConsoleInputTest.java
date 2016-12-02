@@ -19,10 +19,10 @@ import static org.hamcrest.core.Is.is;
 public class ConsoleInputTest {
 
     /**
-     * Test method ask.
+     * Test method ask String.
      */
     @Test
-    public final void whenUserInputThenResultIs() {
+    public final void whenUserInputStringThenResultIs() {
         String result = "testWord";
         InputStream in = new ByteArrayInputStream(result.getBytes());
         System.setIn(in);
@@ -30,6 +30,22 @@ public class ConsoleInputTest {
 
         String answer = console.ask("sss");
         assertThat(result, is(answer));
+
+    }
+
+    /**
+     * Test method for ask int.
+     */
+    @Test
+    public final void whenUserInputIntThenResultIs() {
+        String result = "1";
+        int[] range = new int[] {0, 1};
+        InputStream in = new ByteArrayInputStream(result.getBytes());
+        System.setIn(in);
+        ConsoleInput console = new ConsoleInput();
+
+        int answer = console.ask("test question", range);
+        assertThat(Integer.parseInt(result), is(answer));
 
     }
 
