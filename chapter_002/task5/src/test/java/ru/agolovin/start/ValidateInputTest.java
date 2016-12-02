@@ -1,12 +1,13 @@
 package ru.agolovin.start;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import org.junit.Test;
 
-import static org.junit.Assert.assertThat;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.PrintStream;
+
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Test methods for ConsoleInput class.
@@ -22,8 +23,8 @@ public class ValidateInputTest {
     @Test
     public final void whenUserInputInTheRangeThenResultIs() {
         String result = "1";
-        int[] range = new int[] {0, 1};
-        InputStream in = new ByteArrayInputStream(result.getBytes());
+        int[] range = new int[]{0, 1};
+        ByteArrayInputStream in = new ByteArrayInputStream(result.getBytes());
         System.setIn(in);
         ValidateInput validateInput = new ValidateInput();
 
@@ -39,16 +40,22 @@ public class ValidateInputTest {
     public final void whenUserInputNotInTheRangeThenResultIs() {
 
         String input = "1";
-        int[] range = new int[] {0, 2};
-        InputStream in = new ByteArrayInputStream(input.getBytes());
+        int[] range = new int[]{0, 2};
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         ValidateInput validateInput = new ValidateInput();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
         boolean check = false;
         try {
-            int answer = validateInput.ask("test question", range);
+            validateInput.ask("test question", range);
         } catch (Exception e) {
+            System.out.println("Catch Exception");
+        }
+        if (out.toString().contains("Please select key from menu.")) {
             check = true;
         }
+
         assertThat(check, is(true));
 
     }
