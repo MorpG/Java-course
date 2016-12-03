@@ -5,6 +5,9 @@ import org.junit.Test;
 import ru.agolovin.models.Filter;
 import ru.agolovin.models.Item;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -24,13 +27,20 @@ public class StartUITest {
     public final void whenUserSet0inMenuThenResultIs() {
         final long timeCreate = 15;
         Tracker tracker = new Tracker();
-        String[] answer = {"0", "ss", "d", "15", "y"};
+        String[] answer = {"0", "ss", "d", "d", "15", "y"};
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        boolean check = false;
         StartUI stUI = new StartUI(new StubInput(answer));
         stUI.init(tracker);
+        if (out.toString().contains("Please, enter number")) {
+            check = true;
+        }
 
         Item item = new Item("ss", "d", timeCreate);
         Item[] res = stUI.getTracker().getByFilter(new Filter("ss"));
         assertThat(res[0].getName(), is(item.getName()));
+        assertThat(check, is(true));
     }
 
     /**
@@ -59,19 +69,25 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item item = new Item("testName", "testDescription", 1);
         Item updateItem = new Item("updateName", "updateDescription", 2);
-
         tracker.add(item);
         updateItem.setId(tracker.findById(item.getId()).getId());
         String idItem = updateItem.getId();
         String[] answer = {
-                "2", idItem, "updateName", "updateDescription", "2", "y"
+                "2", idItem, "updateName", "updateDescription", "d", "2", "y"
         };
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        boolean check = false;
         StartUI stUI = new StartUI(new StubInput(answer));
         stUI.init(tracker);
+        if (out.toString().contains("Please, enter number")) {
+            check = true;
+        }
         Item[] res =
                 stUI.getTracker().getByFilter(
                         new Filter("updateDescription"));
         assertThat(res[0].getName(), is(updateItem.getName()));
+        assertThat(check, is(true));
     }
 
     /**

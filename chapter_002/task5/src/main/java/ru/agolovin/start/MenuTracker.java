@@ -20,10 +20,20 @@ class EditItem implements UserAction {
      * @param tracker Tracker
      */
     public void execute(final Input input, final Tracker tracker) {
+        boolean flag = true;
+        long timeCreate = 0;
         String id = input.ask("Enter id to edit: ");
         String name = input.ask("Enter the task`s name: ");
         String desc = input.ask("Enter the task`s description: ");
-        long timeCreate = Long.parseLong(input.ask("Enter time create: "));
+
+        do {
+            try {
+                timeCreate = Long.parseLong(input.ask("Enter time create: "));
+                flag = false;
+            } catch (NumberFormatException nfe) {
+                System.out.println("Please, enter number");
+            }
+        } while (flag);
         Item item = new Item(name, desc, timeCreate);
         item.setId(id);
         tracker.updateItem(item);
@@ -73,10 +83,9 @@ class MenuTracker {
     }
 
     /**
-     *
      * @return lengthUserActions int
      */
-    public int getLengthUserActions() {
+    int getLengthUserActions() {
         return this.lengthUserActions;
     }
 
@@ -174,9 +183,18 @@ class MenuTracker {
          * @param sTracker Tracker
          */
         public void execute(final Input sInput, final Tracker sTracker) {
+            boolean flag = true;
+            long timeCreate = 0;
             String name = sInput.ask("Enter the task`s name: ");
             String desc = sInput.ask("Enter the task`s description: ");
-            long timeCreate = Long.parseLong(sInput.ask("Enter time create: "));
+            do {
+                try {
+                    timeCreate = Long.parseLong(sInput.ask("Enter time create: "));
+                    flag = false;
+                } catch (NumberFormatException nfe) {
+                    System.out.println("Please, enter number");
+                }
+            } while (flag);
             sTracker.add(new Item(name, desc, timeCreate));
         }
 

@@ -20,7 +20,7 @@ public class ConsoleInput implements Input {
      * @param question String
      * @return ask User answer
      */
-    public final String ask(final String question) {
+    public String ask(final String question) {
         System.out.println(question);
         return scanner.nextLine();
     }
