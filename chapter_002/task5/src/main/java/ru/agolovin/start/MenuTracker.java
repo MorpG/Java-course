@@ -23,20 +23,24 @@ class EditItem implements UserAction {
         boolean flag = true;
         long timeCreate = 0;
         String id = input.ask("Enter id to edit: ");
-        String name = input.ask("Enter the task`s name: ");
-        String desc = input.ask("Enter the task`s description: ");
+        if (tracker.findById(id) != null) {
+            String name = input.ask("Enter the task`s name: ");
+            String desc = input.ask("Enter the task`s description: ");
+            do {
+                try {
+                    timeCreate = Long.parseLong(input.ask("Enter time create: "));
+                    flag = false;
+                } catch (NumberFormatException nfe) {
+                    System.out.println("Please, enter number");
+                }
+            } while (flag);
+            Item item = new Item(name, desc, timeCreate);
+            item.setId(id);
+            tracker.updateItem(item);
+        } else {
+            System.out.println("This id did not found");
+        }
 
-        do {
-            try {
-                timeCreate = Long.parseLong(input.ask("Enter time create: "));
-                flag = false;
-            } catch (NumberFormatException nfe) {
-                System.out.println("Please, enter number");
-            }
-        } while (flag);
-        Item item = new Item(name, desc, timeCreate);
-        item.setId(id);
-        tracker.updateItem(item);
     }
 
     /**
