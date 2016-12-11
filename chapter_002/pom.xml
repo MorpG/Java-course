@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>task6</module>
-        <module>ControlQuestions</module>
+        <module>Chess</module>
     </modules>
 </project>
