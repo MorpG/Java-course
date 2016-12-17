@@ -1,15 +1,39 @@
 package ru.agolovin.models;
 
-
+/**
+ * Abstract class for figure logic.
+ *
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 public abstract class Figure {
 
+    /**
+     * position on Board.
+     */
     final Cell position;
 
-    Figure(Cell sPosition) {
+    /**
+     * constructor.
+     * @param sPosition Cell
+     */
+    public Figure(final Cell sPosition) {
         this.position = sPosition;
     }
 
-    public abstract Cell[] way(Cell dist) throws ImpossibleMoveException;
+    /**
+     * array of cells figure way.
+     * @param dist Cell
+     * @return array of cells
+     * @throws ImpossibleMoveException error
+     */
+    public abstract Cell[] way(final Cell dist) throws ImpossibleMoveException;
 
-    public abstract Figure clone(Cell dist);
+    /**
+     * clone figure to new cell.
+     * @param dist cell
+     * @return new figure
+     */
+    public abstract Figure clone(final Cell dist);
 }
