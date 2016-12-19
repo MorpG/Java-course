@@ -130,10 +130,7 @@
         <!--<module name="FinalClass"/>-->
         <!--<module name="HideUtilityClassConstructor"/>-->
         <module name="InterfaceIsType"/>
-        <module name="VisibilityModifier">
-            <property name="protectedAllowed" value="true"/>
-            <property name="packageAllowed" value="true"/>
-        </module>
+        <module name="VisibilityModifier"/>
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->

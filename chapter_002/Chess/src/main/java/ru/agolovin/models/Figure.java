@@ -12,7 +12,7 @@ public abstract class Figure {
     /**
      * position on Board.
      */
-    protected final Cell position;
+    private final Cell position;
 
     /**
      * constructor.
@@ -37,5 +37,11 @@ public abstract class Figure {
      */
     public abstract Figure clone(final Cell dist);
 
-
+    /**
+     * Return Cell position.
+     * @return position Cell
+     */
+    public final Cell getPosition() {
+        return position;
+    }
 }

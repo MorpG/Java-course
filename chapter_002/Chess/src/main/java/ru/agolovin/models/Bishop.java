@@ -35,8 +35,8 @@ public class Bishop extends Figure {
      */
     @Override
     public final Cell[] way(final Cell dist) throws ImpossibleMoveException {
-        int startCol = this.position.getCol();
-        int startRow = this.position.getRow();
+        int startCol = this.getPosition().getCol();
+        int startRow = this.getPosition().getRow();
         int endCol = dist.getCol();
         int endRow = dist.getRow();
         int maxSize = Math.abs(endCol - startCol);
