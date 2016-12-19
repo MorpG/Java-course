@@ -7,12 +7,12 @@ package ru.agolovin.models;
  * @version $Id$
  * @since 0.1
  */
-public class FigureNotFoundException extends RuntimeException {
+class FigureNotFoundException extends RuntimeException {
     /**
      * Return message to parent.
      * @param msg String
      */
-    public FigureNotFoundException(final String msg) {
+    FigureNotFoundException(final String msg) {
         super(msg);
     }
 }

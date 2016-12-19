@@ -7,12 +7,12 @@ package ru.agolovin.models;
  * @version $Id$
  * @since 0.1
  */
-public class ImpossibleMoveException extends RuntimeException {
+class ImpossibleMoveException extends RuntimeException {
     /**
      * Return message to parent.
      * @param msg String
      */
-    public ImpossibleMoveException(final String msg) {
+    ImpossibleMoveException(final String msg) {
         super(msg);
     }
 }

@@ -7,7 +7,7 @@ package ru.agolovin.models;
  * @version $Id$
  * @since 0.1
  */
-public abstract class Figure {
+abstract class Figure {
 
     /**
      * position on Board.
@@ -18,7 +18,7 @@ public abstract class Figure {
      * constructor.
      * @param sPosition Cell
      */
-    public Figure(final Cell sPosition) {
+    Figure(final Cell sPosition) {
         this.position = sPosition;
     }
 
@@ -41,7 +41,7 @@ public abstract class Figure {
      * Return Cell position.
      * @return position Cell
      */
-    public final Cell getPosition() {
+    final Cell getPosition() {
         return position;
     }
 }

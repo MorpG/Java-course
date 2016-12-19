@@ -7,7 +7,7 @@ package ru.agolovin.models;
  * @version $Id$
  * @since 0.1
  */
-public class Cell {
+class Cell {
 
     /**
      * column on the board.
@@ -24,7 +24,7 @@ public class Cell {
      * @param sCol int
      * @param sRow int
      */
-    public Cell(final int sCol, final int sRow) {
+    Cell(final int sCol, final int sRow) {
         this.col = sCol;
         this.row = sRow;
     }
@@ -33,7 +33,7 @@ public class Cell {
      * return column on the board.
      * @return column int
      */
-    public final int getCol() {
+    final int getCol() {
         return col;
     }
 
@@ -41,7 +41,7 @@ public class Cell {
      * return row on the board.
      * @return row int
      */
-    public final int getRow() {
+    final int getRow() {
         return row;
     }
 }

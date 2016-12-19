@@ -7,12 +7,12 @@ package ru.agolovin.models;
  * @version $Id$
  * @since 0.1
  */
-public class OccupiedWayException extends RuntimeException {
+class OccupiedWayException extends RuntimeException {
     /**
      * Return message to parent.
      * @param msg String
      */
-    public OccupiedWayException(final String msg) {
+    OccupiedWayException(final String msg) {
         super(msg);
     }
 }

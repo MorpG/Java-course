@@ -55,7 +55,7 @@ public class Bishop extends Figure {
                 int stepCol = startCol + step * i;
                 int stepRow = (stepCol - startCol) * (endRow - startRow)
                         / (endCol - startCol) + startRow;
-                res[i - 1] = new Cell(startCol, stepRow);
+                res[i - 1] = new Cell(stepCol, stepRow);
             }
         } else {
             throw new ImpossibleMoveException("Error: impossible move");
