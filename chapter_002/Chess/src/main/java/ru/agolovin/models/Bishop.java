@@ -13,7 +13,7 @@ public class Bishop extends Figure {
      * constructor.
      * @param cell cell
      */
-    public Bishop(final Cell cell) {
+    Bishop(final Cell cell) {
         super(cell);
     }
 

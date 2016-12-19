@@ -20,6 +20,16 @@ class Board {
     private Figure[][] board = new Figure[maxSize][maxSize];
 
     /**
+     * Set figure to the board.
+     * @param figure Figure
+     */
+    void setFigure(Figure figure) {
+        int col = figure.getPosition().getCol();
+        int row = figure.getPosition().getRow();
+        this.board[col][row] = figure;
+    }
+
+    /**
      * check correct move figure.
      *
      * @param start cell
