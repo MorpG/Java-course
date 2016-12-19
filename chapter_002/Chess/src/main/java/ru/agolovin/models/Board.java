@@ -38,11 +38,10 @@ class Board {
         try {
             int startCol = start.getCol();
             int startRow = start.getRow();
-            if ((board[startCol][startRow] == null)
-                    || startCol < 0
-                    || startRow < 0
+            if (startCol < 0 || startRow < 0
                     || startCol > maxIndex
-                    || startRow > maxIndex) {
+                    || startRow > maxIndex
+                    || (board[startCol][startRow] == null)) {
                 throw new FigureNotFoundException(
                         "Error: Figure not found on the board");
             }
