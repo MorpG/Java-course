@@ -2,9 +2,6 @@ package ru.agolovin.models;
 
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -30,10 +27,9 @@ public class BoardTest {
         Board board = new Board();
         Cell cellStart = new Cell(colStart, rowStart);
         Cell cellEnd = new Cell(colEnd, rowEnd);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        board.move(cellStart, cellEnd);
-        if (out.toString().contains("Error: Figure not found on the board")) {
+        try {
+            board.move(cellStart, cellEnd);
+        } catch (FigureNotFoundException e) {
             result = true;
         }
         assertThat(result, is(true));
@@ -70,13 +66,12 @@ public class BoardTest {
         Cell cellStart = new Cell(colStart, rowStart);
         Cell cellEnd = new Cell(colEnd, rowEnd);
         board.setFigure(new Bishop(cellStart));
-        board.move(cellStart, cellEnd);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        if (out.toString().contains("Error: impossible move")) {
+        try {
+            board.move(cellStart, cellEnd);
+        } catch (ImpossibleMoveException e) {
             result = true;
         }
-        assertThat(result, is(false));
+        assertThat(result, is(true));
     }
 
     /**
@@ -93,14 +88,16 @@ public class BoardTest {
         Cell cellStart = new Cell(colStart, rowStart);
         Cell cellEnd = new Cell(colEnd, rowEnd);
         board.setFigure(new Bishop(cellStart));
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        board.move(cellStart, cellEnd);
-        if (out.toString().contains("Error: Destination out of the board")) {
+        try {
+            board.move(cellStart, cellEnd);
+
+        } catch (ImpossibleMoveException e) {
             result = true;
         }
+
         assertThat(result, is(true));
     }
+
     /**
      * Test occupiedWay.
      */
@@ -119,10 +116,9 @@ public class BoardTest {
         Cell cellEnd = new Cell(colEnd, rowEnd);
         board.setFigure(new Bishop(cellFigureOne));
         board.setFigure(new Bishop(cellFigureTwo));
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        board.move(cellFigureOne, cellEnd);
-        if (out.toString().contains("Another figure on the way")) {
+        try {
+            board.move(cellFigureOne, cellEnd);
+        } catch (OccupiedWayException e) {
             result = true;
         }
         assertThat(result, is(true));

@@ -45,8 +45,7 @@ class Board {
         boolean result = false;
         final int maxIndex = 7;
 
-        try {
-            int startCol = start.getCol();
+           int startCol = start.getCol();
             int startRow = start.getRow();
             if (startCol < 0 || startRow < 0
                     || startCol > maxIndex
@@ -84,13 +83,7 @@ class Board {
 
             result = true;
 
-        } catch (FigureNotFoundException fnfe) {
-            System.out.println(fnfe);
-        } catch (ImpossibleMoveException ime) {
-            System.out.println(ime);
-        } catch (OccupiedWayException owe) {
-            System.out.println(owe);
-        }
+
         return result;
     }
 }
