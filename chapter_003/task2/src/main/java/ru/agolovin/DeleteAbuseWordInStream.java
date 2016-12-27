@@ -25,7 +25,6 @@ class DeleteAbuseWordInStream {
      * @param abuse String array
      */
     void dropAbuses(InputStream in, OutputStream out, String[] abuse) {
-        boolean result = false;
         try {
             String stream;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
