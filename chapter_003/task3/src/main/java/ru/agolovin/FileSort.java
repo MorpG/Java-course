@@ -101,6 +101,24 @@ public class FileSort {
 
 
     private void mergeTempFiles() {
+        try {
+            RandomAccessFile rafDistance = new RandomAccessFile(dist, "rw");
+            RandomAccessFile rafTempOne = new RandomAccessFile(tempOne, "r");
+            RandomAccessFile rafTempTwo = new RandomAccessFile(tempTwo, "r");
+
+            rafDistance.seek(0);
+            rafTempOne.seek(0);
+            rafTempTwo.seek(0);
+
+            boolean skipTempOne = false;
+            boolean skipTempTwo = false;
+
+            String lineTempOne = rafTempOne.readLine();
+            String lineTempTwo = rafTempTwo.readLine();
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     private void deleteTempFiles() {
