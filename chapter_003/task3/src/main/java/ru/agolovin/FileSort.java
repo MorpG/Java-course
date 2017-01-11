@@ -13,20 +13,41 @@ import java.io.RandomAccessFile;
  */
 public class FileSort {
 
+    /**
+     * First temporary file.
+     */
     private File tempOne;
 
+    /**
+     * Second temporary file.
+     */
     private File tempTwo;
 
+    /**
+     * Distance file.
+     */
     private File dist;
 
+    /**
+     * line separator.
+     */
     private String lineSeparator = System.getProperty("lineSeparator");
 
+    /**
+     * Constructor.
+     */
     FileSort() {
         this.tempOne = new File("tempOne.tmp");
         this.tempTwo = new File("tempTwo.tmp");
         this.dist = new File("distance.txt");
     }
 
+    /**
+     * external sort file
+     * @param source File
+     * @param distance File
+     * @throws IOException exception
+     */
     public void sort(File source, File distance) throws IOException {
 
         if (checkExistFile(source)) {
@@ -35,14 +56,17 @@ public class FileSort {
 
         if (splitFile(source)) {
             mergeTempFiles();
-            deleteTempFiles();
             while (splitFile(distance)) {
                 mergeTempFiles();
-                deleteTempFiles();
             }
         }
     }
 
+    /**
+     * check file exist.
+     * @param file File
+     * @return true if exist
+     */
     private boolean checkExistFile(File file) {
         boolean result = true;
         if (!file.exists() && !file.isFile()) {
@@ -52,6 +76,12 @@ public class FileSort {
         return result;
     }
 
+    /**
+     * check if file already sorted.
+     * @param file File
+     * @return boolean result
+     * @throws IOException exception
+     */
     private boolean splitFile(File file) throws IOException {
         boolean result = false;
 
@@ -89,17 +119,27 @@ public class FileSort {
                 lastLineLength = currentLineLength;
             }
             rafTempTwo.seek(0);
-            if (rafTempTwo.readLine() == null){
+            if (rafTempTwo.length() == 0) {
                 result = true;
             }
+
+            rafFile.close();
+            rafTempOne.close();
+            rafTempTwo.close();
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
+
         }
 
+        this.tempTwo.delete();
+        this.tempOne.delete();
         return result;
     }
 
-
+    /**
+     * merge temp files to one distance.
+     */
     private void mergeTempFiles() {
         try {
             RandomAccessFile rafDistance = new RandomAccessFile(dist, "rw");
@@ -113,19 +153,52 @@ public class FileSort {
             boolean skipTempOne = false;
             boolean skipTempTwo = false;
 
-            String lineTempOne = rafTempOne.readLine();
-            String lineTempTwo = rafTempTwo.readLine();
+            String lineTempOne = "";
+            String lineTempTwo = "";
+
+            if (tempOne.length() != 0) {
+                lineTempOne = rafTempOne.readLine();
+            } else {
+                skipTempOne = true;
+            }
+            if (tempTwo.length() != 0) {
+                lineTempTwo = rafTempTwo.readLine();
+            } else {
+                skipTempTwo = true;
+            }
+
+            do {
+                if (!skipTempTwo && (skipTempOne || (lineTempTwo.length() >= lineTempOne.length()))) {
+                    write(rafDistance, lineTempOne);
+                    if (rafTempOne.getFilePointer() != rafTempOne.length()) {
+                        lineTempOne = rafTempOne.readLine();
+                    } else {
+                        skipTempOne = true;
+                    }
+                } else if (!skipTempOne && (skipTempTwo || (lineTempOne.length() > lineTempTwo.length()))) {
+                    write(rafDistance, lineTempTwo);
+                    if (rafTempTwo.getFilePointer() != rafTempTwo.length()) {
+                        lineTempTwo = rafTempTwo.readLine();
+                    } else {
+                        skipTempTwo = true;
+                    }
+                }
+            } while (!skipTempOne || !skipTempTwo);
+
+            rafDistance.close();
+            rafTempOne.close();
+            rafTempTwo.close();
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    private void deleteTempFiles() {
-        tempOne.delete();
-        tempTwo.delete();
-    }
-
+    /**
+     * write string in the file.
+     * @param randomAccessFile RandomAccessFile
+     * @param string String
+     */
     private void write(RandomAccessFile randomAccessFile, String string) {
         try {
             randomAccessFile.seek(randomAccessFile.length());
@@ -134,19 +207,6 @@ public class FileSort {
             ioe.printStackTrace();
         }
     }
-
-//    private void copyToFile(File source, File distance) throws IOException {
-//        rafSource = new RandomAccessFile(source, "r");
-//        rafDistance = new RandomAccessFile(distance, "rw");
-//        String line = rafSource.readLine();
-//        if (line != null) {
-//            rafDistance.writeBytes(line);
-//        }
-//        while ((line = rafSource.readLine()) != null) {
-//            rafDistance.writeBytes(String.format("%s%s", lineSeparator, line));
-//        }
-//        rafSource.close();
-//    }
 
 
 }
