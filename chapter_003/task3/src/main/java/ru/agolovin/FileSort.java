@@ -49,14 +49,18 @@ public class FileSort {
      * @param distance File
      * @throws IOException exception
      */
-    public void sort(File source, File distance) {
+    public void sort(File source, File distance) throws IOException {
 
         if (checkExistFile(source)) {
-            this.dist = distance;
+            if (checkExistFile(distance)) {
+                this.dist = distance;
+            } else
+                this.dist.createNewFile();
         }
         try {
             if (splitFile(source)) {
                 mergeTempFiles();
+
                 while (splitFile(distance)) {
                     mergeTempFiles();
                 }
