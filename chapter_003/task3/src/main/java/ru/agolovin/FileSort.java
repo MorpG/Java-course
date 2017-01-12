@@ -43,27 +43,32 @@ public class FileSort {
     }
 
     /**
-     * external sort file
-     * @param source File
+     * external sort file.
+     *
+     * @param source   File
      * @param distance File
      * @throws IOException exception
      */
-    public void sort(File source, File distance) throws IOException {
+    public void sort(File source, File distance) {
 
         if (checkExistFile(source)) {
             this.dist = distance;
         }
-
-        if (splitFile(source)) {
-            mergeTempFiles();
-            while (splitFile(distance)) {
+        try {
+            if (splitFile(source)) {
                 mergeTempFiles();
+                while (splitFile(distance)) {
+                    mergeTempFiles();
+                }
             }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
     /**
      * check file exist.
+     *
      * @param file File
      * @return true if exist
      */
@@ -78,6 +83,7 @@ public class FileSort {
 
     /**
      * check if file already sorted.
+     *
      * @param file File
      * @return boolean result
      * @throws IOException exception
@@ -196,8 +202,9 @@ public class FileSort {
 
     /**
      * write string in the file.
+     *
      * @param randomAccessFile RandomAccessFile
-     * @param string String
+     * @param string           String
      */
     private void write(RandomAccessFile randomAccessFile, String string) {
         try {
