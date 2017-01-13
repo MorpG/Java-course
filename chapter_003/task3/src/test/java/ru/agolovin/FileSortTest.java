@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -18,14 +19,12 @@ import static org.junit.Assert.assertThat;
 
 public class FileSortTest {
 
+    private String separator = System.getProperty("line.separator");
     @Test
     public void whenCheckExistFileThenResultTrue() throws IOException {
         FileSort fileSort = new FileSort();
-
         File source = new File("test.txt");
-        System.out.println(source.getAbsolutePath());
-        System.out.println(source.isFile());
-        System.out.println(source.exists());
+        System.out.println(source.length());
         File distance = new File("distance.txt");
     //    assertThat(source.exists(), is(true));
         fileSort.sort(source, distance);

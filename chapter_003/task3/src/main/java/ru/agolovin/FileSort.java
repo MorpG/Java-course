@@ -31,7 +31,7 @@ public class FileSort {
     /**
      * line separator.
      */
-    private String lineSeparator = System.getProperty("lineSeparator");
+    private String lineSeparator = System.getProperty("line.separator");
 
     /**
      * Constructor.
@@ -53,15 +53,21 @@ public class FileSort {
 
         if (checkExistFile(source)) {
             if (checkExistFile(distance)) {
+                distance.delete();
+                this.dist.delete();
+                distance.createNewFile();
                 this.dist = distance;
-            } else
+            } else {
                 this.dist.createNewFile();
+                this.dist = distance;
+            }
+
         }
         try {
             if (splitFile(source)) {
                 mergeTempFiles();
 
-                while (splitFile(distance)) {
+                while (!splitFile(distance)) {
                     mergeTempFiles();
                 }
             }
@@ -101,27 +107,30 @@ public class FileSort {
         int lastLineLength = 0;
 
         try {
+
+            resetFile(this.tempOne);
+            resetFile(this.tempTwo);
             RandomAccessFile rafFile = new RandomAccessFile(file, "r");
-            RandomAccessFile rafTempOne = new RandomAccessFile(tempOne, "rw");
-            RandomAccessFile rafTempTwo = new RandomAccessFile(tempTwo, "rw");
+            RandomAccessFile rafTempOne = new RandomAccessFile(this.tempOne, "rw");
+            RandomAccessFile rafTempTwo = new RandomAccessFile(this.tempTwo, "rw");
 
             rafTempOne.seek(0);
             rafTempTwo.seek(0);
             rafFile.seek(0);
-            while (rafFile.getFilePointer() != rafFile.length()) {
-                line = rafFile.readLine();
+            while ((line = rafFile.readLine()) != null) {
+                //line = rafFile.readLine();
                 currentLineLength = line.length();
-                if (currentLineLength >= lastLineLength && flag) {
+                if ((currentLineLength >= lastLineLength) && flag) {
                     write(rafTempOne, line);
 
-                } else if (currentLineLength < lastLineLength && flag) {
+                } else if ((currentLineLength < lastLineLength) && flag) {
                     write(rafTempTwo, line);
                     flag = false;
 
-                } else if (currentLineLength >= lastLineLength && !flag) {
+                } else if ((currentLineLength >= lastLineLength) && !flag) {
                     write(rafTempTwo, line);
 
-                } else if (currentLineLength < lastLineLength && !flag) {
+                } else if ((currentLineLength < lastLineLength) && !flag) {
                     write(rafTempOne, line);
                     flag = true;
 
@@ -129,9 +138,7 @@ public class FileSort {
                 lastLineLength = currentLineLength;
             }
             rafTempTwo.seek(0);
-            if (rafTempTwo.length() == 0) {
-                result = true;
-            }
+            result = rafTempTwo.length() != 0;
 
             rafFile.close();
             rafTempOne.close();
@@ -142,9 +149,15 @@ public class FileSort {
 
         }
 
-        this.tempTwo.delete();
-        this.tempOne.delete();
         return result;
+    }
+
+    public void resetFile(File file) throws IOException {
+        if (file.exists()) {
+            file.delete();
+            file.createNewFile();
+        } else
+            file.createNewFile();
     }
 
     /**
@@ -195,6 +208,8 @@ public class FileSort {
                 }
             } while (!skipTempOne || !skipTempTwo);
 
+            this.tempOne.delete();
+            this.tempTwo.delete();
             rafDistance.close();
             rafTempOne.close();
             rafTempTwo.close();
@@ -210,10 +225,10 @@ public class FileSort {
      * @param randomAccessFile RandomAccessFile
      * @param string           String
      */
-    private void write(RandomAccessFile randomAccessFile, String string) {
+    void write(RandomAccessFile randomAccessFile, String string) {
         try {
             randomAccessFile.seek(randomAccessFile.length());
-            randomAccessFile.writeBytes(String.format("%s%s", string, lineSeparator));
+            randomAccessFile.writeBytes(String.format("%s%s", string, System.getProperty("line.separator")));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
