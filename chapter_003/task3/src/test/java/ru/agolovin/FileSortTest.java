@@ -19,18 +19,40 @@ import static org.junit.Assert.assertThat;
 
 public class FileSortTest {
 
+    /**
+     * Line separator.
+     */
     private String separator = System.getProperty("line.separator");
+
+    /**
+     * Test sorting method.
+     *
+     * @throws IOException Exception
+     */
     @Test
     public void whenCheckExistFileThenResultTrue() throws IOException {
         FileSort fileSort = new FileSort();
-        File source = new File("test.txt");
-        System.out.println(source.length());
+        String income = "bb" + separator
+                + "a" + separator + "ddd" + separator + "e";
+        File source = new File("test1.txt");
         File distance = new File("distance.txt");
-        assertThat(source.exists(), is(true));
+
+        RandomAccessFile rafSource = new RandomAccessFile(source, "rw");
+        rafSource.seek(0);
+        fileSort.write(rafSource, income);
+
         fileSort.sort(source, distance);
-        RandomAccessFile raf = new RandomAccessFile(distance, "rw");
-        raf.seek(distance.length());
-        String str = raf.readLine();
-        System.out.println(str + " : lenght " + str.length());
+
+        RandomAccessFile rafDistance = new RandomAccessFile(distance, "r");
+        assertThat(distance.exists(), is(true));
+        assertThat(rafDistance.readLine().equals("a"), is(true));
+        assertThat(rafDistance.readLine().equals("e"), is(true));
+        assertThat(rafDistance.readLine().equals("bb"), is(true));
+        assertThat(rafDistance.readLine().equals("ddd"), is(true));
+
+        rafDistance.close();
+        rafSource.close();
+        source.delete();
+
     }
 }

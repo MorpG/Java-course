@@ -49,7 +49,7 @@ public class FileSort {
      * @param distance File
      * @throws IOException exception
      */
-    public void sort(File source, File distance) throws IOException {
+    void sort(File source, File distance) throws IOException {
 
         try {
 
@@ -98,7 +98,7 @@ public class FileSort {
     private boolean checkExistFile(File file) {
         boolean result = true;
         if (!file.exists() && !file.isFile()) {
-            System.out.println("source file invalid");
+            System.out.println("file invalid");
             result = false;
         }
         return result;
@@ -121,8 +121,6 @@ public class FileSort {
 
         try {
 
-            //tempOne = File.createTempFile("tmp1", ".tmp");
-            //tempTwo = File.createTempFile("tmp2", ".tmp");
             resetFile(this.tempOne);
             resetFile(this.tempTwo);
             RandomAccessFile rafFile = new RandomAccessFile(file, "r");
@@ -133,7 +131,6 @@ public class FileSort {
             rafTempTwo.seek(0);
             rafFile.seek(0);
             while ((line = rafFile.readLine()) != null) {
-                //line = rafFile.readLine();
                 currentLineLength = line.length();
                 if ((currentLineLength >= lastLineLength) && flag) {
                     write(rafTempOne, line);
@@ -173,7 +170,7 @@ public class FileSort {
      * @throws IOException Exception
      * @throws FileSortException Exception
      */
-    public void resetFile(File file) throws IOException, FileSortException {
+    private void resetFile(File file) throws IOException, FileSortException {
 
         if (file.exists()) {
             if (!file.delete()) {
@@ -247,8 +244,6 @@ public class FileSort {
             if (!this.tempTwo.delete()) {
                 throw new FileSortException("Cant delete file");
             }
-//            tempOne.deleteOnExit();
-//            tempTwo.deleteOnExit();
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -271,6 +266,4 @@ public class FileSort {
             ioe.printStackTrace();
         }
     }
-
-
 }
