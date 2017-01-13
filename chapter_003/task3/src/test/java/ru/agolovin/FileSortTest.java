@@ -26,7 +26,11 @@ public class FileSortTest {
         File source = new File("test.txt");
         System.out.println(source.length());
         File distance = new File("distance.txt");
-    //    assertThat(source.exists(), is(true));
+        assertThat(source.exists(), is(true));
         fileSort.sort(source, distance);
+        RandomAccessFile raf = new RandomAccessFile(distance, "rw");
+        raf.seek(distance.length());
+        String str = raf.readLine();
+        System.out.println(str + " : lenght " + str.length());
     }
 }

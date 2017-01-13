@@ -51,29 +51,41 @@ public class FileSort {
      */
     public void sort(File source, File distance) throws IOException {
 
-        if (checkExistFile(source)) {
-            if (checkExistFile(distance)) {
-                distance.delete();
-                this.dist.delete();
-                distance.createNewFile();
-                this.dist = distance;
-            } else {
-                this.dist.createNewFile();
-                this.dist = distance;
-            }
-
-        }
         try {
-            if (splitFile(source)) {
-                mergeTempFiles();
 
-                while (!splitFile(distance)) {
+            if (checkExistFile(source)) {
+                if (checkExistFile(distance)) {
+                    if (!distance.delete()) {
+                        throw new FileSortException("Cant delete distance file");
+                    }
+
+                    if (!distance.createNewFile()) {
+                        throw new FileSortException("Cant create distance file");
+                    }
+                    this.dist = distance;
+                } else {
+                    if (!this.dist.createNewFile()) {
+                        throw new FileSortException("Cant create distance file");
+                    }
+
+                    this.dist = distance;
+                }
+
+                if (splitFile(source)) {
                     mergeTempFiles();
+
+                    while (splitFile(this.dist)) {
+                        resetFile(this.dist);
+                        mergeTempFiles();
+                    }
                 }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } catch (FileSortException fse) {
+            System.out.println(fse);
         }
+
     }
 
     /**
@@ -82,6 +94,7 @@ public class FileSort {
      * @param file File
      * @return true if exist
      */
+
     private boolean checkExistFile(File file) {
         boolean result = true;
         if (!file.exists() && !file.isFile()) {
@@ -102,12 +115,14 @@ public class FileSort {
         boolean result = false;
 
         boolean flag = true;
-        int currentLineLength = 0;
+        int currentLineLength;
         String line;
         int lastLineLength = 0;
 
         try {
 
+            //tempOne = File.createTempFile("tmp1", ".tmp");
+            //tempTwo = File.createTempFile("tmp2", ".tmp");
             resetFile(this.tempOne);
             resetFile(this.tempTwo);
             RandomAccessFile rafFile = new RandomAccessFile(file, "r");
@@ -152,12 +167,24 @@ public class FileSort {
         return result;
     }
 
-    public void resetFile(File file) throws IOException {
+    /**
+     * Reset file.
+     * @param file File
+     * @throws IOException Exception
+     * @throws FileSortException Exception
+     */
+    public void resetFile(File file) throws IOException, FileSortException {
+
         if (file.exists()) {
-            file.delete();
-            file.createNewFile();
-        } else
-            file.createNewFile();
+            if (!file.delete()) {
+                throw new FileSortException("Cant delete file");
+            }
+            if (!file.createNewFile()) {
+                throw new FileSortException("Cant create file");
+            }
+        } else if (!file.createNewFile()) {
+            throw new FileSortException("Cant create file");
+        }
     }
 
     /**
@@ -190,32 +217,43 @@ public class FileSort {
                 skipTempTwo = true;
             }
 
-            do {
-                if (!skipTempTwo && (skipTempOne || (lineTempTwo.length() >= lineTempOne.length()))) {
+            while (!skipTempOne || !skipTempTwo) {
+                if ((skipTempTwo || lineTempTwo.length() >= lineTempOne.length()) && !skipTempOne) {
                     write(rafDistance, lineTempOne);
-                    if (rafTempOne.getFilePointer() != rafTempOne.length()) {
+                    if (rafTempOne.getFilePointer() != tempOne.length()) {
                         lineTempOne = rafTempOne.readLine();
                     } else {
                         skipTempOne = true;
                     }
-                } else if (!skipTempOne && (skipTempTwo || (lineTempOne.length() > lineTempTwo.length()))) {
+
+                } else if ((skipTempOne || lineTempOne.length() > lineTempTwo.length()) && !skipTempTwo) {
                     write(rafDistance, lineTempTwo);
-                    if (rafTempTwo.getFilePointer() != rafTempTwo.length()) {
+                    if (rafTempTwo.getFilePointer() != tempTwo.length()) {
                         lineTempTwo = rafTempTwo.readLine();
                     } else {
                         skipTempTwo = true;
                     }
                 }
-            } while (!skipTempOne || !skipTempTwo);
+            }
 
-            this.tempOne.delete();
-            this.tempTwo.delete();
             rafDistance.close();
             rafTempOne.close();
             rafTempTwo.close();
 
+            if (!this.tempOne.delete()) {
+                throw new FileSortException("Cant delete file");
+            }
+
+            if (!this.tempTwo.delete()) {
+                throw new FileSortException("Cant delete file");
+            }
+//            tempOne.deleteOnExit();
+//            tempTwo.deleteOnExit();
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } catch (FileSortException fse) {
+            System.out.println(fse);
         }
     }
 
@@ -228,7 +266,7 @@ public class FileSort {
     void write(RandomAccessFile randomAccessFile, String string) {
         try {
             randomAccessFile.seek(randomAccessFile.length());
-            randomAccessFile.writeBytes(String.format("%s%s", string, System.getProperty("line.separator")));
+            randomAccessFile.writeBytes(String.format("%s%s", string, lineSeparator));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
