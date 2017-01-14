@@ -10,6 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>task3</module>
+        <module>task4</module>
     </modules>
 </project>
