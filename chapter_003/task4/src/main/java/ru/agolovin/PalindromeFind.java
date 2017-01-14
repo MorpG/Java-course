@@ -13,7 +13,7 @@ public class PalindromeFind {
 
     private String word;
 
-    public String ask(){
+    public String ask() {
         System.out.println("Введите слово из пяти букв:");
         return scanner.nextLine();
     }
@@ -27,21 +27,17 @@ public class PalindromeFind {
         char[] subString = str.toLowerCase().toCharArray();
 
         if (subString.length != wordLength) {
-            if (subString.length > wordLength) {
-                System.out.println("В веденном слове больше 5 букв");
-                result = false;
-            } else {
-                System.out.println("В веденном слове меньше 5 букв");
-                result = false;
-            }
-        }
+            System.out.println("Количество букв не равно пяти");
+            result = false;
+        } else {
 
-        for (int i = 0; i < wordLength / 2 ; i++) {
-            if (subString[i] == subString[wordLength - i - 1]) {
-                result = true;
-            } else {
-                result = false;
-                break;
+            for (int i = 0; i < wordLength / 2; i++) {
+                if (subString[i] == subString[wordLength - i - 1]) {
+                    result = true;
+                } else {
+                    result = false;
+                    break;
+                }
             }
         }
         return result;
