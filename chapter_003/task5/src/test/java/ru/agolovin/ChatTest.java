@@ -2,7 +2,7 @@ package ru.agolovin;
 
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -13,14 +13,16 @@ import static org.junit.Assert.assertThat;
  * @since 0.1
  */
 public class ChatTest {
-    private String lineSeparator = System.getProperty("line.separator");
 
+    /**
+     * Test.
+     * @throws Exception exception
+     */
     @Test
     public void chat() throws Exception {
-        String answer = "first" + lineSeparator + "закончить";
-        System.setIn(new ByteArrayInputStream(answer.getBytes()));
-
-        Chat chat = new Chat();
+        File word = new File("word.txt");
+        String[] answer = {"first", "стоп", "word", "продолжить", "word2", "закончить"};
+        Chat chat = new Chat(new StubInput(answer));
         chat.chat();
         boolean result = true;
         assertThat(result, is(true));

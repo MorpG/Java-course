@@ -119,13 +119,17 @@ public class FileSort {
         String line;
         int lastLineLength = 0;
 
+        RandomAccessFile rafFile = null;
+        RandomAccessFile rafTempOne = null;
+        RandomAccessFile rafTempTwo = null;
+
         try {
 
             resetFile(this.tempOne);
             resetFile(this.tempTwo);
-            RandomAccessFile rafFile = new RandomAccessFile(file, "r");
-            RandomAccessFile rafTempOne = new RandomAccessFile(this.tempOne, "rw");
-            RandomAccessFile rafTempTwo = new RandomAccessFile(this.tempTwo, "rw");
+            rafFile = new RandomAccessFile(file, "r");
+            rafTempOne = new RandomAccessFile(this.tempOne, "rw");
+            rafTempTwo = new RandomAccessFile(this.tempTwo, "rw");
 
             rafTempOne.seek(0);
             rafTempTwo.seek(0);
@@ -152,13 +156,22 @@ public class FileSort {
             rafTempTwo.seek(0);
             result = rafTempTwo.length() != 0;
 
-            rafFile.close();
-            rafTempOne.close();
-            rafTempTwo.close();
-
         } catch (IOException ioe) {
             ioe.printStackTrace();
-
+        } finally {
+            try {
+                if (rafFile != null) {
+                    rafFile.close();
+                }
+                if (rafTempOne != null) {
+                    rafTempOne.close();
+                }
+                if (rafTempTwo != null) {
+                    rafTempTwo.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
 
         return result;
@@ -166,8 +179,9 @@ public class FileSort {
 
     /**
      * Reset file.
+     *
      * @param file File
-     * @throws IOException Exception
+     * @throws IOException       Exception
      * @throws FileSortException Exception
      */
     private void resetFile(File file) throws IOException, FileSortException {
@@ -188,10 +202,14 @@ public class FileSort {
      * merge temp files to one distance.
      */
     private void mergeTempFiles() {
+        RandomAccessFile rafDistance = null;
+        RandomAccessFile rafTempOne = null;
+        RandomAccessFile rafTempTwo = null;
+
         try {
-            RandomAccessFile rafDistance = new RandomAccessFile(dist, "rw");
-            RandomAccessFile rafTempOne = new RandomAccessFile(tempOne, "r");
-            RandomAccessFile rafTempTwo = new RandomAccessFile(tempTwo, "r");
+            rafDistance = new RandomAccessFile(dist, "rw");
+            rafTempOne = new RandomAccessFile(tempOne, "r");
+            rafTempTwo = new RandomAccessFile(tempTwo, "r");
 
             rafDistance.seek(0);
             rafTempOne.seek(0);
@@ -232,24 +250,36 @@ public class FileSort {
                     }
                 }
             }
-
-            rafDistance.close();
-            rafTempOne.close();
-            rafTempTwo.close();
-
-            if (!this.tempOne.delete()) {
-                throw new FileSortException("Cant delete file");
-            }
-
-            if (!this.tempTwo.delete()) {
-                throw new FileSortException("Cant delete file");
-            }
-
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } catch (FileSortException fse) {
             System.out.println(fse);
+        } finally {
+            try {
+                if (rafDistance != null) {
+                    rafDistance.close();
+                }
+                if (rafTempOne != null) {
+                    rafTempOne.close();
+                }
+                if (rafTempTwo != null) {
+                    rafTempTwo.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println(ioe);            }
+
         }
+
+
+        if (!this.tempOne.delete()) {
+            throw new FileSortException("Cant delete file");
+        }
+
+        if (!this.tempTwo.delete()) {
+            throw new FileSortException("Cant delete file");
+        }
+
+
     }
 
     /**

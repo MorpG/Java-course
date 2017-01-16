@@ -1,8 +1,10 @@
 package ru.agolovin;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Создать программу консольный чат. Пользователь вводит слово-фразу, программа берет случайную фразу.
@@ -18,109 +20,159 @@ import java.util.Scanner;
  */
 public class Chat {
 
-    private int maxNumberRow;
+    /**
+     * Stop.
+     */
+    private final String stop = "закончить";
 
+    /**
+     * Pause.
+     */
+    private final String pause = "стоп";
+
+    /**
+     * Continue.
+     */
+    private final String repeat = "продолжить";
+
+    /**
+     * Input.
+     */
+    private Input input;
+
+    /**
+     * Array list String.
+     */
+    private ArrayList<String> arrayComputerWords;
+
+    /**
+     * Computer words file.
+     */
     private File computerWords;
 
+    /**
+     * log.
+     */
     private File log;
 
-    Chat() {
+    /**
+     * Constructor.
+      * @param input Input
+     */
+    Chat(Input input) {
+        this.input = input;
         computerWords = new File("word.txt");
         log = new File("log.txt");
+        arrayComputerWords = new ArrayList<>();
     }
 
-    private int defendNumberRows(File file) {
-        int result = 0;
-        try {
-            FileReader fileReader = new FileReader(file);
-            LineNumberReader line = new LineNumberReader(fileReader);
+    /**
+     * Fill Array from File.
+     * @param file File
+     */
+    private void fillArrayFromFile(File file) {
+        RandomAccessFile raf = null;
 
-            while (line.readLine() != null) {
-                result++;
+        try {
+            raf = new RandomAccessFile(file, "r");
+            String line;
+            while ((line = raf.readLine()) != null) {
+                arrayComputerWords.add(line);
             }
-            line.close();
-            fileReader.close();
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            try {
+                raf.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
+    }
+
+    /**
+     * Get Random number from range.
+     * @param rows int
+     * @return random number int
+     */
+    private int getRandomNumberFromRange(int rows) {
+        int result;
+        Random random = new Random();
+        result = random.nextInt(rows);
         return result;
     }
 
-    private String getRandomLineFromFile(File file) {
-        String result = "";
-        try {
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
-            int quanLine = maxNumberRow - 1;
-            Random random = new Random();
-            int position = random.nextInt(quanLine);
-            raf.seek(position);
-            result = raf.readLine();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-        return result;
-    }
-
+    /**
+     * Chat.
+     * @throws Exception exception
+     */
     public void chat() throws Exception {
 
-        final String stopWord = "закончить";
-        final String pauseWord = "стоп";
-        final String continueWord = "продолжить";
+        RandomAccessFile raf = null;
 
-        String lineSeparator = System.getProperty("line.separator");
 
-        boolean stopFlag = false;
+        try {
+            String lineSeparator = System.getProperty("line.separator");
 
-        this.maxNumberRow = defendNumberRows(computerWords);
-        System.out.println(maxNumberRow);
+            boolean stopFlag = false;
 
-        String answer;
+            fillArrayFromFile(computerWords);
 
-        if (log.exists() && log.isFile()) {
-            if (!log.delete()) {
-                throw new Exception("Cant reset log");
+            int maxNumberRow = arrayComputerWords.size();
+
+            String answer;
+
+            if (log.exists() && log.isFile()) {
+                if (!log.delete()) {
+                    throw new Exception("Cant reset log");
+                }
+                if (!log.createNewFile()) {
+                    throw new Exception("Cant create log");
+                }
+            } else {
+                if (!log.createNewFile()) {
+                    throw new Exception("Cant create log");
+                }
             }
-            if (!log.createNewFile()) {
-                throw new Exception("Cant create log");
-            }
-        } else {
-            if (!log.createNewFile()) {
-                throw new Exception("Cant create log");
+
+            raf = new RandomAccessFile(log, "rw");
+            raf.seek(0);
+
+            do {
+                boolean flag = true;
+                answer = input.ask("Пользователь:");
+                System.out.println(String.format("Пользователь: %s", answer));
+                raf.writeBytes(answer);
+
+                if (pause.equals(answer.toLowerCase())) {
+                    stopFlag = true;
+                } else if (repeat.equals(answer.toLowerCase())) {
+                    stopFlag = false;
+                } else if (stop.equals(answer.toLowerCase())) {
+                    flag = false;
+                }
+
+
+                if (!stopFlag && flag) {
+                    String line = arrayComputerWords.get(getRandomNumberFromRange(maxNumberRow));
+                    System.out.println(String.format("Компьютер: %s", line));
+                    raf.writeBytes(lineSeparator);
+                    raf.writeBytes(line);
+                }
+
+            } while (!stop.equals(answer.toLowerCase()));
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (raf != null) {
+                    raf.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
         }
-
-        RandomAccessFile raf = new RandomAccessFile(log, "rw");
-        raf.seek(0);
-
-        do {
-            answer = ask();
-            System.out.println("Пользователь: " + answer);
-            raf.writeBytes(answer + lineSeparator);
-            if (answer.toLowerCase().equals(pauseWord)) {
-                stopFlag = true;
-            } else if (answer.toLowerCase().equals(continueWord)) {
-                stopFlag = false;
-            }
-
-            if (!stopFlag) {
-                String line = getRandomLineFromFile(computerWords);
-                System.out.println("Компьютер: " + line);
-                raf.writeBytes(line + lineSeparator);
-            }
-
-        } while (!answer.toLowerCase().equals(stopWord));
-
-        raf.close();
     }
-
-    private String ask() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
-    public static void main(String[] args) throws Exception {
-        Chat chat = new Chat();
-        chat.chat();
-    }
-
 }
