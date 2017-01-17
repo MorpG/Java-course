@@ -78,7 +78,8 @@ public class Chat {
             raf = new RandomAccessFile(file, "r");
             String line;
             while ((line = raf.readLine()) != null) {
-                arrayComputerWords.add(line);
+                String convert = new String(line.getBytes("windows-1251"), "UTF-8");
+                arrayComputerWords.add(convert);
             }
 
         } catch (IOException ioe) {
@@ -97,7 +98,7 @@ public class Chat {
      * @param rows int
      * @return random number int
      */
-    private int getRandomNumberFromRange(int rows) {
+    int getRandomNumberFromRange(int rows) {
         int result;
         Random random = new Random();
         result = random.nextInt(rows);

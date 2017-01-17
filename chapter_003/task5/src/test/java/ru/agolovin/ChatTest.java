@@ -2,6 +2,9 @@ package ru.agolovin;
 
 import org.junit.Test;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -21,7 +24,9 @@ public class ChatTest {
         String[] answer = {"First", "Стоп", "Word", "Продолжить", "Word2", "Закончить"};
         Chat chat = new Chat(new StubInput(answer));
         chat.chat();
+
         boolean result = true;
         assertThat(result, is(true));
+
     }
 }
