@@ -1,2 +1,8 @@
-Слово 2
-Слово 1
+Computer word 1
+Computer word 2
+Computer word 3
+Computer word 4
+Computer word 5
+Computer word 6
+Computer word 7
+Computer word 8
