@@ -2,8 +2,6 @@ package ru.agolovin;
 
 import org.junit.Test;
 
-import java.io.File;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,12 +18,10 @@ public class ChatTest {
      */
     @Test
     public void chat() throws Exception {
-        File word = new File("word.txt");
-        String[] answer = {"first", "стоп", "word", "продолжить", "word2", "закончить"};
+        String[] answer = {"First", "Стоп", "Word", "Продолжить", "Word2", "Закончить"};
         Chat chat = new Chat(new StubInput(answer));
         chat.chat();
         boolean result = true;
         assertThat(result, is(true));
     }
-
 }

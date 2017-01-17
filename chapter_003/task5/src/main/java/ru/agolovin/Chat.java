@@ -1,6 +1,7 @@
 package ru.agolovin;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -109,11 +110,11 @@ public class Chat {
      */
     public void chat() throws Exception {
 
-        RandomAccessFile raf = null;
+        FileWriter fileWriter = null;
 
+        String lineSeparator = System.getProperty("line.separator");
 
         try {
-            String lineSeparator = System.getProperty("line.separator");
 
             boolean stopFlag = false;
 
@@ -136,14 +137,15 @@ public class Chat {
                 }
             }
 
-            raf = new RandomAccessFile(log, "rw");
-            raf.seek(0);
+            fileWriter = new FileWriter(log);
 
             do {
                 boolean flag = true;
                 answer = input.ask("Пользователь:");
                 System.out.println(String.format("Пользователь: %s", answer));
-                raf.writeBytes(answer);
+                fileWriter.write(answer);
+                fileWriter.write(lineSeparator);
+
 
                 if (pause.equals(answer.toLowerCase())) {
                     stopFlag = true;
@@ -157,8 +159,8 @@ public class Chat {
                 if (!stopFlag && flag) {
                     String line = arrayComputerWords.get(getRandomNumberFromRange(maxNumberRow));
                     System.out.println(String.format("Компьютер: %s", line));
-                    raf.writeBytes(lineSeparator);
-                    raf.writeBytes(line);
+                    fileWriter.write(line);
+                    fileWriter.write(lineSeparator);
                 }
 
             } while (!stop.equals(answer.toLowerCase()));
@@ -167,8 +169,8 @@ public class Chat {
             ioe.printStackTrace();
         } finally {
             try {
-                if (raf != null) {
-                    raf.close();
+                if (fileWriter != null) {
+                    fileWriter.close();
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
