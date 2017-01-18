@@ -24,17 +24,17 @@ public class Chat {
     /**
      * Stop.
      */
-    private final String STOP = "закончить";
+    private static final String STOP = "закончить";
 
     /**
      * Pause.
      */
-    private final String PAUSE = "стоп";
+    private static final String PAUSE = "стоп";
 
     /**
      * Continue.
      */
-    private final String REPEAT = "продолжить";
+    private static final String REPEAT = "продолжить";
 
     /**
      * Input.
