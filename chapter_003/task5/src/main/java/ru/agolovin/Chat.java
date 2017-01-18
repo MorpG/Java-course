@@ -24,17 +24,17 @@ public class Chat {
     /**
      * Stop.
      */
-    private final String stop = "закончить";
+    private final String STOP = "закончить";
 
     /**
      * Pause.
      */
-    private final String pause = "стоп";
+    private final String PAUSE = "стоп";
 
     /**
      * Continue.
      */
-    private final String repeat = "продолжить";
+    private final String REPEAT = "продолжить";
 
     /**
      * Input.
@@ -148,11 +148,11 @@ public class Chat {
                 fileWriter.write(lineSeparator);
 
 
-                if (pause.equals(answer.toLowerCase())) {
+                if (PAUSE.equals(answer.toLowerCase())) {
                     stopFlag = true;
-                } else if (repeat.equals(answer.toLowerCase())) {
+                } else if (REPEAT.equals(answer.toLowerCase())) {
                     stopFlag = false;
-                } else if (stop.equals(answer.toLowerCase())) {
+                } else if (STOP.equals(answer.toLowerCase())) {
                     flag = false;
                 }
 
@@ -164,7 +164,7 @@ public class Chat {
                     fileWriter.write(lineSeparator);
                 }
 
-            } while (!stop.equals(answer.toLowerCase()));
+            } while (!STOP.equals(answer.toLowerCase()));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
