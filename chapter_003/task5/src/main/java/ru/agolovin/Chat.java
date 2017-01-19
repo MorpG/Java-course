@@ -98,7 +98,7 @@ public class Chat {
      * @param rows int
      * @return random number int
      */
-    int getRandomNumberFromRange(int rows) {
+    private int getRandomNumberFromRange(int rows) {
         int result;
         Random random = new Random();
         result = random.nextInt(rows);

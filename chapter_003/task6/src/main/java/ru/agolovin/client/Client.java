@@ -11,11 +11,11 @@ import java.net.Socket;
  */
 public class Client {
     public static void main(String[] args) {
-        int servPort = 6565;
-        String interAdress = "127.0.0.1";
+        int servPort = 6700;
+        String interAdr = "127.0.0.1";
 
         try {
-            InetAddress inetAddress = InetAddress.getByName(interAdress);
+            InetAddress inetAddress = InetAddress.getByName(interAdr);
             System.out.println("Подключаемся к серверу: " + servPort);
 
             Socket socket = new Socket(inetAddress, servPort);
