@@ -266,7 +266,8 @@ public class FileSort {
                     rafTempTwo.close();
                 }
             } catch (IOException ioe) {
-                System.out.println(ioe);            }
+                System.out.println(ioe);
+            }
 
         }
 

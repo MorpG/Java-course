@@ -1,8 +1,11 @@
 package ru.agolovin.client;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * @author agolovin (agolovin@list.ru)
@@ -10,34 +13,59 @@ import java.net.Socket;
  * @since 0.1
  */
 public class Client {
+
+    /**
+     * Client port.
+     */
+    private int port;
+
+    /**
+     * Client ip.
+     */
+    private String ip;
+
+    /**
+     * Constructor.
+     */
+    private Client() {
+        final int defaultPort = 23451;
+        this.port = defaultPort;
+        this.ip = "127.0.0.1";
+    }
+
+    /**
+     * main method.
+     *
+     * @param args String
+     */
     public static void main(String[] args) {
-        int servPort = 6565;
-        String interAdress = "127.0.0.1";
+        Client client = new Client();
+        client.init();
+    }
 
+    /**
+     * Initialization.
+     */
+    private void init() {
         try {
-            InetAddress inetAddress = InetAddress.getByName(interAdress);
-            System.out.println("Подключаемся к серверу: " + servPort);
+            Socket socket = new Socket(InetAddress.getByName(ip), port);
+            System.out.println("Connection successful");
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            Scanner console = new Scanner(System.in);
 
-            Socket socket = new Socket(inetAddress, servPort);
+            String userInput;
+            do {
+                System.out.println("Please, enter the question:");
+                userInput = console.nextLine();
+                out.println(userInput);
+                String str = in.readLine();
+                while (!str.isEmpty()) {
+                    System.out.println(str);
+                    str = in.readLine();
+                }
+            } while (!(userInput.equals("exit")));
 
-            InputStream socketInputStream = socket.getInputStream();
-            OutputStream socketOutputStrream = socket.getOutputStream();
-
-            DataInputStream in = new DataInputStream(socketInputStream);
-            DataOutputStream out = new DataOutputStream(socketOutputStrream);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String string = null;
-            System.out.println("Введите фразу для передачи серверу: ");
-
-            while (true) {
-                string = reader.readLine();
-                out.writeUTF(string);
-                out.flush();
-                string = in.readUTF();
-                System.out.println("Сервер прислал в ответ: " + string);
-                System.out.println("Введите фразу для передачи серверву: ");
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
