@@ -27,7 +27,7 @@ public class Client {
     /**
      * Constructor.
      */
-    private Client() {
+    public Client() {
         final int defaultPort = 23451;
         this.port = defaultPort;
         this.ip = "127.0.0.1";
@@ -46,7 +46,7 @@ public class Client {
     /**
      * Initialization.
      */
-    private void init() {
+    public void init() {
         try {
             Socket socket = new Socket(InetAddress.getByName(ip), port);
             System.out.println("Connection successful");

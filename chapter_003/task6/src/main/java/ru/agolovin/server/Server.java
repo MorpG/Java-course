@@ -32,9 +32,9 @@ public class Server {
     /**
      * Class constructor.
      */
-    private Server() {
-        final int defaultport = 23451;
-        this.port = defaultport;
+    public Server() {
+        final int defaultPort = 23451;
+        this.port = defaultPort;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Server {
     /**
      * Initialization.
      */
-    private void init() {
+    void init() {
         try {
             Socket socket = new ServerSocket(port).accept();
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
