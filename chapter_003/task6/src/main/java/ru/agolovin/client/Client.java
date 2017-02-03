@@ -15,12 +15,12 @@ import java.util.Scanner;
 public class Client {
 
     /**
-     * Client port.
+     * client port.
      */
     private int port;
 
     /**
-     * Client ip.
+     * client ip.
      */
     private String ip;
 
