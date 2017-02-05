@@ -15,22 +15,16 @@ import java.util.Scanner;
 public class Client {
 
     /**
-     * client port.
+     * Socket.
      */
-    private int port;
-
-    /**
-     * client ip.
-     */
-    private String ip;
+    private Socket socket;
 
     /**
      * Constructor.
+     * @param socket Socket
      */
-    public Client() {
-        final int defaultPort = 23451;
-        this.port = defaultPort;
-        this.ip = "127.0.0.1";
+    Client(Socket socket) {
+        this.socket = socket;
     }
 
     /**
@@ -39,16 +33,23 @@ public class Client {
      * @param args String
      */
     public static void main(String[] args) {
-        Client client = new Client();
-        client.init();
+        final int defaultPort = 23451;
+        final String ip = "127.0.0.1";
+        try {
+            Socket socket = new Socket(InetAddress.getByName(ip), defaultPort);
+            new Client(socket).init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
      * Initialization.
      */
-    public void init() {
+    void init() {
         try {
-            Socket socket = new Socket(InetAddress.getByName(ip), port);
             System.out.println("Connection successful");
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -56,11 +57,11 @@ public class Client {
 
             String userInput;
             do {
-                System.out.println("Please, enter the question:");
+                System.out.println("Please, enter your question for Oracle:");
                 userInput = console.nextLine();
                 out.println(userInput);
                 String str = in.readLine();
-                while (!str.isEmpty()) {
+                while (str != null && !str.isEmpty()) {
                     System.out.println(str);
                     str = in.readLine();
                 }
