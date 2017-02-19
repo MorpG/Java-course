@@ -18,10 +18,9 @@ public interface UserAction {
 
     /**
      * Method.
-     * @param dataInput DataInputStream
-     * @param dataOutput DataOutputStream
+     * @param consoleInput ConsoleInput
      */
-    void execute(DataInputStream dataInput, DataOutputStream dataOutput);
+    void execute(ConsoleInput consoleInput);
 
     /**
      * Information.

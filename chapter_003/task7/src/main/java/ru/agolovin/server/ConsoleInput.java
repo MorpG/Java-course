@@ -7,20 +7,29 @@ import java.util.Scanner;
  * @version $Id$
  * @since 0.1
  */
-public class ConsoleInput implements Input {
+public class ConsoleInput {
 
-    /**
-     * Scanner.
-     */
-    private Scanner scanner = new Scanner(System.in);
+    private String name;
 
-    /**
-     * User input.
-     * @param question String
-     * @return user input String
-     */
-    @Override
-    public String ask(String question) {
-        return scanner.nextLine();
+    private String control;
+
+    public ConsoleInput(String comand) {
+        Scanner scanner = new Scanner(comand);
+        if (scanner.hasNext()) {
+            this.name = scanner.nextLine();
+            if (scanner.hasNext()) {
+                this.control = scanner.nextLine();
+
+            }
+
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getControl() {
+        return control;
     }
 }
