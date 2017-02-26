@@ -28,10 +28,6 @@ public class Server {
         server.init();
     }
 
-    public String getStartPath() {
-        return startPath;
-    }
-
     void init() {
         try {
             System.out.println("Connection successful");

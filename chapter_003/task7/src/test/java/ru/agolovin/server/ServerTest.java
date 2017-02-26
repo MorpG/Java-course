@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 import static org.hamcrest.core.Is.is;
@@ -19,39 +20,51 @@ import static org.mockito.Mockito.when;
  */
 public class ServerTest {
 
+    /**
+     * Line separator.
+     */
     private final static String LN = System.getProperty("line.separator");
 
+    /**
+     * Test show directory server.
+     * @throws IOException Exception
+     */
     @Test
-    public void whenShowAllFilesInDirectoryThenSererAnswer() throws Exception {
-        Socket socket = mock(Socket.class);
-        Server server = new Server(socket);
-        String result = "task7";
+    public void whenShowAllFilesInDirectoryThenSererAnswer() throws IOException {
+        String result = "Empty directory";
         String word = Joiner.on(LN).join(
                 "1", "0");
-        ByteArrayInputStream in = new ByteArrayInputStream(word.getBytes());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        when(socket.getInputStream()).thenReturn(in);
-        when(socket.getOutputStream()).thenReturn(out);
-        server.init();
-        System.out.println(server.getStartPath());
-        System.out.println(out.toString());
-        assertThat(out.toString().contains(result), is(true));
+        serverTest(word, result);
     }
 
+    /**
+     * Test change directory to parent.
+     * @throws IOException Exception
+     */
     @Test
-    public void whenChangeDirectoryThenSererAnswer() throws Exception {
+    public void whenChangeDirectoryToParentThenSererAnswer() throws IOException {
+        String result = ".";
+        String word = Joiner.on(LN).join(
+                "1", "3", "0");
+        serverTest(word, result);
+    }
+
+    /**
+     * Base test method.
+     * @param word String
+     * @param result String
+     * @throws IOException Exception
+     */
+    private void serverTest(String word, String result) throws IOException {
         Socket socket = mock(Socket.class);
         Server server = new Server(socket);
-        String result = "D:\\Books";
-        String word = Joiner.on(LN).join(
-                "1", "2", "Books", "1", "0");
         ByteArrayInputStream in = new ByteArrayInputStream(word.getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
         server.init();
         System.out.println(out.toString());
-
         assertThat(out.toString().contains(result), is(true));
+
     }
 }
