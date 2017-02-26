@@ -36,5 +36,4 @@ public class Settings {
     public String getValue(String key) {
         return this.properties.getProperty(key);
     }
-
 }

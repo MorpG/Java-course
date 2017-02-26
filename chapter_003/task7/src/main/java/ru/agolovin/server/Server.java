@@ -1,6 +1,6 @@
 package ru.agolovin.server;
 
-import ru.agolovin.settings.Settings;
+import ru.agolovin.settings.ServerSettings;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -13,52 +13,39 @@ import java.net.Socket;
  */
 public class Server {
 
-    private int port;
-
     private String startPath;
 
     private Socket socket;
 
-    public Server(Socket socket) {
+    Server(Socket socket) {
         this.socket = socket;
+        this.startPath = new ServerSettings().getStartPath();
     }
 
-    public static void main(String[] args) {
-        Socket socket = new Socket();
-        new Server(socket).init();
+    public static void main(String[] args) throws IOException {
+        ServerSettings settings = new ServerSettings();
+        Socket socket = new ServerSocket(settings.getPort()).accept();
+        Server server = new Server(socket);
+        server.init();
     }
 
     void init() {
-        setSettings();
         try {
-            System.out.println("Wait connection");
-            socket = new ServerSocket(port).accept();
+            System.out.println("Connection successful");
             InputStream socketInputStream = socket.getInputStream();
             OutputStream socketOutputStream = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(socketInputStream));
             ServerMenu serverMenu = new ServerMenu(socketInputStream, socketOutputStream, new File(startPath));
             serverMenu.fillActions();
-            System.out.println("Connection successful");
-            while (true) {
-                String string = reader.readLine();
+            String string;
+            do {
+                serverMenu.show();
+                string = reader.readLine();
                 System.out.println("Client received: " + string);
                 serverMenu.select(string);
-            }
+            } while (!"0".equals(string));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-    }
-
-    private void setSettings() {
-        Settings settings = new Settings();
-        ClassLoader loader = Settings.class.getClassLoader();
-        try (InputStream in = loader.getResourceAsStream("app.properties")) {
-            settings.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.port = Integer.parseInt(settings.getValue("port"));
-        this.startPath = settings.getValue("home.path");
-
     }
 }

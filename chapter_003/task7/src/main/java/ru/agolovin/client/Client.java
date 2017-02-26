@@ -1,5 +1,6 @@
 package ru.agolovin.client;
 
+import ru.agolovin.settings.ClientSettings;
 import ru.agolovin.settings.Settings;
 
 import java.io.*;
@@ -12,8 +13,6 @@ import java.net.Socket;
  * @since 0.1
  */
 public class Client {
-    private String inetAdress;
-    private int port;
 
     private Socket socket = new Socket();
 
@@ -22,39 +21,38 @@ public class Client {
 
     }
 
+    public static void main(String[] args) throws IOException{
+        ClientSettings settings = new ClientSettings();
+        Socket socket = new Socket(
+                InetAddress.getByName(settings.getServerAddress()), settings.getPort());
+        new Client(socket).init();
+    }
+
     public void init() {
-        setSettings();
-        System.out.println("Connection to server: ");
         try {
-            InetAddress inetAddress = InetAddress.getByName(inetAdress);
-            socket = new Socket(inetAddress, port);
+            System.out.println("Connection to server successful");
             InputStream socketInputStream = socket.getInputStream();
-            OutputStream socketOutputStram = socket.getOutputStream();
+            OutputStream socketOutputStream = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader readerSocket = new BufferedReader(new InputStreamReader(socketInputStream));
-            PrintWriter writer = new PrintWriter(socketOutputStram, true);
-
-            while (true) {
-                String line = reader.readLine();
-
+            PrintWriter writer = new PrintWriter(socketOutputStream, true);
+            String line;
+            while (readerSocket.ready()) {
+                System.out.println(readerSocket.readLine());
             }
+            System.out.println("Enter smth");
+            do {
+                line = reader.readLine();
+                writer.println(line);
+                while (readerSocket.ready()) {
+                    System.out.println(readerSocket.readLine());
+                }
+            } while (!"0".equals(line));
+
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
-
-    public void setSettings() {
-        Settings settings = new Settings();
-        ClassLoader loader = Settings.class.getClassLoader();
-        try (InputStream in = loader.getResourceAsStream("app.properties")) {
-            settings.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        port = Integer.parseInt(settings.getValue("port"));
-        inetAdress = settings.getValue("address");
-
-    }
-
 
 }
