@@ -14,7 +14,6 @@ import java.net.Socket;
 public class Server {
 
     private String startPath;
-
     private Socket socket;
 
     Server(Socket socket) {
@@ -27,6 +26,10 @@ public class Server {
         Socket socket = new ServerSocket(settings.getPort()).accept();
         Server server = new Server(socket);
         server.init();
+    }
+
+    public String getStartPath() {
+        return startPath;
     }
 
     void init() {

@@ -25,15 +25,16 @@ public class ServerTest {
     public void whenShowAllFilesInDirectoryThenSererAnswer() throws Exception {
         Socket socket = mock(Socket.class);
         Server server = new Server(socket);
-        String result = "Books";
+        String result = "task7";
         String word = Joiner.on(LN).join(
                 "1", "0");
         ByteArrayInputStream in = new ByteArrayInputStream(word.getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
-        System.out.println(out.toString());
         server.init();
+        System.out.println(server.getStartPath());
+        System.out.println(out.toString());
         assertThat(out.toString().contains(result), is(true));
     }
 
