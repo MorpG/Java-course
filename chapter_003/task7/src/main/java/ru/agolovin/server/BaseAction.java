@@ -5,7 +5,7 @@ package ru.agolovin.server;
  * @version $Id$
  * @since 0.1
  */
-public abstract class BaseAction {
+abstract class BaseAction {
 
     /**
      * String name.
@@ -15,7 +15,7 @@ public abstract class BaseAction {
     /**
      * @param sName String
      */
-    public BaseAction(String sName) {
+    BaseAction(String sName) {
         this.name = sName;
     }
 
@@ -28,7 +28,7 @@ public abstract class BaseAction {
     /**
      * @return info about menu line
      */
-    public String info() {
+    String info() {
         return String.format(" %s. %s", this.key(), this.name);
     }
 

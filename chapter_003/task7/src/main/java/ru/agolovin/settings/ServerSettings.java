@@ -10,9 +10,19 @@ import java.io.InputStream;
  */
 public class ServerSettings {
 
+    /**
+     * Port Number.
+     */
     private int port;
+
+    /**
+     * default file path.
+     */
     private String startPath;
 
+    /**
+     * Base method.
+     */
     public ServerSettings() {
         Settings settings = new Settings();
         ClassLoader loader = Settings.class.getClassLoader();
@@ -25,10 +35,18 @@ public class ServerSettings {
         this.startPath = settings.getValue("home.path");
     }
 
+    /**
+     * Getter port number.
+     * @return port int
+     */
     public int getPort() {
         return this.port;
     }
 
+    /**
+     * Getter file path.
+     * @return filepath String
+     */
     public String getStartPath() {
         return this.startPath;
     }

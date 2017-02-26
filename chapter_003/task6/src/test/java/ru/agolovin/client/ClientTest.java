@@ -23,7 +23,7 @@ public class ClientTest {
     /**
      * Line separator.
      */
-    private static final String LN = System.getProperty("line.separator");
+    private final static String LN = System.getProperty("line.separator");
 
     /**
      * Test single user Input.

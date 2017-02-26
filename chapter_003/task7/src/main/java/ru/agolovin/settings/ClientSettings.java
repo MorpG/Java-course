@@ -15,7 +15,7 @@ public class ClientSettings {
     private int port;
 
     /**
-     * IP server
+     * IP server.
      */
     private String serverAddress;
 

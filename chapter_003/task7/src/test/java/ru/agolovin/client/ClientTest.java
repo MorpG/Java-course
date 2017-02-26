@@ -20,8 +20,15 @@ import static org.mockito.Mockito.when;
  */
 public class ClientTest {
 
+    /**
+     * Line separator.
+     */
     private static final String LN = System.getProperty("line.separator");
 
+    /**
+     * Test user input and socket received.
+     * @throws IOException Exception.
+     */
     @Test
     public void whenTestUserInputThenClientReceivedIt() throws IOException {
         String userInput = Joiner.on(LN).join("Line", "2", "0" + LN);
@@ -30,6 +37,13 @@ public class ClientTest {
     }
 
 
+    /**
+     * Base method.
+     * @param user String
+     * @param socketInput String
+     * @param result String
+     * @throws IOException Exception
+     */
     private void clientTest(String user, String socketInput, String result) throws IOException {
         Socket socket = mock(Socket.class);
         Client client = new Client(socket);

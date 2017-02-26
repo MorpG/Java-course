@@ -36,11 +36,12 @@ public class ServerMenu {
     }
 
     void select(String input) {
-        for (BaseAction element : this.baseActionArray)
+        for (BaseAction element : this.baseActionArray) {
             if (element != null && element.key().equals(input)) {
                 int key = Integer.parseInt(input);
                 this.baseActionArray[key].execute();
             }
+        }
     }
 
     void show() {
@@ -113,15 +114,14 @@ public class ServerMenu {
             String path = "";
             if ((element = currentFileInDir.listFiles()) != null) {
                 prW.println("Enter directory");
-                try{
-                path = dataInputStream.readUTF();
-                dataInputStream.close();}
-                catch (IOException ioe) {
+                try {
+                    path = dataInputStream.readUTF();
+                    dataInputStream.close();
+                } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
                 for (File file : element) {
-                    if (file.getName().equals(path))
-                    {
+                    if (file.getName().equals(path)) {
                         currentFileInDir = new File(path);
                     }
                 }

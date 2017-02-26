@@ -1,7 +1,6 @@
 package ru.agolovin.client;
 
 import ru.agolovin.settings.ClientSettings;
-import ru.agolovin.settings.Settings;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -21,7 +20,7 @@ public class Client {
 
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         ClientSettings settings = new ClientSettings();
         Socket socket = new Socket(
                 InetAddress.getByName(settings.getServerAddress()), settings.getPort());
