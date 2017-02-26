@@ -40,7 +40,7 @@ public class Client {
             while (readerSocket.ready()) {
                 System.out.println(readerSocket.readLine());
             }
-            System.out.println("Enter smth");
+            System.out.println("Please, press any key to show menu");
             do {
                 line = reader.readLine();
                 writer.println(line);

@@ -34,8 +34,7 @@ public abstract class BaseAction {
 
     /**
      * Action.
-     * @param text String
      */
-    abstract void execute(String text);
+    abstract void execute();
 
 }
