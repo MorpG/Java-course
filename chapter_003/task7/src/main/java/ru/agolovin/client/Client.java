@@ -15,7 +15,7 @@ public class Client {
 
     private Socket socket = new Socket();
 
-    public Client(Socket socket) {
+    Client(Socket socket) {
         this.socket = socket;
 
     }
@@ -27,26 +27,38 @@ public class Client {
         new Client(socket).init();
     }
 
-    public void init() {
+    void init() {
         try {
-            System.out.println("Connection to server successful");
             InputStream socketInputStream = socket.getInputStream();
             OutputStream socketOutputStream = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader readerSocket = new BufferedReader(new InputStreamReader(socketInputStream));
             PrintWriter writer = new PrintWriter(socketOutputStream, true);
             String line;
-            while (readerSocket.ready()) {
-                System.out.println(readerSocket.readLine());
-            }
-            System.out.println("Please, press any key to show menu");
+            String str;
+            int i = 0;
+            boolean flag = false;
             do {
-                line = reader.readLine();
-                writer.println(line);
-                while (readerSocket.ready()) {
-                    System.out.println(readerSocket.readLine());
+                writer.println(true);
+                i++;
+                if (readerSocket.readLine().equals("true")) {
+                    flag = true;
+                    System.out.println("Connection to server successful");
+                    break;
                 }
-            } while (!"0".equals(line));
+            } while (i <= 5);
+
+            if (flag) {
+                do {
+                    line = reader.readLine();
+                    writer.println(line);
+                    str = readerSocket.readLine();
+                    while (str != null && !str.isEmpty()) {
+                        System.out.println(str);
+                        str = readerSocket.readLine();
+                    }
+                } while (!"0".equals(line));
+            }
 
 
         } catch (IOException ioe) {

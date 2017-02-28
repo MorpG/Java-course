@@ -1,5 +1,6 @@
 package ru.agolovin.server;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import ru.agolovin.settings.ServerSettings;
 
 import java.io.*;
@@ -30,19 +31,35 @@ public class Server {
 
     void init() {
         try {
-            System.out.println("Connection successful");
+            System.out.println("Wait connection");
             InputStream socketInputStream = socket.getInputStream();
             OutputStream socketOutputStream = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(socketInputStream));
+            PrintWriter writer = new PrintWriter(socketOutputStream, true);
             ServerMenu serverMenu = new ServerMenu(socketInputStream, socketOutputStream, new File(startPath));
             serverMenu.fillActions();
             String string;
+            int i = 0;
+            boolean flag = false;
             do {
-                serverMenu.show();
                 string = reader.readLine();
-                System.out.println("Client received: " + string);
-                serverMenu.select(string);
-            } while (!"0".equals(string));
+                if ("true".equals(string)){
+                    writer.println("true");
+                    flag = true;
+                    System.out.println("Connection successful");
+                    break;
+                } else {
+                    i++;
+                }
+            } while (i <= 5);
+            if (flag) {
+                do {
+                    serverMenu.show();
+                    string = reader.readLine();
+                    System.out.println("Client received: " + string);
+                    serverMenu.select(string);
+                } while (!"0".equals(string));
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
