@@ -13,10 +13,23 @@ import java.net.Socket;
  */
 public class Client {
 
-    private Socket socket = new Socket();
+    private Socket socket;
+
+    private BufferedReader reader;
+
+    private BufferedReader readerSocket;
+
+    private PrintWriter writer;
 
     Client(Socket socket) {
-        this.socket = socket;
+        try {
+            this.socket = socket;
+            this.reader = new BufferedReader(new InputStreamReader(System.in));
+            this.readerSocket = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            this.writer = new PrintWriter(this.socket.getOutputStream(), true);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
 
     }
 
@@ -29,42 +42,19 @@ public class Client {
 
     void init() {
         try {
-            InputStream socketInputStream = socket.getInputStream();
-            OutputStream socketOutputStream = socket.getOutputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            BufferedReader readerSocket = new BufferedReader(new InputStreamReader(socketInputStream));
-            PrintWriter writer = new PrintWriter(socketOutputStream, true);
-            String line;
-            String str;
-            int i = 0;
-            boolean flag = false;
-            do {
-                writer.println("true");
-                i++;
-                if (readerSocket.readLine().equals("true")) {
-                    flag = true;
-                    System.out.println("Connection to server successful");
-                    break;
-                }
-            } while (i <= 5);
-            if (flag) {
-                System.out.println("Press any key to continue");
+            String line = "";
+            if (checkConnection(writer, readerSocket)) {
+                System.out.println("Press any key to start");
                 reader.readLine();
                 writer.println("show menu");
-                str = readerSocket.readLine();
-                while (str != null && !str.isEmpty()) {
-                    System.out.println(str);
-                    str = readerSocket.readLine();
-                }
+                readSocket(readerSocket);
                 do {
                     line = reader.readLine();
                     writer.println(line);
-                    str = readerSocket.readLine();
-                    while (str != null && !str.isEmpty()) {
-                        System.out.println(str);
-                        str = readerSocket.readLine();
-                    }
+                    readSocket(readerSocket);
                 } while (!"0".equals(line));
+            } else {
+                System.out.println("connection failed");
             }
 
 
@@ -73,4 +63,35 @@ public class Client {
         }
     }
 
+    private void readSocket(BufferedReader readerSocket) {
+        String str;
+        try {
+            str = readerSocket.readLine();
+            while (str != null && !str.isEmpty()) {
+                System.out.println(str);
+                str = readerSocket.readLine();
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private boolean checkConnection(PrintWriter writer, BufferedReader readerSocket) {
+        boolean result = false;
+        try {
+            int i = 0;
+            do {
+                writer.println("start");
+                i++;
+                if (readerSocket.readLine().equals("start")) {
+                    result = true;
+                    System.out.println("Connection to server successful");
+                    break;
+                }
+            } while (i <= 5);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return result;
+    }
 }

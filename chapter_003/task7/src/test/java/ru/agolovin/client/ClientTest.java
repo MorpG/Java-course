@@ -32,7 +32,7 @@ public class ClientTest {
     @Test
     public void whenTestUserInputThenClientReceivedIt() throws IOException {
         String userInput = Joiner.on(LN).join("Line", "2", "0" + LN);
-        String socketInput = Joiner.on(LN).join("Answer One", "Answer Two", "Exit");
+        String socketInput = Joiner.on(LN).join("start", "menu show", "Line", "2", "Exit");
         clientTest(userInput, socketInput, userInput);
     }
 
@@ -46,13 +46,13 @@ public class ClientTest {
      */
     private void clientTest(String user, String socketInput, String result) throws IOException {
         Socket socket = mock(Socket.class);
-        Client client = new Client(socket);
         ByteArrayInputStream inUser = new ByteArrayInputStream(user.getBytes());
         System.setIn(inUser);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ByteArrayInputStream inSocket = new ByteArrayInputStream(socketInput.getBytes());
-        when(socket.getOutputStream()).thenReturn(out);
         when(socket.getInputStream()).thenReturn(inSocket);
+        when(socket.getOutputStream()).thenReturn(out);
+        Client client = new Client(socket);
         client.init();
         assertThat(result, is(out.toString()));
     }

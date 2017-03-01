@@ -2,9 +2,11 @@ package ru.agolovin.server;
 
 import com.google.common.base.Joiner;
 import org.junit.Test;
+import ru.agolovin.settings.ServerSettings;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -27,31 +29,38 @@ public class ServerTest {
 
     /**
      * Test show directory server.
+     *
      * @throws IOException Exception
      */
     @Test
     public void whenShowAllFilesInDirectoryThenSererAnswer() throws IOException {
-        String result = "Empty directory";
+        String result = "dir1";
         String word = Joiner.on(LN).join(
-                "1", "0");
+                "start" , "show menu", "1", "0");
         serverTest(word, result);
     }
 
     /**
      * Test change directory to parent.
+     *
      * @throws IOException Exception
      */
     @Test
-    public void whenChangeDirectoryToParentThenSererAnswer() throws IOException {
-        String result = ".";
+    public void whenChangeDirectoryToParentThenServerAnswer() throws IOException {
+        String result = "Directory changed to : dir1";
         String word = Joiner.on(LN).join(
-                "1", "3", "0");
+                "true", "show menu", "2", "dir1", "0");
+        String startPath = new ServerSettings().getStartPath();
+
+        File dirOne = new File(startPath + "//dir1");
+        boolean mkDirOne = dirOne.mkdir();
         serverTest(word, result);
     }
 
     /**
      * Base test method.
-     * @param word String
+     *
+     * @param word   String
      * @param result String
      * @throws IOException Exception
      */
@@ -63,6 +72,9 @@ public class ServerTest {
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
         server.init();
+        System.out.println();
+        System.out.println("OUT");
+        System.out.println(out.toString());
         assertThat(out.toString().contains(result), is(true));
 
     }

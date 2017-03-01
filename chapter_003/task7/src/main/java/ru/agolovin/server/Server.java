@@ -30,23 +30,21 @@ public class Server {
 
     void init() {
         try {
-            System.out.println("Wait connection");
             InputStream socketInputStream = socket.getInputStream();
             OutputStream socketOutputStream = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(socketInputStream));
             PrintWriter writer = new PrintWriter(socketOutputStream, true);
-            ServerMenu serverMenu = new ServerMenu(socketInputStream, socketOutputStream, new File(startPath));
+            ServerMenu serverMenu = new ServerMenu(reader, writer, new File(startPath));
             serverMenu.fillActions();
             String string;
             int i = 0;
             boolean flag = false;
             do {
                 string = reader.readLine();
-                if ("true".equals(string)){
-                    writer.println("true");
+                if ("start".equals(string)){
+                    writer.println("start");
                     flag = true;
                     System.out.println("Connection successful");
-                    System.out.println(i);
                     break;
                 } else {
                     i++;

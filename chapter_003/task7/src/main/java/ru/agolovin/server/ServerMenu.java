@@ -1,6 +1,9 @@
 package ru.agolovin.server;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author agolovin (agolovin@list.ru)
@@ -9,19 +12,20 @@ import java.io.*;
  */
 public class ServerMenu {
 
-    private static final int MENUSIZE = 4;
+    private static final int MENUSIZE = 6;
     private static final String LN = System.getProperty("line.separator");
     private PrintWriter prW;
-    private DataInputStream dataInputStream;
+    private BufferedReader reader;
     private int position = 0;
     private File currentFileInDir;
+    private String newFile;
 
     private BaseAction[] baseActionArray = new BaseAction[MENUSIZE];
 
-    public ServerMenu(InputStream in, OutputStream out, File home) {
-        this.prW = new PrintWriter(out, true);
+    public ServerMenu(BufferedReader reader, PrintWriter writer, File home) {
+        this.prW = writer;
         this.currentFileInDir = home;
-        this.dataInputStream = new DataInputStream(in);
+        this.reader = reader;
     }
 
     void fillActions() {
@@ -29,6 +33,8 @@ public class ServerMenu {
         this.baseActionArray[position++] = new ShowCurDir();
         this.baseActionArray[position++] = new InDir();
         this.baseActionArray[position++] = new OutDir();
+        this.baseActionArray[position++] = new Download();
+        this.baseActionArray[position++] = new Upload();
     }
 
     void select(String input) {
@@ -41,14 +47,13 @@ public class ServerMenu {
     }
 
     void show() {
-        StringBuilder sb = new StringBuilder();
         for (BaseAction element : baseActionArray) {
             if (element != null) {
                 this.prW.println(element.info());
                 System.out.println(element.info());
             }
         }
-        this.prW.println(sb.toString());
+        this.prW.println("");
     }
 
 
@@ -109,11 +114,9 @@ public class ServerMenu {
             boolean flag = false;
             if ((element = currentFileInDir.listFiles()) != null) {
                 prW.println("Enter directory");
-                prW.println("step1");
+                prW.println("");
                 try {
-                    path = dataInputStream.readUTF();
-                    dataInputStream.close();
-                    prW.write("data connect");
+                    path = reader.readLine();
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
@@ -125,14 +128,16 @@ public class ServerMenu {
                 }
                 if (flag) {
                     prW.println("Directory changed to : " + currentFileInDir);
-                }
+                } else
+                    prW.println("Error change directory");
+
             }
 
         }
     }
 
     public class OutDir extends BaseAction {
-        public OutDir() {
+        OutDir() {
             super("Go to parent directory");
         }
 
@@ -153,6 +158,38 @@ public class ServerMenu {
                 System.out.println("No parent directory");
                 prW.println("No parent directory");
             }
+
+        }
+    }
+
+    public class Download extends BaseAction {
+        Download() {
+            super("Download file from server");
+        }
+
+        @Override
+        String key() {
+            return "4";
+        }
+
+        @Override
+        void execute() {
+
+        }
+    }
+
+    public class Upload extends BaseAction {
+        Upload() {
+            super("Upload file to server");
+        }
+
+        @Override
+        String key() {
+            return "5";
+        }
+
+        @Override
+        void execute() {
 
         }
     }
