@@ -63,7 +63,6 @@ public class ServerTest {
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
         server.init();
-        System.out.println(out.toString());
         assertThat(out.toString().contains(result), is(true));
 
     }

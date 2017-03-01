@@ -1,6 +1,5 @@
 package ru.agolovin.server;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import ru.agolovin.settings.ServerSettings;
 
 import java.io.*;
@@ -47,17 +46,25 @@ public class Server {
                     writer.println("true");
                     flag = true;
                     System.out.println("Connection successful");
+                    System.out.println(i);
                     break;
                 } else {
                     i++;
                 }
             } while (i <= 5);
             if (flag) {
-                do {
+                string = reader.readLine();
+                if (string.equals("show menu")) {
                     serverMenu.show();
+                }
+                do {
+                    if (!flag) {
+                        serverMenu.show();
+                    }
                     string = reader.readLine();
                     System.out.println("Client received: " + string);
                     serverMenu.select(string);
+                    flag = false;
                 } while (!"0".equals(string));
             }
         } catch (IOException ioe) {

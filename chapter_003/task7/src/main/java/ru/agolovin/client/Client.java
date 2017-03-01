@@ -39,7 +39,7 @@ public class Client {
             int i = 0;
             boolean flag = false;
             do {
-                writer.println(true);
+                writer.println("true");
                 i++;
                 if (readerSocket.readLine().equals("true")) {
                     flag = true;
@@ -47,8 +47,15 @@ public class Client {
                     break;
                 }
             } while (i <= 5);
-
             if (flag) {
+                System.out.println("Press any key to continue");
+                reader.readLine();
+                writer.println("show menu");
+                str = readerSocket.readLine();
+                while (str != null && !str.isEmpty()) {
+                    System.out.println(str);
+                    str = readerSocket.readLine();
+                }
                 do {
                     line = reader.readLine();
                     writer.println(line);

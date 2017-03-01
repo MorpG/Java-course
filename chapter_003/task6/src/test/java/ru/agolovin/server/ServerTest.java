@@ -46,6 +46,9 @@ public class ServerTest {
                 "hello", "exit");
         String result = Joiner.on(LN).join("Hello, dear friend, I'm a oracle.", "", "");
         testServer(word, result);
+        int a = (byte)(-128 - 1);
+        System.out.println(1 + 2 + " " + 3 + 4);
+        //System.out.println(a);
     }
 
     /**

@@ -11,8 +11,6 @@ public class ServerMenu {
 
     private static final int MENUSIZE = 4;
     private static final String LN = System.getProperty("line.separator");
-    private InputStream in;
-    private OutputStream out;
     private PrintWriter prW;
     private DataInputStream dataInputStream;
     private int position = 0;
@@ -21,8 +19,6 @@ public class ServerMenu {
     private BaseAction[] baseActionArray = new BaseAction[MENUSIZE];
 
     public ServerMenu(InputStream in, OutputStream out, File home) {
-        this.in = in;
-        this.out = out;
         this.prW = new PrintWriter(out, true);
         this.currentFileInDir = home;
         this.dataInputStream = new DataInputStream(in);
@@ -45,12 +41,14 @@ public class ServerMenu {
     }
 
     void show() {
+        StringBuilder sb = new StringBuilder();
         for (BaseAction element : baseActionArray) {
             if (element != null) {
                 this.prW.println(element.info());
                 System.out.println(element.info());
             }
         }
+        this.prW.println(sb.toString());
     }
 
 
@@ -85,13 +83,9 @@ public class ServerMenu {
             prW.println("File list in " + currentFileInDir);
             File[] element;
             if ((element = currentFileInDir.listFiles()) != null) {
-                StringBuilder sb = new StringBuilder();
                 for (File file : element) {
-//                    prW.println(file.getName());
-                    sb.append(file.getName());
-                    sb.append(LN);
+                    prW.println(file.getName());
                 }
-                prW.println(sb.toString());
             } else {
                 prW.println("Empty directory");
             }
@@ -112,18 +106,25 @@ public class ServerMenu {
         void execute() {
             File[] element;
             String path = "";
+            boolean flag = false;
             if ((element = currentFileInDir.listFiles()) != null) {
                 prW.println("Enter directory");
+                prW.println("step1");
                 try {
                     path = dataInputStream.readUTF();
                     dataInputStream.close();
+                    prW.write("data connect");
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
                 for (File file : element) {
                     if (file.getName().equals(path)) {
                         currentFileInDir = new File(path);
+                        flag = true;
                     }
+                }
+                if (flag) {
+                    prW.println("Directory changed to : " + currentFileInDir);
                 }
             }
 

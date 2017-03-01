@@ -89,6 +89,7 @@ public class Server {
      * @return Array of the answers.
      */
     private String[] takeAnswer() {
+
         int stopIndex = this.index;
         for (int i = index; i < this.botAnswers.length; i++) {
             if (!this.botAnswers[i].isEmpty()) {
