@@ -46,7 +46,7 @@ public class ServerTest {
      * @throws IOException Exception
      */
     @Test
-    public void whenChangeDirectoryToParentThenServerAnswer() throws IOException {
+    public void whenChangeDirectoryToSubThenServerAnswer() throws IOException {
         String result = "Directory changed to : dir1";
         String word = Joiner.on(LN).join(
                 "true", "show menu", "2", "dir1", "0");

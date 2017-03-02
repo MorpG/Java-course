@@ -34,7 +34,8 @@ public class Server {
             OutputStream socketOutputStream = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(socketInputStream));
             PrintWriter writer = new PrintWriter(socketOutputStream, true);
-            ServerMenu serverMenu = new ServerMenu(reader, writer, new File(startPath));
+            ServerMenu serverMenu = new ServerMenu(
+                    socketInputStream, socketOutputStream, new File(startPath));
             serverMenu.fillActions();
             String string;
             int i = 0;

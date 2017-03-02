@@ -1,31 +1,30 @@
 package ru.agolovin.server;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 /**
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
  * @since 0.1
  */
-public class ServerMenu {
+class ServerMenu {
 
     private static final int MENUSIZE = 6;
-    private static final String LN = System.getProperty("line.separator");
     private PrintWriter prW;
+    private DataOutputStream dataOutputStream;
     private BufferedReader reader;
     private int position = 0;
     private File currentFileInDir;
-    private String newFile;
+    private InputStream inputStream;
 
     private BaseAction[] baseActionArray = new BaseAction[MENUSIZE];
 
-    public ServerMenu(BufferedReader reader, PrintWriter writer, File home) {
-        this.prW = writer;
+    ServerMenu(InputStream inputStream, OutputStream outputStream, File home) {
+        this.inputStream = inputStream;
+        this.prW = new PrintWriter(outputStream, true);
+        this.dataOutputStream = new DataOutputStream(outputStream);
         this.currentFileInDir = home;
-        this.reader = reader;
+        this.reader = new BufferedReader(new InputStreamReader(inputStream));
     }
 
     void fillActions() {
@@ -97,6 +96,32 @@ public class ServerMenu {
         }
     }
 
+    public class OutDir extends BaseAction {
+        OutDir() {
+            super("Go to parent directory");
+        }
+
+        @Override
+        String key() {
+            return "3";
+        }
+
+        @Override
+        void execute() {
+            String line;
+            if (currentFileInDir.getParentFile() != null) {
+                currentFileInDir = currentFileInDir.getParentFile();
+                line = String.format("Current dir is: %s", currentFileInDir);
+                System.out.println(line);
+                prW.println(line);
+            } else {
+                System.out.println("No parent directory");
+                prW.println("No parent directory");
+            }
+
+        }
+    }
+
     public class InDir extends BaseAction {
         InDir() {
             super("Step into dir");
@@ -137,32 +162,6 @@ public class ServerMenu {
         }
     }
 
-    public class OutDir extends BaseAction {
-        OutDir() {
-            super("Go to parent directory");
-        }
-
-        @Override
-        String key() {
-            return "3";
-        }
-
-        @Override
-        void execute() {
-            String line = "";
-            if (currentFileInDir.getParentFile() != null) {
-                currentFileInDir = currentFileInDir.getParentFile();
-                line = String.format("Current dir is: %s", currentFileInDir);
-                System.out.println(line);
-                prW.println(line);
-            } else {
-                System.out.println("No parent directory");
-                prW.println("No parent directory");
-            }
-
-        }
-    }
-
     public class Download extends BaseAction {
         Download() {
             super("Download file from server");
@@ -175,7 +174,36 @@ public class ServerMenu {
 
         @Override
         void execute() {
+            prW.println("Write file name to download: ");
+            prW.println("");
+            try {
+                String fileName = reader.readLine();
+                File[] element;
+                if ((element = currentFileInDir.listFiles()) != null) {
+                    for (File file : element) {
+                        if (file.getName().equals(fileName)) {
+                            File fileServer = new File(currentFileInDir + "/" + fileName);
+                            if (fileServer.exists() && fileServer.isFile()) {
+                                prW.println(file.length());
+                                try (FileInputStream fis = new FileInputStream(fileServer)) {
+                                    byte[] buffer = new byte[8 * 1024];
+                                    int partBuf;
+                                    while ((partBuf = fis.read(buffer)) != -1) {
+                                        dataOutputStream.write(buffer, 0, partBuf);
+                                    }
+                                }
+                            } else {
+                                prW.print("File error");
+                            }
 
+                        } else {
+                            prW.println("File not found");
+                        }
+                    }
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
     }
 
@@ -191,7 +219,29 @@ public class ServerMenu {
 
         @Override
         void execute() {
-
+            try {
+                String filename = reader.readLine();
+                long fileSize;
+                File file = new File(filename);
+                if (file.exists() && file.isFile()) {
+                    try {
+                        fileSize = Long.parseLong(reader.readLine());
+                        FileOutputStream fos = new FileOutputStream(file);
+                        byte[] bytes = new byte[16 * 1024];
+                        int partBuf;
+                        while ((partBuf = inputStream.read(bytes)) > 0) {
+                            fos.write(bytes, 0, partBuf);
+                            if (file.length() == fileSize) {
+                                break;
+                            }
+                        }
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
     }
 

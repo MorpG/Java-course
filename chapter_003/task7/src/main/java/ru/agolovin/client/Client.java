@@ -13,7 +13,7 @@ import java.net.Socket;
  */
 public class Client {
 
-    private Socket socket;
+    //private Socket socket;
 
     private BufferedReader reader;
 
@@ -21,12 +21,18 @@ public class Client {
 
     private PrintWriter writer;
 
+    private DataInputStream dataInputStream;
+
+    private DataOutputStream dataOutputStream;
+
     Client(Socket socket) {
         try {
-            this.socket = socket;
+//            this.socket = socket;
             this.reader = new BufferedReader(new InputStreamReader(System.in));
-            this.readerSocket = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.writer = new PrintWriter(this.socket.getOutputStream(), true);
+            this.readerSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.writer = new PrintWriter(socket.getOutputStream(), true);
+            this.dataInputStream = new DataInputStream(socket.getInputStream());
+            this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
