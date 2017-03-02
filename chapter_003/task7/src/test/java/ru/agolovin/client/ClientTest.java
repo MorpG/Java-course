@@ -27,23 +27,18 @@ public class ClientTest {
 
     /**
      * Test user input and socket received.
+     *
      * @throws IOException Exception.
      */
     @Test
     public void whenTestUserInputThenClientReceivedIt() throws IOException {
-        String userInput = Joiner.on(LN).join("Line", "2", "0" + LN);
-        String socketInput = Joiner.on(LN).join("start", "menu show", "Line", "2", "Exit");
-        clientTest(userInput, socketInput, userInput);
+        String userInput = Joiner.on(LN).join("","Line", "2", "0" + LN);
+        String socketInp = Joiner.on(LN).join("start", "show menu", "", "Line", "", "2", "", "0");
+        String socketOutP = Joiner.on(LN).join("start", "show menu", "Line", "2", "0" + LN);
+        clientTest(userInput, socketInp, socketOutP);
     }
 
 
-    /**
-     * Base method.
-     * @param user String
-     * @param socketInput String
-     * @param result String
-     * @throws IOException Exception
-     */
     private void clientTest(String user, String socketInput, String result) throws IOException {
         Socket socket = mock(Socket.class);
         ByteArrayInputStream inUser = new ByteArrayInputStream(user.getBytes());

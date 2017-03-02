@@ -42,7 +42,7 @@ public class Client {
 
     void init() {
         try {
-            String line = "";
+            String line;
             if (checkConnection(writer, readerSocket)) {
                 System.out.println("Press any key to start");
                 reader.readLine();

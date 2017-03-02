@@ -125,6 +125,7 @@ public class ServerMenu {
                         currentFileInDir = new File(path);
                         flag = true;
                     }
+
                 }
                 if (flag) {
                     prW.println("Directory changed to : " + currentFileInDir);

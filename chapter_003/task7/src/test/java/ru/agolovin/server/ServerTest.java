@@ -54,6 +54,7 @@ public class ServerTest {
 
         File dirOne = new File(startPath + "//dir1");
         boolean mkDirOne = dirOne.mkdir();
+        System.out.println(mkDirOne);
         serverTest(word, result);
     }
 
