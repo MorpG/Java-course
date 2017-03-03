@@ -20,6 +20,11 @@ public class ClientSettings {
     private String serverAddress;
 
     /**
+     * StartPath.
+     */
+    private String startPath;
+
+    /**
      * Constructor.
      */
     public ClientSettings() {
@@ -31,12 +36,13 @@ public class ClientSettings {
             e.printStackTrace();
         }
         this.port = Integer.parseInt(settings.getValue("port"));
-
+        this.startPath = settings.getValue("home.path");
         this.serverAddress = settings.getValue("ip_address");
     }
 
     /**
      * Getter port.
+     *
      * @return port integer
      */
     public int getPort() {
@@ -45,9 +51,19 @@ public class ClientSettings {
 
     /**
      * Getter Server IP.
+     *
      * @return IP integer.
      */
     public String getServerAddress() {
         return this.serverAddress;
+    }
+
+    /**
+     * Getter startPath.
+     *
+     * @return startPath String
+     */
+    public String getStartPath() {
+        return this.startPath;
     }
 }

@@ -109,7 +109,7 @@ class ServerMenu {
         @Override
         void execute() {
             String line;
-            if (currentFileInDir.getParentFile() != null) {
+            if (currentFileInDir.getParent() != null) {
                 currentFileInDir = currentFileInDir.getParentFile();
                 line = String.format("Current dir is: %s", currentFileInDir);
                 System.out.println(line);
@@ -174,7 +174,7 @@ class ServerMenu {
 
         @Override
         void execute() {
-            prW.println("Write file name to download: ");
+            prW.println("Enter file name to download: ");
             prW.println("");
             try {
                 String fileName = reader.readLine();
@@ -186,7 +186,7 @@ class ServerMenu {
                             if (fileServer.exists() && fileServer.isFile()) {
                                 prW.println(file.length());
                                 try (FileInputStream fis = new FileInputStream(fileServer)) {
-                                    byte[] buffer = new byte[8 * 1024];
+                                    byte[] buffer = new byte[16 * 1024];
                                     int partBuf;
                                     while ((partBuf = fis.read(buffer)) != -1) {
                                         dataOutputStream.write(buffer, 0, partBuf);
