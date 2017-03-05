@@ -2,7 +2,13 @@ package ru.agolovin.server;
 
 import ru.agolovin.settings.ServerSettings;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -13,14 +19,32 @@ import java.net.Socket;
  */
 public class Server {
 
+    /**
+     * Start path.
+     */
     private String startPath;
+
+    /**
+     * Socket.
+     */
     private Socket socket;
 
+    /**
+     * Constructor.
+     *
+     * @param socket Socket.
+     */
     Server(Socket socket) {
         this.socket = socket;
         this.startPath = new ServerSettings().getStartPath();
     }
 
+    /**
+     * Main method.
+     *
+     * @param args String
+     * @throws IOException Exception
+     */
     public static void main(String[] args) throws IOException {
         ServerSettings settings = new ServerSettings();
         Socket socket = new ServerSocket(settings.getPort()).accept();
@@ -28,6 +52,9 @@ public class Server {
         server.init();
     }
 
+    /**
+     * Initialization.
+     */
     void init() {
         try {
             InputStream socketInputStream = socket.getInputStream();
@@ -40,9 +67,10 @@ public class Server {
             String string;
             int i = 0;
             boolean flag = false;
+            final int maxTry = 5;
             do {
                 string = reader.readLine();
-                if ("start".equals(string)){
+                if ("start".equals(string)) {
                     writer.println("start");
                     flag = true;
                     System.out.println("Connection successful");
@@ -50,7 +78,7 @@ public class Server {
                 } else {
                     i++;
                 }
-            } while (i <= 5);
+            } while (i <= maxTry);
             if (flag) {
                 string = reader.readLine();
                 if (string.equals("show menu")) {

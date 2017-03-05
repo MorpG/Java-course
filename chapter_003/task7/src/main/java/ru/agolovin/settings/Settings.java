@@ -18,6 +18,7 @@ public class Settings {
 
     /**
      * load properties.
+     *
      * @param inputStream InputStream
      */
     public void load(InputStream inputStream) {
@@ -30,6 +31,7 @@ public class Settings {
 
     /**
      * Get property value.
+     *
      * @param key String
      * @return property value
      */

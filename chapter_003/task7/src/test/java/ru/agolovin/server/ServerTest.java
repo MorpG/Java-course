@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -25,7 +26,7 @@ public class ServerTest {
     /**
      * Line separator.
      */
-    private final static String LN = System.getProperty("line.separator");
+    private static final String LN = System.getProperty("line.separator");
 
     /**
      * Test show directory server.
@@ -36,7 +37,7 @@ public class ServerTest {
     public void whenShowAllFilesInDirectoryThenSererAnswer() throws IOException {
         String result = "dir1";
         String word = Joiner.on(LN).join(
-                "start" , "show menu", "1", "0");
+                "start", "show menu", "1", "0");
         serverTest(word, result);
     }
 
@@ -49,12 +50,19 @@ public class ServerTest {
     public void whenChangeDirectoryToSubThenServerAnswer() throws IOException {
         String result = "Directory changed to : dir1";
         String word = Joiner.on(LN).join(
-                "true", "show menu", "2", "dir1", "0");
+                "start", "show menu", "1", "2", "0");
         String startPath = new ServerSettings().getStartPath();
+        System.out.println(startPath);
+        File dirOne = new File(startPath);
+        if (Arrays.asList(dirOne.listFiles()).contains("dir1")) {
+            System.out.println("directory exist");
+        } else {
+            System.out.println("create directory to test");
+            File trt = new File(dirOne + "/dir1");
+            boolean mkDirOne = trt.mkdir();
+            System.out.println(mkDirOne);
+        }
 
-        File dirOne = new File(startPath + "//dir1");
-        boolean mkDirOne = dirOne.mkdir();
-        System.out.println(mkDirOne);
         serverTest(word, result);
     }
 
@@ -66,12 +74,12 @@ public class ServerTest {
      * @throws IOException Exception
      */
     private void serverTest(String word, String result) throws IOException {
-        Socket socket = mock(Socket.class);
-        Server server = new Server(socket);
         ByteArrayInputStream in = new ByteArrayInputStream(word.getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Socket socket = mock(Socket.class);
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
+        Server server = new Server(socket);
         server.init();
         System.out.println();
         System.out.println("OUT");
