@@ -20,6 +20,10 @@ import java.net.Socket;
 public class Server {
 
     /**
+     * Check.
+     */
+    private static final String CHECKCORRECT = "correct";
+    /**
      * Start path.
      */
     private String startPath;
@@ -28,6 +32,21 @@ public class Server {
      * Socket.
      */
     private Socket socket;
+
+    /**
+     * Start key.
+     */
+    private static final String STARTKEY = "start";
+
+    /**
+     * Show menu key.
+     */
+    private static final String SHOWMENUKEY = "show menu";
+
+    /**
+     * Exit key.
+      */
+    private static final String EXITKEY = "0";
 
     /**
      * Constructor.
@@ -70,8 +89,8 @@ public class Server {
             final int maxTry = 5;
             do {
                 string = reader.readLine();
-                if ("start".equals(string)) {
-                    writer.println("start");
+                if (STARTKEY.equals(string)) {
+                    writer.println(STARTKEY);
                     flag = true;
                     System.out.println("Connection successful");
                     break;
@@ -81,7 +100,7 @@ public class Server {
             } while (i <= maxTry);
             if (flag) {
                 string = reader.readLine();
-                if (string.equals("show menu")) {
+                if (SHOWMENUKEY.equals(string)) {
                     serverMenu.show();
                 }
                 do {
@@ -92,7 +111,7 @@ public class Server {
                     System.out.println("Client received: " + string);
                     serverMenu.select(string);
                     flag = false;
-                } while (!"0".equals(string));
+                } while (!EXITKEY.equals(string));
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

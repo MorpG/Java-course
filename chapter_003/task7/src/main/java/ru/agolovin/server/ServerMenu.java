@@ -20,9 +20,21 @@ import java.io.PrintWriter;
 class ServerMenu {
 
     /**
+     * Check.
+     */
+    private static final String CHECKCORRECT = "correct";
+    /**
      * Menu size.
      */
     private static final int MENUSIZE = 6;
+    /**
+     * Transfer result.
+     */
+    private static final String TRANSFERRESULT = "Transfer correct";
+    /**
+     * Transfer result Error.
+     */
+    private static final String TRANSFERRESULTERR = "Error transferring";
     /**
      * BufferSize.
      */
@@ -56,10 +68,6 @@ class ServerMenu {
      */
     private File currentFileDir;
     /**
-     * InputStream.
-     */
-    private InputStream inputStream;
-    /**
      * Base action array.
      */
     private BaseAction[] baseActionArray = new BaseAction[MENUSIZE];
@@ -72,7 +80,6 @@ class ServerMenu {
      * @param home         File.
      */
     ServerMenu(InputStream inputStream, OutputStream outputStream, File home) {
-        this.inputStream = inputStream;
         this.prW = new PrintWriter(outputStream, true);
         this.dataOutputStream = new DataOutputStream(outputStream);
         this.dataInputStream = new DataInputStream(inputStream);
@@ -292,7 +299,6 @@ class ServerMenu {
                                         dataOutputStream.write(buffer, 0, partBuf);
                                         dataOutputStream.flush();
                                     }
-                                    fis.close();
                                 }
                             } else {
                                 prW.print("File error");
@@ -304,9 +310,9 @@ class ServerMenu {
                         System.out.println("File not found");
                     }
                     String resultTransfer = reader.readLine();
-                    if (resultTransfer.equals("Transfer correct")) {
+                    if (TRANSFERRESULT.equals(resultTransfer)) {
                         System.out.println(resultTransfer);
-                    } else if (resultTransfer.equals("Error transferring")) {
+                    } else if (TRANSFERRESULTERR.equals(resultTransfer)) {
                         System.out.println(resultTransfer);
                     } else {
                         System.out.println("Error");
@@ -340,7 +346,7 @@ class ServerMenu {
                 String fileName = reader.readLine();
                 String check = reader.readLine();
                 long fileLength;
-                if (check.equals("correct")) {
+                if (CHECKCORRECT.equals(check)) {
                     fileLength = Long.parseLong(reader.readLine());
                     if (fileLength > 0) {
                         String filePath = String.format("%s/upload", currentFileDir);
@@ -354,7 +360,7 @@ class ServerMenu {
                         File newFile2 = new File(filePath2);
                         try (FileOutputStream fos = new FileOutputStream(newFile2)) {
                             byte[] buffer = new byte[bufferSize * bufferSizeN];
-                            int partBuffer = 0;
+                            int partBuffer;
                             long tempLength = fileLength;
                             while (tempLength > 0) {
                                 partBuffer = dataInputStream.read(buffer);
@@ -363,17 +369,13 @@ class ServerMenu {
                                 tempLength -= partBuffer;
                             }
 
-                            fos.close();
-                            String message;
                             if (fileLength == newFile2.length()) {
-                                message = "Transfer correct";
-                                System.out.println(message);
-                                prW.println(message);
+                                System.out.println(TRANSFERRESULT);
+                                prW.println(TRANSFERRESULT);
                                 System.out.println(String.format("File download to: %s", newFile.getAbsoluteFile()));
                             } else {
-                                message = "Error transferring";
-                                prW.println(message);
-                                System.out.println(message);
+                                prW.println(TRANSFERRESULTERR);
+                                System.out.println(TRANSFERRESULTERR);
                             }
                         } catch (IOException ioe) {
                             ioe.printStackTrace();

@@ -22,6 +22,41 @@ import java.net.Socket;
 public class Client {
 
     /**
+     * Check.
+     */
+    private static final String CHECKCORRECT = "correct";
+
+    /**
+     * Input key number.
+     */
+    private static final String KEYFOUR = "4";
+    /**
+     * Input key number.
+     */
+    private static final String KEYFIVE = "5";
+    /**
+     * Start key.
+     */
+    private static final String STARTKEY = "start";
+    /**
+     * Show menu key.
+     */
+    private static final String SHOWMENUKEY = "show menu";
+    /**
+     * Exit key.
+     */
+    private static final String EXITKEY = "0";
+
+    /**
+     * Transfer result.
+     */
+    private static final String TRANSFERRESULT = "Transfer correct";
+
+    /**
+     * Transfer result Error.
+     */
+    private static final String TRANSFERRESULTERR = "Error transferring";
+    /**
      * BufferSize.
      */
     private final int bufferSize = 16;
@@ -54,14 +89,9 @@ public class Client {
      */
     private String fileName;
     /**
-     * FileLength.
-     */
-    private long fileLength;
-    /**
      * Current Directory.
      */
     private File currentDirectory;
-
 
     /**
      * Constructor.
@@ -105,18 +135,18 @@ public class Client {
             if (checkConnection(writer, readerSocket)) {
                 System.out.println("Press any key to start");
                 reader.readLine();
-                writer.println("show menu");
+                writer.println(SHOWMENUKEY);
                 readSocket(readerSocket);
                 do {
                     line = reader.readLine();
                     writer.println(line);
-                    if ("4".equals(line)) {
+                    if (KEYFOUR.equals(line)) {
                         readSocket(readerSocket);
                         fileName = reader.readLine();
                         writer.println(fileName);
                         getFile(dataInputStream);
                     }
-                    if ("5".equals(line)) {
+                    if (KEYFIVE.equals(line)) {
                         System.out.println("Enter file name to upload");
                         fileName = reader.readLine();
                         writer.println(fileName);
@@ -124,7 +154,7 @@ public class Client {
 
                     }
                     readSocket(readerSocket);
-                } while (!"0".equals(line));
+                } while (!EXITKEY.equals(line));
             } else {
                 System.out.println("connection failed");
             }
@@ -166,9 +196,9 @@ public class Client {
             int i = 0;
             final int maxTry = 5;
             do {
-                writer.println("start");
+                writer.println(STARTKEY);
                 i++;
-                if (readerSocket.readLine().equals("start")) {
+                if (STARTKEY.equals(readerSocket.readLine())) {
                     result = true;
                     System.out.println("Connection to server successful");
                     break;
@@ -186,9 +216,10 @@ public class Client {
      * @param dataInputStream DataInputStream.
      */
     private void getFile(DataInputStream dataInputStream) {
+        long fileLength;
         try {
             String check = readerSocket.readLine();
-            if (check.equals("correct")) {
+            if (CHECKCORRECT.equals(check)) {
                 fileLength = Long.parseLong(readerSocket.readLine());
                 if (fileLength > 0) {
                     String filePath = String.format("%s/download", currentDirectory);
@@ -202,26 +233,20 @@ public class Client {
                     File newFile2 = new File(filePath2);
                     try (FileOutputStream fos = new FileOutputStream(newFile2)) {
                         byte[] buffer = new byte[bufferSize * bufferSizeN];
-                        int partBuffer = 0;
+                        int partBuffer;
                         long tempLength = fileLength;
                         while (tempLength > 0) {
                             partBuffer = dataInputStream.read(buffer);
                             fos.write(buffer, 0, partBuffer);
-                            fos.flush();
                             tempLength -= partBuffer;
                         }
-
-                        fos.close();
-                        String message;
                         if (fileLength == newFile2.length()) {
-                            message = "Transfer correct";
-                            System.out.println(message);
+                            System.out.println(TRANSFERRESULT);
                             System.out.println(String.format("File download to: %s", newFile.getAbsoluteFile()));
-                            writer.println(message);
+                            writer.println(TRANSFERRESULT);
                         } else {
-                            message = "Error transferring";
-                            System.out.println(message);
-                            writer.println(message);
+                            System.out.println(TRANSFERRESULTERR);
+                            writer.println(TRANSFERRESULTERR);
                         }
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
@@ -249,7 +274,7 @@ public class Client {
                     if (file.getName().equals(fileName)) {
                         File fileClient = new File(currentDirectory + "/" + fileName);
                         if (fileClient.exists() && fileClient.isFile()) {
-                            writer.println("correct");
+                            writer.println(CHECKCORRECT);
                             writer.println(file.length());
                             flag = true;
                             try (FileInputStream fis = new FileInputStream(fileClient)) {
@@ -259,7 +284,6 @@ public class Client {
                                     dataOutputStream.write(buffer, 0, partBuf);
                                     dataOutputStream.flush();
                                 }
-                                fis.close();
                             }
                         } else {
                             writer.println("File error");
@@ -271,9 +295,9 @@ public class Client {
                     System.out.println("File not found");
                 }
                 String resultTransfer = readerSocket.readLine();
-                if (resultTransfer.equals("Error transferring")) {
+                if (TRANSFERRESULTERR.equals(resultTransfer)) {
                     System.out.println(resultTransfer);
-                } else if (resultTransfer.equals("Transfer correct")) {
+                } else if (TRANSFERRESULT.equals(resultTransfer)) {
                     System.out.println(resultTransfer);
                 } else {
                     System.out.println("Error");

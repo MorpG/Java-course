@@ -38,6 +38,21 @@ public class ServerTest {
         String result = "dir1";
         String word = Joiner.on(LN).join(
                 "start", "show menu", "1", "0");
+        String startPath = new ServerSettings().getStartPath();
+        File dirOne = new File(startPath);
+        File[] dirList = dirOne.listFiles();
+        if (dirList != null) {
+            for (File file : dirList) {
+                if (file.getName().equals(result) && file.isDirectory()) {
+                    System.out.println("directory exist");
+                }
+            }
+        } else {
+            System.out.println("create directory to test");
+            File trt = new File(dirOne + "/dir1");
+            boolean mkDirOne = trt.mkdir();
+            System.out.println(mkDirOne);
+        }
         serverTest(word, result);
     }
 
@@ -48,7 +63,7 @@ public class ServerTest {
      */
     @Test
     public void whenChangeDirectoryToSubThenServerAnswer() throws IOException {
-        String result = "Directory changed to : dir1";
+        String result = "Directory changed to: dir1";
         String word = Joiner.on(LN).join(
                 "start", "show menu", "1", "2", "0");
         String startPath = new ServerSettings().getStartPath();
