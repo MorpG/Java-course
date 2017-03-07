@@ -11,6 +11,7 @@ public class FileSortException extends RuntimeException {
 
     /**
      * Return message to parent.
+     *
      * @param msg String
      */
     FileSortException(String msg) {
