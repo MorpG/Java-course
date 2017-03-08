@@ -27,6 +27,10 @@ public class ServerTest {
      */
     private static final String LN = System.getProperty("line.separator");
 
+    /**
+     * Create directory to test.
+     * @param name String
+     */
     private void createDirectory(String name) {
         String startPath = new ServerSettings().getStartPath();
         File startPathDir = new File(startPath);
@@ -53,6 +57,10 @@ public class ServerTest {
         }
     }
 
+    /**
+     * Delete directory after test.
+     * @param name String
+     */
     private void deleteDirectory(String name) {
         String startPath = new ServerSettings().getStartPath();
         File dirOne = new File(startPath);
