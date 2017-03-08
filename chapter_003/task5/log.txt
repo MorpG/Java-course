@@ -1,0 +1,9 @@
+First
+Computer word 3
+Стоп
+Word
+Продолжить
+Computer word 8
+Word2
+Computer word 6
+Закончить

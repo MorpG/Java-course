@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -28,6 +27,47 @@ public class ServerTest {
      */
     private static final String LN = System.getProperty("line.separator");
 
+    private void createDirectory(String name) {
+        String startPath = new ServerSettings().getStartPath();
+        File startPathDir = new File(startPath);
+        File[] dirList = startPathDir.listFiles();
+        boolean marker = false;
+        if (dirList != null) {
+            for (File file : dirList) {
+                if (file.getName().equals(name) && file.isDirectory()) {
+                    System.out.println("directory " + name + " exist");
+                    marker = true;
+                }
+            }
+            if (!marker) {
+                System.out.println("create directory to test");
+                File dirName = new File(startPathDir + "/" + name);
+                boolean mkDirOne = dirName.mkdir();
+                System.out.println("Create directory: " + mkDirOne);
+            }
+        } else {
+            System.out.println("create directory to test");
+            File dirName = new File(startPathDir + "/" + name);
+            boolean mkDirOne = dirName.mkdir();
+            System.out.println("Create directory: " + mkDirOne);
+        }
+    }
+
+    private void deleteDirectory(String name) {
+        String startPath = new ServerSettings().getStartPath();
+        File dirOne = new File(startPath);
+        File[] dirList = dirOne.listFiles();
+        if (dirList != null) {
+            for (File file : dirList) {
+                if (file.getName().equals(name) && file.isDirectory()) {
+                    System.out.println("Directory deleted: " + file.delete());
+                }
+            }
+        } else {
+            System.out.println("Directory is empty");
+        }
+    }
+
     /**
      * Test show directory server.
      *
@@ -36,24 +76,11 @@ public class ServerTest {
     @Test
     public void whenShowAllFilesInDirectoryThenSererAnswer() throws IOException {
         String result = "dir1";
+        createDirectory(result);
         String word = Joiner.on(LN).join(
                 "start", "show menu", "1", "0");
-        String startPath = new ServerSettings().getStartPath();
-        File dirOne = new File(startPath);
-        File[] dirList = dirOne.listFiles();
-        if (dirList != null) {
-            for (File file : dirList) {
-                if (file.getName().equals(result) && file.isDirectory()) {
-                    System.out.println("directory exist");
-                }
-            }
-        } else {
-            System.out.println("create directory to test");
-            File trt = new File(dirOne + "/dir1");
-            boolean mkDirOne = trt.mkdir();
-            System.out.println(mkDirOne);
-        }
         serverTest(word, result);
+        deleteDirectory(result);
     }
 
     /**
@@ -63,22 +90,14 @@ public class ServerTest {
      */
     @Test
     public void whenChangeDirectoryToSubThenServerAnswer() throws IOException {
-        String result = "Directory changed to: dir1";
+        String directoryName = "dir1";
+        createDirectory(directoryName);
+        String result = "Directory changed to: " + directoryName;
         String word = Joiner.on(LN).join(
-                "start", "show menu", "1", "2", "0");
-        String startPath = new ServerSettings().getStartPath();
-        System.out.println(startPath);
-        File dirOne = new File(startPath);
-        if (Arrays.asList(dirOne.listFiles()).contains("dir1")) {
-            System.out.println("directory exist");
-        } else {
-            System.out.println("create directory to test");
-            File trt = new File(dirOne + "/dir1");
-            boolean mkDirOne = trt.mkdir();
-            System.out.println(mkDirOne);
-        }
-
+                "start", "show menu", "1", "2", directoryName, "0");
         serverTest(word, result);
+        deleteDirectory(directoryName);
+
     }
 
     /**
@@ -97,7 +116,7 @@ public class ServerTest {
         Server server = new Server(socket);
         server.init();
         System.out.println();
-        System.out.println("OUT");
+        System.out.println("Server OUT");
         System.out.println(out.toString());
         assertThat(out.toString().contains(result), is(true));
 

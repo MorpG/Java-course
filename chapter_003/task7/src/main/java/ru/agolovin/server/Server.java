@@ -20,33 +20,25 @@ import java.net.Socket;
 public class Server {
 
     /**
-     * Check.
-     */
-    private static final String CHECKCORRECT = "correct";
-    /**
-     * Start path.
-     */
-    private String startPath;
-
-    /**
-     * Socket.
-     */
-    private Socket socket;
-
-    /**
      * Start key.
      */
     private static final String STARTKEY = "start";
-
     /**
      * Show menu key.
      */
     private static final String SHOWMENUKEY = "show menu";
-
     /**
      * Exit key.
-      */
+     */
     private static final String EXITKEY = "0";
+    /**
+     * Start path.
+     */
+    private String startPath;
+    /**
+     * Socket.
+     */
+    private Socket socket;
 
     /**
      * Constructor.
