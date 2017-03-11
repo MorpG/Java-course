@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -75,16 +74,17 @@ class ServerMenu {
     /**
      * Constructor.
      *
+     * @param sReader      BufferedReader.
      * @param inputStream  InputStream.
      * @param outputStream OutPutStream.
      * @param home         File.
      */
-    ServerMenu(InputStream inputStream, OutputStream outputStream, File home) {
+    ServerMenu(BufferedReader sReader, InputStream inputStream, OutputStream outputStream, File home) {
         this.prW = new PrintWriter(outputStream, true);
         this.dataOutputStream = new DataOutputStream(outputStream);
         this.dataInputStream = new DataInputStream(inputStream);
         this.currentFileDir = home;
-        this.reader = new BufferedReader(new InputStreamReader(inputStream));
+        this.reader = sReader;
     }
 
     /**
@@ -247,7 +247,7 @@ class ServerMenu {
                     }
                 }
                 if (flag) {
-                    prW.println("Directory changed to : " + currentFileDir);
+                    prW.println("Directory changed to: " + currentFileDir);
                 } else {
                     prW.println("Error change directory");
                 }

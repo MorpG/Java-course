@@ -29,6 +29,7 @@ public class ServerTest {
 
     /**
      * Create directory to test.
+     *
      * @param name String
      */
     private void createDirectory(String name) {
@@ -39,7 +40,6 @@ public class ServerTest {
         if (dirList != null) {
             for (File file : dirList) {
                 if (file.getName().equals(name) && file.isDirectory()) {
-                    System.out.println("directory " + name + " exist");
                     marker = true;
                 }
             }
@@ -50,7 +50,6 @@ public class ServerTest {
                 System.out.println("Create directory: " + mkDirOne);
             }
         } else {
-            System.out.println("create directory to test");
             File dirName = new File(startPathDir + "/" + name);
             boolean mkDirOne = dirName.mkdir();
             System.out.println("Create directory: " + mkDirOne);
@@ -59,6 +58,7 @@ public class ServerTest {
 
     /**
      * Delete directory after test.
+     *
      * @param name String
      */
     private void deleteDirectory(String name) {
@@ -100,7 +100,10 @@ public class ServerTest {
     public void whenChangeDirectoryToSubThenServerAnswer() throws IOException {
         String directoryName = "dir1";
         createDirectory(directoryName);
-        String result = "Directory changed to: " + directoryName;
+        ServerSettings settings = new ServerSettings();
+        File file = new File(settings.getStartPath());
+        String filePathDir1 = file.getAbsolutePath() + "\\" + directoryName;
+        String result = "Directory changed to: " + filePathDir1;
         String word = Joiner.on(LN).join(
                 "start", "show menu", "1", "2", directoryName, "0");
         serverTest(word, result);
