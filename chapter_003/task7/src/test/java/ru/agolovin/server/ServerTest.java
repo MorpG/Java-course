@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
 
 import static org.hamcrest.core.Is.is;
@@ -89,6 +90,26 @@ public class ServerTest {
                 "start", "show menu", "1", "0");
         serverTest(word, result);
         deleteDirectory(result);
+    }
+
+    /**
+     * Test Exception in Socket InputStream.
+     * @throws Exception Exception
+     */
+    @Test
+    public void whenSocketServerMakeErrorThenResult() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(out));
+        Socket socket = mock(Socket.class);
+        when(socket.getInputStream()).thenThrow(new java.io.IOException());
+        Server server = new Server(socket);
+        server.init();
+        boolean marker = false;
+        if (out.toString().contains("java.io.IOException")) {
+            marker = true;
+        }
+        assertThat(marker, is(true));
+
     }
 
     /**
