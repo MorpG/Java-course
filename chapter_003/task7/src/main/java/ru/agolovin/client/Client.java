@@ -124,6 +124,7 @@ public class Client {
         Socket socket = new Socket(
                 InetAddress.getByName(settings.getServerAddress()), settings.getPort());
         new Client(socket).init();
+        socket.close();
     }
 
     /**
@@ -162,6 +163,17 @@ public class Client {
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+                readerSocket.close();
+                writer.close();
+                dataInputStream.close();
+                dataOutputStream.close();
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
     }
 
@@ -193,17 +205,11 @@ public class Client {
     private boolean checkConnection(PrintWriter writer, BufferedReader readerSocket) {
         boolean result = false;
         try {
-            int i = 0;
-            final int maxTry = 5;
-            do {
-                writer.println(STARTKEY);
-                i++;
-                if (STARTKEY.equals(readerSocket.readLine())) {
-                    result = true;
-                    System.out.println("Connection to server successful");
-                    break;
-                }
-            } while (i <= maxTry);
+            writer.println(STARTKEY);
+            if (STARTKEY.equals(readerSocket.readLine())) {
+                result = true;
+                System.out.println("Connection to server successful");
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

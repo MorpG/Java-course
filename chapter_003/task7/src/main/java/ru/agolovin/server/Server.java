@@ -61,6 +61,7 @@ public class Server {
         Socket socket = new ServerSocket(settings.getPort()).accept();
         Server server = new Server(socket);
         server.init();
+        socket.close();
     }
 
     /**
@@ -78,18 +79,13 @@ public class Server {
             String string;
             int i = 0;
             boolean flag = false;
-            final int maxTry = 5;
-            do {
-                string = reader.readLine();
-                if (STARTKEY.equals(string)) {
-                    writer.println(STARTKEY);
-                    flag = true;
-                    System.out.println("Connection successful");
-                    break;
-                } else {
-                    i++;
-                }
-            } while (i <= maxTry);
+            string = reader.readLine();
+            if (STARTKEY.equals(string)) {
+                writer.println(STARTKEY);
+                flag = true;
+                System.out.println("Connection successful");
+            } else
+                System.out.println("Connection failed");
             if (flag) {
                 string = reader.readLine();
                 if (SHOWMENUKEY.equals(string)) {
@@ -107,6 +103,14 @@ public class Server {
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
     }
 }

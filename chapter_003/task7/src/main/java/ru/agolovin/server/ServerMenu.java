@@ -144,7 +144,15 @@ class ServerMenu {
 
         @Override
         void execute() {
-            System.out.println("Exit");
+            try {
+                System.out.println("Exit");
+                prW.close();
+                dataInputStream.close();
+                dataOutputStream.close();
+                reader.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
     }
 
