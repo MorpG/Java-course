@@ -17,5 +17,6 @@
         <module>task5</module>
         <module>task6</module>
         <module>task7</module>
+        <module>controlTask_3</module>
     </modules>
 </project>
