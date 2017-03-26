@@ -1,18 +1,18 @@
 package ru.agolovin;
+
 /**
  * В течении дня в банк заходят люди, у каждого человека есть время захода в банк и время выхода.
  * Всего за день у банка было N посетителей. Банк работает с 8:00 до 20:00.
  * Человек посещает банк только один раз за день.
  * Написать программу, которая определяет периоды времени,.
  * когда в банке было максимальное количество посетителей.
- */
-
-/**
+ *
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
  * @since 0.1
  */
 public class ControlTask {
+
     /**
      * Количество посетителей.
      */
@@ -21,74 +21,119 @@ public class ControlTask {
     /**
      * Число временных интревалов.
      */
-    private static final int TIME_INTERVAL = 11;
-
+    private static final int TIME_INTERVAL = 12;
     /**
-     * Массив временных интервалов.
+     * Время входа.
      */
-    private int[] a = new int[TIME_INTERVAL];
-
+    private static final int TIME_ENTRY = 8;
     /**
-     * Случайное число посетителей.
+     * Время выхода.
      */
-    private int randomNumber;
-
+    private static final int TIME_OUT = 20;
     /**
-     * Максимальное число для случайного числа.
+     * Массив числа поситителей во временных промежутках.
      */
-    private int count = MAX_PEOPLE_COUNT + 1;
+    private int[] amountPersons = new int[TIME_INTERVAL];
+    /**
+     * Массив посетителей.
+     */
+    private Person[] persons = new Person[MAX_PEOPLE_COUNT];
 
     /**
-     * Получение случайного числа в диапазоне.
+     * Main method.
      *
-     * @param range Диапазон
-     * @return Случайное число
+     * @param args String[]
      */
-    private int getRandomNumberInRange(int range) {
-        int result = (int) (Math.random() * range);
-        this.randomNumber = result;
-        return result;
+    public static void main(String[] args) {
+        new ControlTask().init();
     }
 
     /**
-     * Базовый метод.
+     * Инициализация.
      */
     private void init() {
-        for (int i = 0; i < a.length; i++) {
-            this.a[i] = getRandomNumberInRange(this.count);
-            downRange();
+        fillPersons();
+        fillAmountPersons();
+        int max = findMaxAmount(this.amountPersons);
+        printTimeMaxPersonsAmount(this.amountPersons, max);
+    }
+
+    /**
+     * Заполнение массива посетителей временем входа и выхода.
+     */
+    private void fillPersons() {
+        for (int i = 0; i < this.persons.length; i++) {
+            int entryTime = TIME_ENTRY + (int) (Math.random() * ((TIME_OUT - TIME_ENTRY) + 1));
+            int outTime = entryTime + (int) (Math.random() * ((TIME_OUT - entryTime) + 1));
+            this.persons[i] = new Person(entryTime, outTime);
         }
-        findMaxPeople();
     }
 
     /**
-     * Уменьшение диапазона случайных числе.
+     * Подсчет числа посетителей во временных интревалах.
      */
-    private void downRange() {
-        this.count = this.count - this.randomNumber;
+    private void fillAmountPersons() {
+        int amount = 0;
+        final int startTime = 8;
+        int time = startTime;
+        for (int i = 0; i < this.amountPersons.length; i++) {
+            for (int j = 0; j < this.persons.length; j++) {
+                if (time >= this.persons[j].getEntryTime() && time <= this.persons[j].getOutTime()) {
+                    amount++;
+                }
+            }
+            this.amountPersons[i] = amount;
+            time++;
+            amount = 0;
+        }
     }
 
     /**
-     * Определение и вывод максимального числа посетителей.
+     * Нахождение максимального числа посетителей.
+     *
+     * @param array Массив
+     * @return максимальное число int
      */
-    private void findMaxPeople() {
-        final int start = 8;
-        final int end = 9;
-
-        int max = a[0];
-        for (int i = 1; i < a.length; i++) {
-            if (a[i] > max) {
-                max = a[i];
+    private int findMaxAmount(int[] array) {
+        int max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
             }
         }
-        for (int i = 0; i < a.length; i++) {
-            if (max == a[i]) {
+        return max;
+    }
+
+    /**
+     * Вывод на экран временных промежутков с максимальным числом.
+     *
+     * @param array массив int[]
+     * @param max   максимальное число int
+     */
+    private void printTimeMaxPersonsAmount(int[] array, int max) {
+        final int time = 8;
+        int amountMaxTime;
+        int length = array.length;
+        int amountMaxTimeInterval = 1;
+        System.out.println("Максимальное число посетителей в следующих временых интревалах: ");
+        for (int i = 0; i < length; i++) {
+            if (array[i] == max) {
+                amountMaxTime = i;
+                for (int j = i; j < length; j++) {
+                    if (array[j] == max) {
+                        amountMaxTime = j;
+                    } else {
+                        break;
+                    }
+                }
                 System.out.println(
                         String.format(
-                                "Больше всего людей было в промежутке от %s до %s", i + start, i + end)
+                                "%s: c %s до %s", amountMaxTimeInterval++, time
+                                        + i, time + amountMaxTime + 1)
                 );
+                i = amountMaxTime;
             }
-        }
 
+        }
     }
 }
