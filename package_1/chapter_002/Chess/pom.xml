@@ -1,0 +1,11 @@
+<project>
+    <parent>
+        <groupId>ru.agolovin</groupId>
+        <artifactId>chapter_002</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>Chess</artifactId>
+    <packaging>jar</packaging>
+</project>

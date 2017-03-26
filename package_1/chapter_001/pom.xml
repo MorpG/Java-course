@@ -1,0 +1,23 @@
+<project>
+    <parent>
+        <groupId>ru.agolovin</groupId>
+        <artifactId>package_1</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>chapter_001</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>task121</module>
+        <module>task131</module>
+        <module>task132</module>
+        <module>task141</module>
+        <module>task142</module>
+        <module>task151</module>
+        <module>task152</module>
+        <module>task153</module>
+        <module>task161</module>
+    </modules>
+</project>

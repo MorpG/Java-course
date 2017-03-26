@@ -27,6 +27,7 @@ public class ServerTest {
 
     /**
      * Test single server ask.
+     *
      * @throws Exception Exception
      */
     @Test
@@ -38,6 +39,7 @@ public class ServerTest {
 
     /**
      * Test ask server twice.
+     *
      * @throws Exception Exception
      */
     @Test
@@ -46,13 +48,11 @@ public class ServerTest {
                 "hello", "exit");
         String result = Joiner.on(LN).join("Hello, dear friend, I'm a oracle.", "", "");
         testServer(word, result);
-        int a = (byte)(-128 - 1);
-        System.out.println(1 + 2 + " " + 3 + 4);
-        //System.out.println(a);
     }
 
     /**
      * Test ask server multiple.
+     *
      * @throws Exception Exception
      */
     @Test
@@ -67,8 +67,9 @@ public class ServerTest {
 
     /**
      * Base method.
+     *
      * @param incoming String
-     * @param result String
+     * @param result   String
      * @throws IOException Exception
      */
     private void testServer(String incoming, String result) throws IOException {

@@ -84,8 +84,9 @@ public class Server {
                 writer.println(STARTKEY);
                 flag = true;
                 System.out.println("Connection successful");
-            } else
+            } else {
                 System.out.println("Connection failed");
+            }
             if (flag) {
                 string = reader.readLine();
                 if (SHOWMENUKEY.equals(string)) {
