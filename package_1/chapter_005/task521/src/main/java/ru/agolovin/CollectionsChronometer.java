@@ -2,6 +2,7 @@ package ru.agolovin;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -13,85 +14,98 @@ import java.util.TreeSet;
 
 public class CollectionsChronometer {
 
-    private static final int CAPACITY = 1000;
 
-    private ArrayList<String> arrayList = new ArrayList<>();
+    /**
+     * Capacity of the elements in the lists.
+     * Check operation time to add/delete items to/from ArrayList, LinkedList, TreeSet.
+     */
+    private static final int CAPACITY = 200000;
 
-    private LinkedList<String> linkedList = new LinkedList<String>();
+    /**
+     * Number of elements to remove.
+     */
+    private static final int REMOVE_CAPACITY = CAPACITY / 2;
 
-    private TreeSet<String> treeSet = new TreeSet<>();
-
-    private long startTime;
-
-    private long endTime;
-
+    /**
+     * Main method.
+     *
+     * @param args String
+     */
     public static void main(String[] args) {
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        LinkedList<String> linkedList = new LinkedList<>();
+        TreeSet<String> treeSet = new TreeSet<>();
+
         CollectionsChronometer chronometer = new CollectionsChronometer();
-        chronometer.checkAddArrayList();
-        chronometer.checkAddLinkedList();
-        chronometer.checkAddTreeSet();
-        chronometer.checkDeleteFromArrayList();
-        chronometer.checkDeleteFromLinkedLIst();
-        chronometer.checkDeleteFromTreeSet();
-    }
 
-    private void checkDeleteFromTreeSet() {
-        System.out.println(String.format("Delete from TreeSet %s items", CAPACITY - 20));
-        long amountTime = delete(treeSet, CAPACITY - 20);
-        System.out.println(String.format("Amount time: %s", amountTime));
-    }
 
-    private void checkDeleteFromLinkedLIst() {
-        System.out.println(String.format("Delete from LinkedLIst %s items", CAPACITY - 20));
-        long amountTime = delete(linkedList, CAPACITY - 20);
-        System.out.println(String.format("Amount time: %s", amountTime));
-    }
 
-    private void checkDeleteFromArrayList() {
-        System.out.println(String.format("Delete from ArrayList %s items", CAPACITY - 20));
-        long amountTime = delete(arrayList, CAPACITY - 20);
-        System.out.println(String.format("Amount time: %s", amountTime));
-    }
-
-    private void checkAddArrayList() {
-        System.out.println(String.format("Add to Arraylist %s items", CAPACITY));
-        long amountTime = add(this.arrayList, "line", 100);
-        System.out.println(String.format("Amount time: %s", amountTime));
-    }
-
-    private void checkAddLinkedList() {
         System.out.println(String.format("Add to Linkedlist %s items", CAPACITY));
-        long amountTime = add(this.arrayList, "line", 100);
-        System.out.println(String.format("Amount time: %s", amountTime));
+        System.out.println(String.format("Amount time: %s", chronometer.add(linkedList, "line", CAPACITY)));
 
-    }
+        System.out.println(String.format("Delete from LinkedLIst %s items", REMOVE_CAPACITY));
+        System.out.println(String.format("Amount time: %s", chronometer.delete(linkedList, REMOVE_CAPACITY)));
 
-    private void checkAddTreeSet() {
+        System.out.println(String.format("Add to Arraylist %s items", CAPACITY));
+        System.out.println(String.format("Amount time: %s", chronometer.add(arrayList, "line", CAPACITY)));
+
+        System.out.println(String.format("Delete from ArrayList %s items", REMOVE_CAPACITY));
+        System.out.println(String.format("Amount time: %s", chronometer.delete(arrayList, REMOVE_CAPACITY)));
+
         System.out.println(String.format("Add to TreeSet %s items", CAPACITY));
-        long amountTime = add(treeSet, "line", 100);
-        System.out.println(String.format("Amount time: %s", amountTime));
+        System.out.println(String.format("Amount time: %s", chronometer.add(treeSet, "line", CAPACITY)));
+
+        System.out.println(String.format("Delete from TreeSet %s items", REMOVE_CAPACITY));
+        System.out.println(String.format("Amount time: %s", chronometer.delete(treeSet, REMOVE_CAPACITY)));
+
     }
 
+    /**
+     * Add line to collection.
+     *
+     * @param collection Collection
+     * @param line       String
+     * @param amount     int
+     * @return operation time long.
+     */
     public long add(Collection<String> collection, String line, int amount) {
-        this.startTime = getTime();
+        long startTime = getTime();
         for (int i = 0; i < amount; i++) {
-            collection.add(line);
+            String s = line + i;
+            collection.add(s);
         }
-        this.endTime = getTime();
-        return this.endTime - this.startTime;
+        long endTime = getTime();
+
+        return endTime - startTime;
     }
 
+    /**
+     * Delete line from collection.
+     *
+     * @param collection Collection
+     * @param amount     int
+     * @return operation time long.
+     */
     public long delete(Collection<String> collection, int amount) {
-        this.startTime = getTime();
-        for (int i = 0; i < amount; i++) {
-            collection.remove(i);
+        long startTime = getTime();
+        Iterator<String> iterator = collection.iterator();
+        while (iterator.hasNext() && amount != 0) {
+            iterator.next();
+            iterator.remove();
+            amount--;
         }
-        this.endTime = getTime();
+        long endTime = getTime();
 
-        return this.endTime - this.startTime;
+        return endTime - startTime;
     }
 
+    /**
+     * Get current system time.
+     *
+     * @return Current time long
+     */
     private long getTime() {
-        return System.nanoTime();
+        return System.currentTimeMillis();
     }
 }
