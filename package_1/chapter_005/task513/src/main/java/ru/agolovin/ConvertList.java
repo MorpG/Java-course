@@ -1,6 +1,7 @@
 package ru.agolovin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
  * @since 0.1
  */
 
-public class ConvertList {
+class ConvertList {
 
     /**
      * Convert int[][] array to List<Integer>.
@@ -60,25 +61,16 @@ public class ConvertList {
     public int[][] toArray(List<Integer> list, int rows) {
         int[][] array;
         int listSize = list.size();
-        int lines;
-        int counter = 0;
-        int index = 0;
-        if (listSize % rows == 0) {
-            lines = listSize / rows;
-            array = new int[lines][rows];
-        } else {
-            do {
-                counter++;
-                lines = (listSize + counter) / rows;
-            }
-            while ((listSize + counter) % rows != 0);
-            array = new int[lines][rows];
-        }
+
+        int lines = listSize % rows == 0 ? listSize / rows : listSize / rows + 1;
+        array = new int[lines][rows];
+
+        Iterator<Integer> iterator = list.iterator();
         for (int i = 0; i < lines; i++) {
             for (int j = 0; j < rows; j++) {
-                try {
-                    array[i][j] = list.get(index++);
-                } catch (IndexOutOfBoundsException e) {
+                if (iterator.hasNext()) {
+                    array[i][j] = iterator.next();
+                } else  {
                     array[i][j] = 0;
                 }
 

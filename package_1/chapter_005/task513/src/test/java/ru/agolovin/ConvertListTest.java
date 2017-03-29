@@ -41,7 +41,7 @@ public class ConvertListTest {
     public void whenConvertArrayToListThenNewListIs() throws Exception {
         final int arrayLength = 7;
         int ind = 1;
-        int[][] array = new int[][]{{ind++, ind++}, {ind++, ind++}, {ind++, ind++}};
+        int[][] array = new int[][]{{ind++, ind++}, {ind++, ind++}, {ind++, ind}};
         this.list = this.convertList.toList(array);
         for (int i = 1; i < arrayLength; i++) {
             this.result.add(i);
@@ -63,7 +63,7 @@ public class ConvertListTest {
         }
         int ind = 1;
         int[][] result = this.convertList.toArray(list, rows);
-        int[][] array = new int[][]{{ind++, ind++, ind++}, {ind++, ind++, ind++}, {ind++, 0, 0}};
+        int[][] array = new int[][]{{ind++, ind++, ind++}, {ind++, ind++, ind++}, {ind, 0, 0}};
 
         assertThat(result, is(array));
     }
@@ -82,7 +82,7 @@ public class ConvertListTest {
         }
         int ind = 1;
         int[][] result = this.convertList.toArray(list, rows);
-        int[][] array = new int[][]{{ind++, ind++, ind++}, {ind++, ind++, ind++}};
+        int[][] array = new int[][]{{ind++, ind++, ind++}, {ind++, ind++, ind}};
 
         assertThat(result, is(array));
     }
@@ -96,7 +96,7 @@ public class ConvertListTest {
         int ind = 1;
         List<int[]> list = new ArrayList<>();
         list.add(new int[]{ind++, ind++});
-        list.add(new int[]{ind++, ind++, ind++, ind++});
+        list.add(new int[]{ind++, ind++, ind++, ind});
 
         List<Integer> answer = new ArrayList<>();
         for (int i = 1; i <= arrayLength; i++) {
