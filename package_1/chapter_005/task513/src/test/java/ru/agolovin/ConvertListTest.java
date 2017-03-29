@@ -87,4 +87,24 @@ public class ConvertListTest {
         assertThat(result, is(array));
     }
 
+    /**
+     * Test convert List<int[]> to List<Integer>.
+     */
+    @Test
+    public void whenConvertToArraysWhenItCollectInOne() {
+        final int arrayLength = 6;
+        int ind = 1;
+        List<int[]> list = new ArrayList<>();
+        list.add(new int[]{ind++, ind++});
+        list.add(new int[]{ind++, ind++, ind++, ind++});
+
+        List<Integer> answer = new ArrayList<>();
+        for (int i = 1; i <= arrayLength; i++) {
+            answer.add(i);
+        }
+        List<Integer> result = convertList.convert(list);
+        assertThat(result, is(answer));
+
+    }
+
 }
