@@ -4,6 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Вам необходимо создать класс ConvertList.
+ * В нём написать 2 метода:.
+ * public List<Integer> toList (int[][] array) {} - в метод приходит двумерный массив целых чисел,.
+ * необходимо пройтись по всем элементам массива и добавить их в List<Integer>.
+ * public int[][] toArray (List<Integer> list, int rows) {} - метод toArray должен равномерно разбить лист.
+ * на количество строк двумерного массива. В методе toArray должна быть проверка - если количество элементов.
+ * не кратно количеству строк - оставшиеся значения в массиве заполнять нулями.
+ * Например в результате конвертации листа со значениями (1,2,3,4,5,6,7) с разбиением на 3 строки должен.
+ * получиться двумерный массив {{1, 2, 3} {4, 5, 6} {7, 0 ,0}}
+ *
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
  * @since 0.1
@@ -11,6 +21,12 @@ import java.util.List;
 
 public class ConvertList {
 
+    /**
+     * Convert int[][] array to List<Integer>.
+     *
+     * @param array int[][]
+     * @return list List<Integer>
+     */
     public List<Integer> toList(int[][] array) {
         ArrayList<Integer> arrayList = new ArrayList<>();
         for (int[] element : array) {
@@ -22,7 +38,41 @@ public class ConvertList {
         return arrayList;
     }
 
+    /**
+     * Convert List<Integer> to int[][] array With the number of lines. Free elements are replaced by 0.
+     *
+     * @param list List<Integer>
+     * @param rows int
+     * @return array int[][]
+     */
     public int[][] toArray(List<Integer> list, int rows) {
-        return new int[0][];
+        int[][] array;
+        int listSize = list.size();
+        int lines;
+        int counter = 0;
+        int index = 0;
+        if (listSize % rows == 0) {
+            lines = listSize / rows;
+            array = new int[lines][rows];
+        } else {
+            do {
+                counter++;
+                lines = (listSize + counter) / rows;
+            }
+            while ((listSize + counter) % rows != 0);
+            array = new int[lines][rows];
+        }
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < rows; j++) {
+                try {
+                    array[i][j] = list.get(index++);
+                } catch (IndexOutOfBoundsException e) {
+                    array[i][j] = 0;
+                }
+
+            }
+        }
+
+        return array;
     }
 }
