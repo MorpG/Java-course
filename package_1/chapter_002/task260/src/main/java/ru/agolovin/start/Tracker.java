@@ -75,7 +75,7 @@ public class Tracker {
      */
     final Item findById(final String id) {
         Item result = null;
-        for (Item item : items) {
+        for (Item item : this.items) {
             if (item != null && item.getId().equals(id)) {
                 result = item;
                 break;
@@ -100,7 +100,7 @@ public class Tracker {
      */
     final List<Item> getAll() {
         List<Item> result = new ArrayList<>();
-        for (Item item : items) {
+        for (Item item : this.items) {
             if (item != null) {
                 result.add(item);
             }
@@ -118,7 +118,7 @@ public class Tracker {
 
         List<Item> tmp = new ArrayList<>();
         int length = 0;
-        for (Item item : items) {
+        for (Item item : this.items) {
             if (item != null
                     && ((item.getName().equals(filter.getFilter()))
                     || item.getDescription().equals(filter.getFilter()))) {

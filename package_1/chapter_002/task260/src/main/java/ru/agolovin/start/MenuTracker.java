@@ -51,11 +51,6 @@ class EditItem extends BaseAction {
 class MenuTracker {
 
     /**
-     * first length menu.
-     */
-    private int position = 0;
-
-    /**
      * input Input.
      */
     private Input input;
@@ -102,12 +97,12 @@ class MenuTracker {
      * Actions for menu.
      */
     void fillActions() {
-        this.actions.add(position++, this.new AddItem());
-        this.actions.add(position++, new MenuTracker.ShowItems());
-        this.actions.add(position++, new EditItem());
-        this.actions.add(position++, this.new FilterItem());
-        this.actions.add(position++, this.new DeleteItem());
-        this.actions.add(position++, this.new ExitMenu());
+        this.actions.add(this.new AddItem());
+        this.actions.add(new MenuTracker.ShowItems());
+        this.actions.add(new EditItem());
+        this.actions.add(this.new FilterItem());
+        this.actions.add(this.new DeleteItem());
+        this.actions.add(this.new ExitMenu());
     }
 
     /**
