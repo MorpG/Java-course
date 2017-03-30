@@ -3,6 +3,9 @@ package ru.agolovin.start;
 import ru.agolovin.models.Filter;
 import ru.agolovin.models.Item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Method to edit Item from tracker.
  */
@@ -26,21 +29,11 @@ class EditItem extends BaseAction {
      * @param input   Input
      * @param tracker Tracker
      */
-public void execute(final Input input, final Tracker tracker) {
-        boolean flag = true;
-        long timeCreate = 0;
+    public void execute(final Input input, final Tracker tracker) {
         String id = input.ask("Enter id to edit: ");
         String name = input.ask("Enter the task`s name: ");
         String desc = input.ask("Enter the task`s description: ");
-
-        do {
-            try {
-                timeCreate = Long.parseLong(input.ask("Enter time create: "));
-                flag = false;
-            } catch (NumberFormatException nfe) {
-                System.out.println("Please, enter number");
-            }
-        } while (flag);
+        long timeCreate = MenuTracker.setTimeCreate(input);
         Item item = new Item(name, desc, timeCreate);
         item.setId(id);
         tracker.updateItem(item);
@@ -56,11 +49,6 @@ public void execute(final Input input, final Tracker tracker) {
  * @since 0.1
  */
 class MenuTracker {
-
-    /**
-     * size userActions array.
-     */
-    private final int lengthUserActions = 6;
 
     /**
      * first length menu.
@@ -80,7 +68,7 @@ class MenuTracker {
     /**
      * actions User actions array.
      */
-    private UserAction[] actions = new UserAction[lengthUserActions];
+    private List<UserAction> actions = new ArrayList<>();
 
     /**
      * @param sInput   Input
@@ -92,22 +80,41 @@ class MenuTracker {
     }
 
     /**
+     * Set time create.
+     * @param sInput Input
+     * @return long TimeCreate
+     */
+    static long setTimeCreate(final Input sInput) {
+        long timeCreate = 0;
+        boolean flag = true;
+        do {
+            try {
+                timeCreate = Long.parseLong(sInput.ask("Enter time create: "));
+                flag = false;
+            } catch (NumberFormatException nfe) {
+                System.out.println("Please, enter number");
+            }
+        } while (flag);
+        return timeCreate;
+    }
+
+    /**
      * Actions for menu.
      */
     void fillActions() {
-        this.actions[position++] = this.new AddItem();
-        this.actions[position++] = new MenuTracker.ShowItems();
-        this.actions[position++] = new EditItem();
-        this.actions[position++] = this.new FilterItem();
-        this.actions[position++] = this.new DeleteItem();
-        this.actions[position++] = this.new ExitMenu();
+        this.actions.add(position++, this.new AddItem());
+        this.actions.add(position++, new MenuTracker.ShowItems());
+        this.actions.add(position++, new EditItem());
+        this.actions.add(position++, this.new FilterItem());
+        this.actions.add(position++, this.new DeleteItem());
+        this.actions.add(position++, this.new ExitMenu());
     }
 
     /**
      * @param key int
      */
     void select(final int key) {
-        this.actions[key].execute(this.input, this.tracker);
+        this.actions.get(key).execute(this.input, this.tracker);
     }
 
     /**
@@ -187,19 +194,10 @@ class MenuTracker {
          * @param sTracker Tracker
          */
         public void execute(final Input sInput, final Tracker sTracker) {
-            boolean flag = true;
-            long timeCreate = 0;
             String name = sInput.ask("Enter the task`s name: ");
             String desc = sInput.ask("Enter the task`s description: ");
-            do {
-                try {
-                    timeCreate = Long.parseLong(sInput.ask("Enter time create: "));
-                    flag = false;
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Please, enter number");
-                }
-            } while (flag);
-            sTracker.add(new Item(name, desc, timeCreate));
+            long timeCreate = setTimeCreate(input);
+            sTracker.addItem(new Item(name, desc, timeCreate));
         }
     }
 
@@ -231,7 +229,7 @@ class MenuTracker {
             Filter filter = new Filter(
                     sInput.ask("Enter filter description: ")
             );
-            Item[] result = sTracker.getByFilter(filter);
+            List<Item> result = sTracker.getByFilter(filter);
             for (Item item : result) {
                 System.out.println("Id: " + item.getId() + " Name: "
                         + item.getName() + " Description: "

@@ -12,10 +12,10 @@
     <modules>
         <module>Chess</module>
         <module>ControlQuestions</module>
-        <module>task220</module>
-        <module>task230</module>
-        <module>task240</module>
-        <module>task250</module>
+        <!--<module>task220</module>-->
+        <!--<module>task230</module>-->
+        <!--<module>task240</module>-->
+        <!--<module>task250</module>-->
         <module>task260</module>
     </modules>
 </project>

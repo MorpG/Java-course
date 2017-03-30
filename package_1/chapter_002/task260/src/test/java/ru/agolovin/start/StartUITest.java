@@ -7,6 +7,7 @@ import ru.agolovin.models.Item;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -21,14 +22,24 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
 
     /**
+     * Tracker for testes.
+     */
+    private Tracker tracker = new Tracker();
+
+    /**
+     * OutPutStream.
+     */
+    private ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    /**
      * Test for paragraph 0 in menu StartUI(MenuTracker).
      */
     @Test
     public final void whenUserSet0inMenuThenResultIs() {
         final long timeCreate = 15;
-        Tracker tracker = new Tracker();
+
         String[] answer = {"0", "ss", "d", "d", "15", "y"};
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
         System.setOut(new PrintStream(out));
         boolean check = false;
         StartUI stUI = new StartUI(new StubInput(answer));
@@ -36,10 +47,9 @@ public class StartUITest {
         if (out.toString().contains("Please, enter number")) {
             check = true;
         }
-
         Item item = new Item("ss", "d", timeCreate);
-        Item[] res = stUI.getTracker().getByFilter(new Filter("ss"));
-        assertThat(res[0].getName(), is(item.getName()));
+        List<Item> res = stUI.getTracker().getByFilter(new Filter("ss"));
+        assertThat(res.get(0).getName(), is(item.getName()));
         assertThat(check, is(true));
     }
 
@@ -49,16 +59,15 @@ public class StartUITest {
     @Test
     public final void whenUserSet1inMenuThenResultIs() {
         final int arrayLength = 2;
-        Tracker tracker = new Tracker();
         Item itemOne = new Item("testName", "testDescription", 1);
         Item itemTwo = new Item("updateName", "updateDescription", 2);
-        tracker.add(itemOne);
-        tracker.add(itemTwo);
+        tracker.addItem(itemOne);
+        tracker.addItem(itemTwo);
         String[] answer = {"1", "y"};
         StartUI stUI = new StartUI(new StubInput(answer));
         stUI.init(tracker);
-        Item[] res = stUI.getTracker().getAll();
-        assertThat(res.length, is(arrayLength));
+        List<Item> res = stUI.getTracker().getAll();
+        assertThat(res.size(), is(arrayLength));
     }
 
     /**
@@ -66,16 +75,14 @@ public class StartUITest {
      */
     @Test
     public final void whenUserSet2inMenuThenResultIs() {
-        Tracker tracker = new Tracker();
         Item item = new Item("testName", "testDescription", 1);
         Item updateItem = new Item("updateName", "updateDescription", 2);
-        tracker.add(item);
+        tracker.addItem(item);
         updateItem.setId(tracker.findById(item.getId()).getId());
         String idItem = updateItem.getId();
         String[] answer = {
                 "2", idItem, "updateName", "updateDescription", "d", "2", "y"
         };
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         boolean check = false;
         StartUI stUI = new StartUI(new StubInput(answer));
@@ -83,10 +90,10 @@ public class StartUITest {
         if (out.toString().contains("Please, enter number")) {
             check = true;
         }
-        Item[] res =
+        List<Item> res =
                 stUI.getTracker().getByFilter(
                         new Filter("updateDescription"));
-        assertThat(res[0].getName(), is(updateItem.getName()));
+        assertThat(res.get(0).getName(), is(updateItem.getName()));
         assertThat(check, is(true));
     }
 
@@ -95,16 +102,15 @@ public class StartUITest {
      */
     @Test
     public final void whenUserSet3inMenuThenResultIs() {
-        Tracker tracker = new Tracker();
         Item itemOne = new Item("testName", "testDescription", 1);
         Item itemTwo = new Item("updateName", "updateDescription", 2);
-        tracker.add(itemOne);
-        tracker.add(itemTwo);
+        tracker.addItem(itemOne);
+        tracker.addItem(itemTwo);
         String[] answer = {"3", "testName", "y"};
         StartUI stUI = new StartUI(new StubInput(answer));
         stUI.init(tracker);
-        Item[] res = stUI.getTracker().getByFilter(new Filter("testName"));
-        assertThat(res[0].getName(), is(itemOne.getName()));
+        List<Item> res = stUI.getTracker().getByFilter(new Filter("testName"));
+        assertThat(res.get(0).getName(), is(itemOne.getName()));
     }
 
     /**
@@ -114,18 +120,17 @@ public class StartUITest {
     public final void whenUserSet4inMenuThenResultIs() {
         final long timeCreate1 = 9;
         final long timeCreate2 = 8;
-        Tracker tracker = new Tracker();
         Item item1 = new Item("ss", "desc", timeCreate1);
         Item item2 = new Item("ss2", "dd2", timeCreate2);
-        tracker.add(item1);
-        tracker.add(item2);
+        tracker.addItem(item1);
+        tracker.addItem(item2);
         String idItem = tracker.findById(item2.getId()).getId();
         String[] answer = {"4", idItem, "y"};
         StartUI stUI = new StartUI(new StubInput(answer));
         stUI.init(tracker);
         Item item = new Item("ss", "desc", timeCreate1);
-        Item[] res = stUI.getTracker().getByFilter(new Filter("ss"));
-        assertThat(res[0].getName(), is(item.getName()));
+        List<Item> res = stUI.getTracker().getByFilter(new Filter("ss"));
+        assertThat(res.get(0).getName(), is(item.getName()));
     }
 
     /**
@@ -134,13 +139,11 @@ public class StartUITest {
     @Test
     public final void whenUserSet0And1inMenuThenResultIs() {
         final long timeCreate = 15;
-        Tracker tracker = new Tracker();
         String[] answer = {"0", "ss", "d", "15", "n", "1", "y"};
         StartUI stUI = new StartUI(new StubInput(answer));
         stUI.init(tracker);
-
         Item item = new Item("ss", "d", timeCreate);
-        Item[] res = stUI.getTracker().getByFilter(new Filter("ss"));
-        assertThat(res[0].getName(), is(item.getName()));
+        List<Item> res = stUI.getTracker().getByFilter(new Filter("ss"));
+        assertThat(res.get(0).getName(), is(item.getName()));
     }
 }

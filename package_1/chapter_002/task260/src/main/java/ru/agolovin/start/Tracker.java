@@ -3,6 +3,8 @@ package ru.agolovin.start;
 import ru.agolovin.models.Filter;
 import ru.agolovin.models.Item;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,35 +20,23 @@ import java.util.Random;
 public class Tracker {
 
     /**
-     * @param size int
-     */
-    private final int size = 10;
-
-    /**
-     * @param size int
-     */
-    private Item[] items = new Item[size];
-
-    /**
-     * @param position int
-     */
-    private int position = 0;
-
-    /**
-     * @param RN Random
+     * RN Random.
      */
     private static final Random RN = new Random();
+
+    /**
+     * List Items.
+     */
+    private List<Item> items = new ArrayList<>();
 
     /**
      * add Item into tacker.
      *
      * @param item Item
-     * @return item Item
      */
-    public final Item add(final Item item) {
+    final void addItem(final Item item) {
         item.setId(this.generateId());
-        this.items[position++] = item;
-        return item;
+        this.items.add(item);
     }
 
     /**
@@ -54,10 +44,10 @@ public class Tracker {
      *
      * @param item Item
      */
-    public final void updateItem(final Item item) {
-        for (int i = 0; i < this.position; i++) {
-            if (this.items[i].getId().equals(item.getId())) {
-                this.items[i] = item;
+    final void updateItem(final Item item) {
+        for (int i = 0; i < items.size(); i++) {
+            if (this.items.get(i).getId().equals(item.getId())) {
+                this.items.set(i, item);
                 break;
             }
         }
@@ -68,10 +58,10 @@ public class Tracker {
      *
      * @param item Item
      */
-    public final void deleteItem(final Item item) {
-        for (int i = 0; i < this.position; i++) {
-            if (this.items[i].getId().equals(item.getId())) {
-                this.items[i] = null;
+    final void deleteItem(final Item item) {
+        for (int i = 0; i < items.size(); i++) {
+            if (this.items.get(i).getId().equals(item.getId())) {
+                this.items.set(i, null);
                 break;
             }
         }
@@ -99,7 +89,7 @@ public class Tracker {
      *
      * @return id String
      */
-    final String generateId() {
+    private String generateId() {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
     }
 
@@ -108,10 +98,12 @@ public class Tracker {
      *
      * @return result Array of Items
      */
-    public final Item[] getAll() {
-        Item[] result = new Item[this.position];
-        for (int i = 0; i < this.position; i++) {
-            result[i] = this.items[i];
+    final List<Item> getAll() {
+        List<Item> result = new ArrayList<>();
+        for (Item item : items) {
+            if (item != null) {
+                result.add(item);
+            }
         }
         return result;
     }
@@ -122,21 +114,22 @@ public class Tracker {
      * @param filter Filter
      * @return result Array of Items
      */
-    public final Item[] getByFilter(final Filter filter) {
-        Item[] tmp = new Item[this.position];
+    final List<Item> getByFilter(final Filter filter) {
+
+        List<Item> tmp = new ArrayList<>();
         int length = 0;
-        for (int i = 0; i < this.position; i++) {
-            if (items[i] != null
-                    && ((items[i].getName().equals(filter.getFilter()))
-                    || items[i].getDescription().equals(filter.getFilter()))) {
-                tmp[i] = items[i];
+        for (Item item : items) {
+            if (item != null
+                    && ((item.getName().equals(filter.getFilter()))
+                    || item.getDescription().equals(filter.getFilter()))) {
+                tmp.add(item);
                 length++;
             }
         }
-        Item[] result = new Item[length];
+        List<Item> result = new ArrayList<>();
         if (length > 0) {
             for (int i = 0; i < length; i++) {
-                result[i] = tmp[i];
+                result.add(tmp.get(i));
             }
         }
 

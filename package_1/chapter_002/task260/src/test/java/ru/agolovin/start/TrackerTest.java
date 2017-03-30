@@ -1,9 +1,11 @@
 package ru.agolovin.start;
 
 import org.junit.Test;
-
 import ru.agolovin.models.Filter;
 import ru.agolovin.models.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -18,15 +20,23 @@ import static org.junit.Assert.assertThat;
 public class TrackerTest {
 
     /**
+     * Tracker for tests.
+     */
+    private Tracker tracker = new Tracker();
+
+    /**
+     * List.
+     */
+    private List<Item> result = new ArrayList<>();
+
+    /**
      * Test for adding new Item in tracker.
      */
     @Test
     public final void whetAddNewItemThenResultIs() {
-        Tracker tracker = new Tracker();
         Item item = new Item("testName", "testDescription", 1);
-        Item[] result = new Item[1];
-        tracker.add(item);
-        result[0] = item;
+        tracker.addItem(item);
+        result.add(item);
         assertThat(tracker.getAll(), is(result));
 
     }
@@ -36,14 +46,12 @@ public class TrackerTest {
      */
     @Test
     public final void whenUpdateItemThenResultIs() {
-        Tracker tracker = new Tracker();
         Item item = new Item("testName", "testDescription", 1);
         Item updateItem = new Item("updateName", "updateDescription", 2);
-        Item[] result = new Item[1];
-        tracker.add(item);
+        tracker.addItem(item);
         updateItem.setId(tracker.findById(item.getId()).getId());
         tracker.updateItem(updateItem);
-        result[0] = updateItem;
+        result.add(updateItem);
         assertThat(tracker.getAll(), is(result));
 
     }
@@ -53,14 +61,12 @@ public class TrackerTest {
      */
     @Test
     public final void whenDeleteItemThenResultIs() {
-        Tracker tracker = new Tracker();
         Item itemOne = new Item("testName", "testDescription", 1);
         Item itemTwo = new Item("updateName", "updateDescription", 2);
-        Item[] result = new Item[2];
-        tracker.add(itemOne);
-        tracker.add(itemTwo);
+        tracker.addItem(itemOne);
+        tracker.addItem(itemTwo);
         tracker.deleteItem(itemOne);
-        result[1] = itemTwo;
+        result.add(itemTwo);
         assertThat(tracker.getAll(), is(result));
 
     }
@@ -70,11 +76,9 @@ public class TrackerTest {
      */
     @Test
     public final void whenFindByFilterThenResultIs() {
-        Tracker tracker = new Tracker();
         Item itemOne = new Item("testName", "testDescription", 1);
-        Item[] result = new Item[1];
-        tracker.add(itemOne);
-        result[0] = itemOne;
+        tracker.addItem(itemOne);
+        result.add(itemOne);
         Filter filter = new Filter("testName");
         assertThat(tracker.getByFilter(filter), is(result));
 
