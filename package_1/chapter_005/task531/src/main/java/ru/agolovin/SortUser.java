@@ -5,6 +5,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
+ * Необходимо создать модель User с полями name, age.
+ * Класс User должен реализовать интерфейс Comparable.
+ * В классе SortUser написать метод public Set<User> sort (List<User>),
+ * который будет возвращать TreeSet пользователей, отсортированных
+ * по возрасту в порядке возрастания.
+ *
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
  * @since 0.1
