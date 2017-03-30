@@ -97,12 +97,12 @@ class MenuTracker {
      * Actions for menu.
      */
     void fillActions() {
-        this.actions.add(this.new AddItem());
+        this.actions.add(new AddItem());
         this.actions.add(new MenuTracker.ShowItems());
         this.actions.add(new EditItem());
-        this.actions.add(this.new FilterItem());
-        this.actions.add(this.new DeleteItem());
-        this.actions.add(this.new ExitMenu());
+        this.actions.add(new FilterItem());
+        this.actions.add(new DeleteItem());
+        this.actions.add(new ExitMenu());
     }
 
     /**
