@@ -27,7 +27,7 @@ public class UserTest {
      * Test when user1 not equals user2.
      */
     @Test
-    public void whenUserNotTheSameThneResultFalse() {
+    public void whenUserNotTheSameThenResultFalse() {
         User user1 = new User("Name1", 0);
         User user2 = new User("Name2", 1);
         boolean result = user1.equals(user2);
