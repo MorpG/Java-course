@@ -1,5 +1,7 @@
 package ru.agolovin;
 
+import java.util.Objects;
+
 /**
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
@@ -28,5 +30,23 @@ public class User {
 
         this.name = name;
         this.passport = passport;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return passport == user.passport
+                && Objects.equals(name, user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, passport);
     }
 }
