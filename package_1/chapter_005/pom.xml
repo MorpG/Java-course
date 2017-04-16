@@ -15,5 +15,6 @@
         <module>task522</module>
         <module>task531</module>
         <module>testTaskBank</module>
+        <module>additionalTestTask</module>
     </modules>
 </project>
