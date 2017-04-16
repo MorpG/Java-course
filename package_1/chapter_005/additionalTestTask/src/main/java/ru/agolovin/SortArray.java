@@ -31,7 +31,7 @@ public class SortArray {
     }
 
     /**
-     * Сортировка списка сотрудников по отделам по убвыванию.
+     * Сортировка списка сотрудников по отделам по убыванию.
      *
      * @param strings String[]
      * @return list ArrayList
