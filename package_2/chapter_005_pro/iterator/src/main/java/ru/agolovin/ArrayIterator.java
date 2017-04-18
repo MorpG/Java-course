@@ -48,12 +48,12 @@ public class ArrayIterator implements Iterator<Integer> {
         int result;
         if (hasNext()) {
             result = this.array[rowIndex][colIndex++];
+            if (colIndex > this.array[rowIndex].length - 1) {
+                rowIndex++;
+                colIndex = 0;
+            }
         } else {
             throw new ArrayIndexOutOfBoundsException();
-        }
-        if (colIndex > this.array[rowIndex].length - 1) {
-            rowIndex++;
-            colIndex = 0;
         }
         return result;
     }
