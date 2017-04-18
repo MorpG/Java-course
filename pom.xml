@@ -8,6 +8,7 @@
     <modules>
         <module>chapter_003</module>
         <module>package_1</module>
+        <module>package_2</module>
     </modules>
 
     <properties>

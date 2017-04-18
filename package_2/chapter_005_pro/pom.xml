@@ -1,0 +1,15 @@
+<project>
+    <parent>
+        <groupId>ru.agolovin</groupId>
+        <artifactId>package_2</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>chapter_005_pro</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>iterator</module>
+    </modules>
+</project>
