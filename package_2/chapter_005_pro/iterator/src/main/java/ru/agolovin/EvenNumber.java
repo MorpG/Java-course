@@ -22,41 +22,59 @@ public class EvenNumber implements Iterator<Integer> {
     private int index = 0;
 
     /**
+     * index event number.
+     */
+    private int indexEvNumber;
+
+    /**
      * Constructor.
      *
      * @param array int[]
      */
-    public EvenNumber(int[] array) {
+    EvenNumber(int[] array) {
         this.array = array;
     }
 
     @Override
     public boolean hasNext() {
         boolean result = false;
-        if (index < this.array.length) {
-            for (int i = index; i < this.array.length; i++) {
-                if (this.array[i] % 2 == 0) {
-                    result = true;
-                    break;
-                }
-            }
+        int i = indexEvenNumber();
+        if (i != -1) {
+            this.indexEvNumber = i;
+            result = true;
         }
         return result;
     }
 
     @Override
     public Integer next() throws NoSuchElementException {
-        int result = 0;
-        if (hasNext()) {
-            for (int i = this.index; i < this.array[i]; i++) {
+        int result;
+        if (this.indexEvNumber != -1) {
+            result = this.array[this.indexEvNumber];
+            this.index = this.indexEvNumber + 1;
+        } else {
+            throw new NoSuchElementException();
+        }
+        return result;
+    }
+
+    /**
+     * Get index even number.
+     *
+     * @return index int
+     */
+    private int indexEvenNumber() {
+        int result = -1;
+        if (this.index < this.array.length) {
+            for (int i = index; i < this.array.length; i++) {
                 if (this.array[i] % 2 == 0) {
-                    result = this.array[i];
-                    this.index = ++i;
+                    result = i;
+                    this.indexEvNumber = i;
                     break;
                 }
             }
         } else {
-            throw new NoSuchElementException();
+            indexEvNumber = -1;
         }
         return result;
     }

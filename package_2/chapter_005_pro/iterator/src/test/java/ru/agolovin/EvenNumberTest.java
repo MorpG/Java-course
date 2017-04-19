@@ -45,7 +45,9 @@ public class EvenNumberTest {
      */
     @Test
     public void whenNextReturnEvenNumberThenResultIs() {
+        en.hasNext();
         assertThat(en.next(), is(two));
+        en.hasNext();
         assertThat(en.next(), is(four));
     }
 
@@ -56,6 +58,7 @@ public class EvenNumberTest {
     public void whenTestHasNextThenResultIs() {
         assertThat(en.hasNext(), is(true));
         en.next();
+        en.hasNext();
         en.next();
         assertThat(en.hasNext(), is(false));
     }
@@ -66,6 +69,7 @@ public class EvenNumberTest {
     @Test(expected = NoSuchElementException.class)
     public void whenTestExceptionThenResultIs() {
         for (int i = 0; i < three; i++) {
+            en.hasNext();
             en.next();
         }
     }
