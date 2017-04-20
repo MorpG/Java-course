@@ -1,5 +1,6 @@
 package ru.agolovin;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -45,13 +46,27 @@ public class IteratorIteratorsTest {
 
 
     /**
+     * SetUp iterators.
+     */
+    @Before
+    public void prepare() {
+        this.list0 = new ArrayList<>(Arrays.asList(4, 2, 0, 4, 6, 4, 9));
+        this.list1 = new ArrayList<>(Arrays.asList(0, 9, 8, 7, 5));
+        this.list2 = new ArrayList<>(Arrays.asList(1, 3, 5, 6, 7, 0, 9, 8, 4));
+
+        Iterator<Integer> iterator0 = list0.iterator();
+        Iterator<Integer> iterator1 = list1.iterator();
+        Iterator<Integer> iterator2 = list2.iterator();
+
+        this.listIterators = new ArrayList<>(Arrays.asList(iterator0, iterator1, iterator2));
+    }
+
+
+    /**
      * Test method convert.
      */
     @Test
     public void whenGetAllFromIteratorThenResultContainsAll() {
-
-        prepare();
-
         Iterator<Iterator<Integer>> globalIterator = listIterators.iterator();
 
         Iterator<Integer> resultIter = it.convert(globalIterator);
@@ -69,13 +84,11 @@ public class IteratorIteratorsTest {
 
     }
 
-
     /**
      * Test out from all iterators.
      */
     @Test(expected = NoSuchElementException.class)
     public void whenExitFromIteratorThenThrowException() {
-        prepare();
         Iterator<Iterator<Integer>> globalIterator = listIterators.iterator();
         Iterator<Integer> resultIter = it.convert(globalIterator);
         int length = list0.size() + list1.size() + list2.size();
@@ -84,21 +97,6 @@ public class IteratorIteratorsTest {
         }
         resultIter.next();
 
-    }
-
-    /**
-     * SetUp iterators.
-     */
-    private void prepare() {
-        this.list0 = new ArrayList<>(Arrays.asList(4, 2, 0, 4, 6, 4, 9));
-        this.list1 = new ArrayList<>(Arrays.asList(0, 9, 8, 7, 5));
-        this.list2 = new ArrayList<>(Arrays.asList(1, 3, 5, 6, 7, 0, 9, 8, 4));
-
-        Iterator<Integer> iterator0 = list0.iterator();
-        Iterator<Integer> iterator1 = list1.iterator();
-        Iterator<Integer> iterator2 = list2.iterator();
-
-        this.listIterators = new ArrayList<>(Arrays.asList(iterator0, iterator1, iterator2));
     }
 
 
