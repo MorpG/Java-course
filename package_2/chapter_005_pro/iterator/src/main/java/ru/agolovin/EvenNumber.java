@@ -37,13 +37,7 @@ public class EvenNumber implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        boolean result = false;
-        int i = indexEvenNumber();
-        if (i != -1) {
-            this.indexEvNumber = i;
-            result = true;
-        }
-        return result;
+       return indexEvenNumber() != -1;
     }
 
     @Override
