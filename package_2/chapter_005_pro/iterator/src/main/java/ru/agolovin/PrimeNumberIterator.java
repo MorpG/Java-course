@@ -28,6 +28,7 @@ public class PrimeNumberIterator implements Iterator<Integer> {
 
     /**
      * Constructor.
+     *
      * @param array int[]
      */
     PrimeNumberIterator(int[] array) {
@@ -36,24 +37,17 @@ public class PrimeNumberIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        boolean result = false;
-        int i = indexInArray();
-        this.indexPrimeNumber = i;
-        if (i != -1) {
-            this.indexPrimeNumber = i;
-            result = true;
-        }
-
-        return result;
+        return indexInArray() != -1;
     }
 
     @Override
     public Integer next() {
         int result;
-        if (this.indexPrimeNumber != -1) {
-            result = this.array[this.indexPrimeNumber];
-            this.index = this.indexPrimeNumber + 1;
-        } else {
+        try {
+            int position = indexInArray();
+            result = this.array[position];
+            this.index = position + 1;
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NoSuchElementException();
         }
         return result;
@@ -61,12 +55,13 @@ public class PrimeNumberIterator implements Iterator<Integer> {
 
     /**
      * Index prime number in array.
+     *
      * @return index int
      */
     private int indexInArray() {
         int result = -1;
         boolean flag = false;
-        for (int i = index; i < this.array.length; i++) {
+        for (int i = this.index; i < this.array.length; i++) {
             int element = this.array[i];
             if (element > 1) {
                 if (element == 2 || element == 3) {
