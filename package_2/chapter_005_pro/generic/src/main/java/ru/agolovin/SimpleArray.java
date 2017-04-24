@@ -1,11 +1,10 @@
 package ru.agolovin;
 
 /**
+ * @param <T> generic
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
  * @since 0.1
- *
- * @param <T> generic
  */
 public class SimpleArray<T> {
 
@@ -64,7 +63,7 @@ public class SimpleArray<T> {
     /**
      * update value in array by index.
      *
-     * @param index int
+     * @param index     int
      * @param newObject generic
      */
     public void update(final int index, T newObject) {
