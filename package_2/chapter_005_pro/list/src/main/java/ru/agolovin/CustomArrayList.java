@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * @version $Id$
  * @since 0.1
  */
-public class CustomArrayList<T> implements SimpleArrayList {
+public class CustomArrayList<T> implements SimpleContainer {
 
     /**
      * Array capacity.
