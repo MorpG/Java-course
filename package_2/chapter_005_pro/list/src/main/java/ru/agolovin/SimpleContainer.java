@@ -6,7 +6,7 @@ package ru.agolovin;
  * @version $Id$
  * @since 0.1
  */
-public interface SimpleArrayList<T> extends Iterable<T> {
+public interface SimpleContainer<T> extends Iterable<T> {
 
     /**
      * Add element.
