@@ -1,6 +1,7 @@
 package ru.agolovin;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @param <E> generic
@@ -24,6 +25,54 @@ public class CustomLinkedList<E> implements SimpleContainer<E> {
      * Node to last.
      */
     private Node<E> last;
+
+    /**
+     * Remove first element from LinkedList.
+     *
+     * @return Element
+     */
+    public E removeFirst() {
+        final Node<E> f = first;
+        if (f == null) {
+            throw new NoSuchElementException();
+        }
+        final E element = f.getItem();
+        final Node<E> next = f.getNext();
+        f.setItem(null);
+        f.setNext(null);
+        first = next;
+        if (next == null) {
+            last = null;
+        } else {
+            next.setPrev(null);
+        }
+        size--;
+        return element;
+    }
+
+    /**
+     * Remove last element from LinkedList.
+     *
+     * @return Element
+     */
+    public E removeLast() {
+        final Node<E> l = last;
+        if (l == null) {
+            throw new NoSuchElementException();
+        }
+        final E element = l.getItem();
+        final Node<E> prev = l.getPrev();
+        l.setItem(null);
+        l.setPrev(null);
+        last = prev;
+        if (prev == null) {
+            first = null;
+        } else {
+            prev.setNext(null);
+        }
+        size--;
+        return element;
+    }
 
 
     @Override
