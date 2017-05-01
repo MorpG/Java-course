@@ -36,6 +36,23 @@ public class Node<E> {
     }
 
     /**
+     * Set item.
+     *
+     * @param item Generic
+     */
+    public void setItem(E item) {
+        this.item = item;
+    }
+
+    /**
+     * Set Node prev.
+     * @param prev Node
+     */
+    public void setPrev(Node<E> prev) {
+        this.prev = prev;
+    }
+
+    /**
      * Get element.
      *
      * @return element <E>
