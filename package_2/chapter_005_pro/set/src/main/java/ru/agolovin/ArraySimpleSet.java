@@ -15,23 +15,21 @@ public class ArraySimpleSet<E> implements Iterable<E> {
     /**
      * Array capacity.
      */
-    static final int DEFAULT_CAPACITY = 100;
+    private static final int DEFAULT_CAPACITY = 100;
 
     /**
      * Array.
      */
-    Object[] array;
-
+    private Object[] array;
     /**
      * Last index in array.
      */
-    int index;
-
+    private int index;
 
     /**
      * Constructor.
      */
-    public ArraySimpleSet() {
+    ArraySimpleSet() {
         this.array = new Object[DEFAULT_CAPACITY];
     }
 
@@ -40,8 +38,54 @@ public class ArraySimpleSet<E> implements Iterable<E> {
      *
      * @param size int
      */
-    public ArraySimpleSet(int size) {
+    ArraySimpleSet(int size) {
         this.array = new Object[size];
+    }
+
+    /**
+     * Get array.
+     *
+     * @return array
+     */
+    Object[] getArray() {
+        return array;
+    }
+
+    /**
+     * Set new array.
+     *
+     * @param array array
+     */
+    void setArray(Object[] array) {
+        this.array = array;
+    }
+
+    /**
+     * Get index.
+     *
+     * @return int index
+     */
+    int getIndex() {
+        return index;
+    }
+
+    /**
+     * Set index.
+     *
+     * @param index int
+     */
+    void setIndex(int index) {
+        this.index = index;
+    }
+
+    /**
+     * Set value to array item.
+     *
+     * @param pos   int
+     * @param value Generic
+     */
+    void setValue(int pos, E value) {
+        this.array[pos] = value;
     }
 
     /**
@@ -53,6 +97,7 @@ public class ArraySimpleSet<E> implements Iterable<E> {
 
     /**
      * Chech if element alredy contains in array.
+     *
      * @param e Generic
      * @return check result.
      */
@@ -72,6 +117,7 @@ public class ArraySimpleSet<E> implements Iterable<E> {
 
     /**
      * Add element to array.
+     *
      * @param e Generic
      */
     public void add(E e) {
@@ -87,6 +133,7 @@ public class ArraySimpleSet<E> implements Iterable<E> {
 
     /**
      * Get element from array.
+     *
      * @param index int
      * @return Element
      */
