@@ -15,17 +15,17 @@ public class ArraySimpleSet<E> implements Iterable<E> {
     /**
      * Array capacity.
      */
-    private static final int DEFAULT_CAPACITY = 100;
+    static final int DEFAULT_CAPACITY = 100;
 
     /**
      * Array.
      */
-    private Object[] array;
+    Object[] array;
 
     /**
      * Last index in array.
      */
-    private int index;
+    int index;
 
 
     /**
@@ -47,7 +47,7 @@ public class ArraySimpleSet<E> implements Iterable<E> {
     /**
      * Rise array capacity.
      */
-    private void riseArray() {
+    void riseArray() {
         this.array = Arrays.copyOf(this.array, (this.index * 3) / 2 + 1);
     }
 
