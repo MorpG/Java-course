@@ -2,6 +2,7 @@ package ru.agolovin;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author agolovin (agolovin@list.ru)
@@ -24,6 +25,12 @@ public class MyMap<T, V> implements Iterable<V> {
     }
 
     private boolean insertVal(int hash, T key, V value) {
+        boolean result = false;
+        int hashK = hash(key);
+        int pos = getPosition(hash, nodes.length);
+
+
+
         if (this.nodes.length == 0 || this.nodes == null || position > (this.nodes.length - 1)) {
             this.nodes = resize();
         }
@@ -42,10 +49,6 @@ public class MyMap<T, V> implements Iterable<V> {
         return newTab;
     }
 
-    private int indexOfTable(int hash, int length) {
-        return (length - 1) & hash;
-    }
-
     V get(T key) {
         return null;
     }
@@ -59,6 +62,11 @@ public class MyMap<T, V> implements Iterable<V> {
         int h = key.hashCode();
         return h ^ (h >>> 16);
     }
+
+    private int getPosition(int hashValue, int length) {
+        return (length - 1) & hashValue;
+    }
+
 
     @Override
     public Iterator<V> iterator() {
@@ -87,6 +95,20 @@ public class MyMap<T, V> implements Iterable<V> {
             this.key = key;
             this.value = value;
             this.hash = hash;
+        }
+
+        public int hashCode() {
+            return Objects.hashCode(key) ^ Objects.hashCode(value);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node<T, V> node = (Node<T, V>) o;
+            return hash == node.hash &&
+                    Objects.equals(key, node.key) &&
+                    Objects.equals(value, node.value);
         }
 
         @Override
