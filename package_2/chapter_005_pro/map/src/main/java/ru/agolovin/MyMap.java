@@ -30,23 +30,22 @@ public class MyMap<T, V> implements Iterable<V> {
         int pos = getPosition(hash, nodes.length);
 
 
-
         if (this.nodes.length == 0 || this.nodes == null || position > (this.nodes.length - 1)) {
             this.nodes = resize();
         }
         return false;
     }
 
-    final Node<T, V>[] resize() {
+    private final Node<T, V>[] resize() {
         int newCapacity = this.nodes.length * 2;
-        Node<T, V>[] newTab = (Node<T, V>[]) new Node[newCapacity];
-        for (int j = 0; j < this.nodes.length; ++j) {
-            Node<T, V> e;
-            if ((e = this.nodes[j]) != null) {
-                newTab[indexOfTable(e.hash, newCapacity)] = e;
+        Node<T, V>[] newMap = (Node<T, V>[]) new Node[newCapacity];
+        for (Node<T, V> node : this.nodes) {
+            Node<T, V> e = node;
+            if (e != null) {
+                newMap[getPosition(e.hash, newCapacity)] = e;
             }
         }
-        return newTab;
+        return newMap;
     }
 
     V get(T key) {
