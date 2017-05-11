@@ -14,29 +14,58 @@ public class MyMap<T, V> implements Iterable<V> {
 
     private Node<T, V>[] nodes;
     private int position = 0;
+    private int capacity = 16;
 
     public MyMap() {
-        int capacity = 16;
         this.nodes = new Node[capacity];
     }
 
+    public MyMap(int capacity) {
+        this.capacity = capacity;
+        this.nodes = new Node[this.capacity];
+    }
+
     boolean insert(T key, V value) {
-        return false;
+        return insertVal(hash(key), key, value);
     }
 
     private boolean insertVal(int hash, T key, V value) {
+
         boolean result = false;
-        int hashK = hash(key);
+
         int pos = getPosition(hash, nodes.length);
 
-
-        if (this.nodes.length == 0 || this.nodes == null || position > (this.nodes.length - 1)) {
-            this.nodes = resize();
+        double loadFactor = 0.75;
+        if (nodes.length > nodes.length * loadFactor) {
+            resize();
         }
-        return false;
+        if (nodes[pos] == null) {
+            nodes[pos] = new Node<>(hash, key, value, null);
+            position++;
+            result = true;
+        } else {
+            Node<T, V> temp = nodes[pos];
+            do {
+                if (key.equals(temp.getKey())) {
+                    temp.setValue(value);
+                    break;
+                }
+                if (temp.getNext() == null) {
+                    temp.setNext(new Node<T, V>(hash, key, value, null));
+                    position++;
+                    result = true;
+                    break;
+                }
+            } while ((temp = temp.getNext()) != null);
+        }
+        return result;
     }
 
-    private final Node<T, V>[] resize() {
+    int getSize() {
+        return position;
+    }
+
+    private Node<T, V>[] resize() {
         int newCapacity = this.nodes.length * 2;
         Node<T, V>[] newMap = (Node<T, V>[]) new Node[newCapacity];
         for (Node<T, V> node : this.nodes) {
@@ -49,7 +78,21 @@ public class MyMap<T, V> implements Iterable<V> {
     }
 
     V get(T key) {
-        return null;
+        V result = null;
+        int hash = hash(key);
+        int pos = getPosition(hash, nodes.length);
+        if (nodes[pos] != null) {
+            Node<T, V> e = nodes[pos];
+            T k;
+            k = e.key;
+            do {
+                if (e.hash == hash || (key != null && key.equals(k))) {
+                    result = e.value;
+                    break;
+                }
+            } while ((e = e.next) != null);
+        }
+        return result;
     }
 
     boolean delete(T key) {
@@ -94,6 +137,14 @@ public class MyMap<T, V> implements Iterable<V> {
             this.key = key;
             this.value = value;
             this.hash = hash;
+        }
+
+        Node<T, V> getNext() {
+            return next;
+        }
+
+        void setNext(Node<T, V> next) {
+            this.next = next;
         }
 
         public int hashCode() {
