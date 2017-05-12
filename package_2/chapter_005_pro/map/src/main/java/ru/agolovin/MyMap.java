@@ -16,31 +16,26 @@ public class MyMap<T, V> implements Iterable<V> {
     private int position = 0;
     private int capacity = 16;
 
-    public MyMap() {
+    MyMap() {
         this.nodes = new Node[capacity];
     }
 
-    public MyMap(int capacity) {
+    MyMap(int capacity) {
         this.capacity = capacity;
         this.nodes = new Node[this.capacity];
     }
 
     boolean insert(T key, V value) {
-        return insertVal(hash(key), key, value);
-    }
-
-    private boolean insertVal(int hash, T key, V value) {
-
         boolean result = false;
-
-        int pos = getPosition(hash, nodes.length);
+        int hashKey = hash(key);
+        int pos = getPosition(hashKey, nodes.length);
 
         double loadFactor = 0.75;
         if (nodes.length > nodes.length * loadFactor) {
             resize();
         }
         if (nodes[pos] == null) {
-            nodes[pos] = new Node<>(hash, key, value, null);
+            nodes[pos] = new Node<>(hashKey, key, value, null);
             position++;
             result = true;
         } else {
@@ -48,10 +43,11 @@ public class MyMap<T, V> implements Iterable<V> {
             do {
                 if (key.equals(temp.getKey())) {
                     temp.setValue(value);
+                    result = true;
                     break;
                 }
                 if (temp.getNext() == null) {
-                    temp.setNext(new Node<T, V>(hash, key, value, null));
+                    temp.setNext(new Node<T, V>(hashKey, key, value, null));
                     position++;
                     result = true;
                     break;
@@ -96,7 +92,10 @@ public class MyMap<T, V> implements Iterable<V> {
     }
 
     boolean delete(T key) {
-        return false;
+        boolean result = false;
+        int hasKey = hash(key);
+        int pos = getPosition(hasKey, nodes.length);
+        return result;
     }
 
 
