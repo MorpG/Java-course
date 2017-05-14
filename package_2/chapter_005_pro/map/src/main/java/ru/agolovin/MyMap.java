@@ -2,9 +2,12 @@ package ru.agolovin;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
+ * @param <T> Generic
+ * @param <V> Generic
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
  * @since 0.1
@@ -12,98 +15,124 @@ import java.util.Objects;
 
 public class MyMap<T, V> implements Iterable<V> {
 
+    /**
+     * Map capacity.
+     */
+    private static final int CAPACITY = 64;
+    /**
+     * node array.
+     */
     private Node<T, V>[] nodes;
-    private int position = 0;
-    private int capacity = 16;
 
+    /**
+     * Array size.
+     */
+    private int size = 0;
+
+    /**
+     * Constructor.
+     */
     MyMap() {
-        this.nodes = new Node[capacity];
+        this.nodes = new Node[CAPACITY];
     }
 
-    MyMap(int capacity) {
-        this.capacity = capacity;
-        this.nodes = new Node[this.capacity];
-    }
-
+    /**
+     * Insert element in the map.
+     *
+     * @param key   Generic
+     * @param value Generic
+     * @return boolean result
+     */
     boolean insert(T key, V value) {
         boolean result = false;
         int hashKey = hash(key);
         int pos = getPosition(hashKey, nodes.length);
-
-        double loadFactor = 0.75;
-        if (nodes.length > nodes.length * loadFactor) {
-            resize();
-        }
         if (nodes[pos] == null) {
             nodes[pos] = new Node<>(hashKey, key, value, null);
-            position++;
+            size++;
             result = true;
         } else {
             Node<T, V> temp = nodes[pos];
-            do {
-                if (key.equals(temp.getKey())) {
-                    temp.setValue(value);
-                    result = true;
-                    break;
-                }
-                if (temp.getNext() == null) {
-                    temp.setNext(new Node<T, V>(hashKey, key, value, null));
-                    position++;
-                    result = true;
-                    break;
-                }
-            } while ((temp = temp.getNext()) != null);
+            if (key.equals(temp.getKey())) {
+                temp.setValue(value);
+                result = true;
+            }
         }
         return result;
     }
 
-    int getSize() {
-        return position;
-    }
-
-    private Node<T, V>[] resize() {
-        int newCapacity = this.nodes.length * 2;
-        Node<T, V>[] newMap = (Node<T, V>[]) new Node[newCapacity];
-        for (Node<T, V> node : this.nodes) {
-            Node<T, V> e = node;
-            if (e != null) {
-                newMap[getPosition(e.hash, newCapacity)] = e;
-            }
-        }
-        return newMap;
-    }
-
+    /**
+     * Get value from map by key.
+     *
+     * @param key generic
+     * @return value generic
+     */
     V get(T key) {
         V result = null;
         int hash = hash(key);
         int pos = getPosition(hash, nodes.length);
         if (nodes[pos] != null) {
-            Node<T, V> e = nodes[pos];
-            T k;
-            k = e.key;
-            do {
-                if (e.hash == hash || (key != null && key.equals(k))) {
-                    result = e.value;
-                    break;
-                }
-            } while ((e = e.next) != null);
+            result = nodes[pos].getValue();
         }
         return result;
     }
 
+    /**
+     * delete element from map.
+     *
+     * @param key Generic
+     * @return boolean result
+     */
     boolean delete(T key) {
         boolean result = false;
-        int hasKey = hash(key);
-        int pos = getPosition(hasKey, nodes.length);
+        int hashKey = hash(key);
+        Node<T, V> p = null, e;
+        Node<T, V> node = null;
+        p = this.nodes[getPosition(hashKey, this.nodes.length)];
+        if (this.nodes != null && this.nodes.length > 0
+                && p != null) {
+            if (p.hash == hashKey && (p.key == key || (key != null && key.equals(p.key)))) {
+                node = p;
+            } else {
+                while ((e = p.next) != null) {
+                    if (e.hash == hashKey && e.key == key || (key != null && key.equals(e.key))) {
+                        node = e;
+                        break;
+                    }
+                    p = e;
+                }
+            }
+        }
+        if (node != null) {
+            if (node == p) {
+                this.nodes[getPosition(hashKey, this.nodes.length)] = node.next;
+            } else {
+                p.next = node.next;
+            }
+            --size;
+            result = true;
+        }
         return result;
     }
 
-
+    /**
+     * Generate hash for map.
+     *
+     * @param key Generic
+     * @return int hash
+     */
     private int hash(Object key) {
         int h = key.hashCode();
         return h ^ (h >>> 16);
     }
 
+    /**
+     * Get position to insert.
+     *
+     * @param hashValue int
+     * @param length    int
+     * @return position int
+     */
     private int getPosition(int hashValue, int length) {
         return (length - 1) & hashValue;
     }
@@ -112,67 +141,128 @@ public class MyMap<T, V> implements Iterable<V> {
     @Override
     public Iterator<V> iterator() {
         return new Iterator<V>() {
+
+            private int nextIndex = 0;
+            private int prevIndex = -1;
+
+
             @Override
             public boolean hasNext() {
-                return false;
+                boolean has = false;
+                int position = nextIndex;
+                while (!has && position < nodes.length) {
+                    if (nodes[position] != null) {
+                        has = true;
+                    } else {
+                        position++;
+                    }
+                }
+                return has;
             }
 
             @Override
             public V next() {
-                return null;
+                Node<T, V> nextEntry = null;
+                for (int i = nextIndex; i < nodes.length; i++) {
+                    Node<T, V> element = nodes[i];
+                    if (element != null) {
+                        nextEntry = element;
+                        nextIndex = i + 1;
+                        break;
+                    }
+                }
+                if (nextEntry == null) {
+                    throw new NoSuchElementException();
+                }
+                return nextEntry.getValue();
             }
         };
     }
 
-    private class Node<T, V> implements Map.Entry<T, V> {
+    /**
+     * Node.
+     *
+     * @param <H> generic
+     * @param <L> generic
+     */
+    static class Node<H, L> implements Map.Entry<H, L> {
 
-        Node<T, V> next;
-        T key;
-        V value;
-        int hash;
+        /**
+         * Next node.
+         */
+        private Node<H, L> next;
 
-        public Node(int hash, T key, V value, Node<T, V> next) {
+        /**
+         * temp key.
+         */
+        private H key;
+
+        /**
+         * temp value.
+         */
+        private L value;
+
+        /**
+         * int hash.
+         */
+        private int hash;
+
+        /**
+         * Constructor.
+         *
+         * @param hash  int
+         * @param key   int
+         * @param value int
+         * @param next  node
+         */
+        Node(int hash, H key, L value, Node<H, L> next) {
             this.next = next;
             this.key = key;
             this.value = value;
             this.hash = hash;
         }
 
-        Node<T, V> getNext() {
-            return next;
+        /**
+         * Get next node.
+         *
+         * @return next node
+         */
+        Node<H, L> getNext() {
+            return this.next;
         }
 
-        void setNext(Node<T, V> next) {
-            this.next = next;
-        }
-
+        @Override
         public int hashCode() {
             return Objects.hashCode(key) ^ Objects.hashCode(value);
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Node<T, V> node = (Node<T, V>) o;
-            return hash == node.hash &&
-                    Objects.equals(key, node.key) &&
-                    Objects.equals(value, node.value);
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Node<H, L> node = (Node<H, L>) o;
+            return hash == node.hash
+                    && Objects.equals(key, node.key)
+                    && Objects.equals(value, node.value);
         }
 
         @Override
-        public T getKey() {
+        public H getKey() {
             return this.key;
         }
 
         @Override
-        public V setValue(V value) {
+        public L setValue(L value) {
             this.value = value;
             return this.value;
         }
 
         @Override
-        public V getValue() {
+        public L getValue() {
             return this.value;
         }
     }
