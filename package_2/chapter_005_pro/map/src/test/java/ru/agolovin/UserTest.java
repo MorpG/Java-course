@@ -17,15 +17,26 @@ import static org.junit.Assert.assertThat;
  */
 public class UserTest {
 
+    /**
+     * Calendar.
+     */
     private Calendar calc = new GregorianCalendar();
+
+    /**
+     * Name.
+     */
     private String name = "Name";
+
+    /**
+     * Children.
+     */
     private int children = 2;
 
     /**
      * Test user class.
      */
     @Test
-    public void thenAddUserThneGetInformation() {
+    public void thenAddUserThenGetInformation() {
 
         User user = new User(name, children, calc);
         assertThat(user.getName(), is(name));
@@ -54,4 +65,33 @@ public class UserTest {
         }
 
     }
+
+    /**
+     * Test User equals.
+     */
+    @Test
+    public void thenUserEqualsThenResultTrue() {
+        User user1 = new User(name, children, calc);
+        User user2 = new User(name, children, calc);
+        boolean res = user1.equals(user2);
+        boolean res1 = user2.equals(user1);
+        assertThat(res, is(true));
+        assertThat(res1, is(true));
+    }
+
+    /**
+     * Test user not equals.
+     */
+    @Test
+    public void thenUserNotEqualsThenResultFalse() {
+        User user1 = new User(name, children, calc);
+        User user2 = new User(null, 5, null);
+        int resHash = user2.hashCode();
+        boolean res = user1.equals(user2);
+        boolean res1 = user2.equals(user1);
+        assertThat(res, is(false));
+        assertThat(res1, is(false));
+        assertThat(resHash, is(155));
+    }
+
 }
