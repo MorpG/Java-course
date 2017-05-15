@@ -86,29 +86,16 @@ public class MyMap<T, V> implements Iterable<V> {
     boolean delete(T key) {
         boolean result = false;
         int hashKey = hash(key);
-        Node<T, V> p = null, e;
+        Node<T, V> p;
         Node<T, V> node = null;
         p = this.nodes[getPosition(hashKey, this.nodes.length)];
-        if (this.nodes != null && this.nodes.length > 0
-                && p != null) {
+        if (this.nodes.length > 0 && p != null) {
             if (p.hash == hashKey && (p.key == key || (key != null && key.equals(p.key)))) {
                 node = p;
-            } else {
-                while ((e = p.next) != null) {
-                    if (e.hash == hashKey && e.key == key || (key != null && key.equals(e.key))) {
-                        node = e;
-                        break;
-                    }
-                    p = e;
-                }
             }
         }
         if (node != null) {
-            if (node == p) {
-                this.nodes[getPosition(hashKey, this.nodes.length)] = node.next;
-            } else {
-                p.next = node.next;
-            }
+            this.nodes[getPosition(hashKey, this.nodes.length)] = node.next;
             --size;
             result = true;
         }
@@ -143,8 +130,6 @@ public class MyMap<T, V> implements Iterable<V> {
         return new Iterator<V>() {
 
             private int nextIndex = 0;
-            private int prevIndex = -1;
-
 
             @Override
             public boolean hasNext() {
