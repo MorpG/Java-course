@@ -67,11 +67,11 @@ public class MyMapTest {
         MyMap<Integer, Integer> map = new MyMap<>();
         map.insert(1, 11);
         map.insert(2, 22);
-        Iterator<Integer> iter = map.iterator();
-        assertThat(iter.hasNext(), is(true));
-        assertThat(iter.next(), is(11));
-        assertThat(iter.next(), is(22));
-        assertThat(iter.hasNext(), is(false));
+        Iterator<Integer> iterator = map.iterator();
+        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.next(), is(11));
+        assertThat(iterator.next(), is(22));
+        assertThat(iterator.hasNext(), is(false));
     }
 
     /**
@@ -81,9 +81,9 @@ public class MyMapTest {
     public void thenNoElementThenNoSuchElementException() {
         MyMap<Integer, Integer> map = new MyMap<>();
         map.insert(1, 11);
-        Iterator<Integer> iter = map.iterator();
-        iter.next();
-        iter.next();
+        Iterator<Integer> iterator = map.iterator();
+        iterator.next();
+        iterator.next();
     }
 
     /**
@@ -109,12 +109,22 @@ public class MyMapTest {
      * Test node class.
      */
     @Test
-    public void thenNodeNotEqualsThenResultTrue() {
+    public void thenNodeNotEqualsThenResultFalse() {
         MyMap.Node<Object, Object> node1 = new MyMap.Node<>(1, 2, 3, null);
         MyMap.Node<Object, Object> node2 = new MyMap.Node<>(5, 2, 3, node1);
         boolean res = node1.equals(node2);
         boolean res1 = node2.equals(node1);
         assertThat(res, is(false));
         assertThat(res1, is(false));
+    }
+
+    /**
+     * Test node class.
+     */
+    @Test
+    public void thenNodeNotNodeThenResultFalse() {
+        MyMap.Node<Object, Object> node1 = new MyMap.Node<>(1, 2, 3, null);
+        boolean res = node1.equals(null);
+        assertThat(res, is(false));
     }
 }
