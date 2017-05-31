@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Tree.
- *
- * @param <E> E
- *            Created by istolbov on 09.05.2017.
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
  */
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
@@ -56,8 +55,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     @Override
     public Iterator<E> iterator() throws NoSuchElementException {
-//        nodesIndex = 0;
-//        fillRoot(this.first);
+        nodesIndex = 0;
+        fillRoot(this.first);
         return new Iterator<E>() {
 
             @Override
@@ -80,39 +79,20 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         };
     }
 
-//    /**
-//     * fillRoot.
-//     *
-//     * @param node node
-//     */
-//
-//    private void fillRoot(Node<E> node) {
-//        if (nodesIndex == 0 && node != null) {
-//            nodes.clear();
-//            nodes.add(node);
-//        }
-//    }
+    private void fillRoot(Node<E> node) {
+        if (nodesIndex == 0 && node != null) {
+            nodes.clear();
+            nodes.add(node);
+        }
+    }
 
-    /**
-     * Node.
-     *
-     * @param <E> E
-     */
+
     class Node<E> {
-        /**
-         * children.
-         */
+
         List<Node<E>> children = new ArrayList<>();
-        /**
-         * value.
-         */
+
         E value;
 
-        /**
-         * constructor.
-         *
-         * @param value value
-         */
         Node(E value) {
             this.value = value;
         }
