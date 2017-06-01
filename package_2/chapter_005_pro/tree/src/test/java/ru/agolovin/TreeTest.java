@@ -16,6 +16,9 @@ import static org.junit.Assert.assertThat;
  */
 public class TreeTest {
 
+    /**
+     * Test.
+     */
     @Test
     public void whenAddTwoSameParentThenResultTwoChild() {
         Tree<String> tree = new Tree<>();
@@ -24,39 +27,34 @@ public class TreeTest {
 
         tree.add(parentOne, "childOne");
         tree.add(parentOne, "childTwo");
+        tree.add(parentOne, "childThree");
+        tree.add(parentOne, "childFour");
 
         List<String> answer = new ArrayList<>();
         answer.add("childOne");
         answer.add("childTwo");
+        answer.add("childThree");
+        answer.add("childFour");
 
         assertThat(tree.getChild(parentOne), is(answer));
     }
 
+    /**
+     * Test iterator.
+     */
     @Test
-    public void whenAddToTreeThenReturnResult() {
-
+    public void whenIteratorWork() {
         Tree<String> tree = new Tree<>();
 
-        String childOne = "B";
-        String childTwo = "C";
-        String childThree = "D";
+        String parentOne = "par1";
 
-        tree.add("A", childOne);
-        tree.add("A", childTwo);
-        tree.add("A", childThree);
-
-        tree.add(childOne, "E");
-        tree.add(childOne, "F");
-        tree.add(childTwo, "G");
-        tree.add(childThree, "H");
+        tree.add(parentOne, "childOne");
+        tree.add(parentOne, "childTwo");
 
         Iterator<String> iter = tree.iterator();
 
-        StringBuilder result = new StringBuilder();
-        while (iter.hasNext()) {
-            result.append(iter.next());
-
-        }
-        assertThat(result.toString(), is("EFBGCHDA"));
+        assertThat(iter.hasNext(), is(true));
+        assertThat(iter.next(), is("par1"));
+        assertThat(iter.hasNext(), is(false));
     }
 }
