@@ -16,61 +16,44 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     private List<Node<E>> nodes;
 
-    private Node<E> first;
-
     Tree() {
         nodes = new ArrayList<>();
     }
 
-
     @Override
     public boolean add(E parent, E child) {
         boolean result = false;
-        if (this.first == null) {
-            this.first = new Node<>(parent);
-            this.first.children.add(new Node<>(child));
-            result = true;
-        } else if (exist(this.first, parent, child)) {
-            result = true;
-        }
-        return result;
-    }
-
-
-    private boolean exist(Node<E> node, E parent, E child) {
-        boolean result = false;
-        if (!node.children.isEmpty()) {
-            for (Node<E> x : node.children) {
-                exist(x, parent, child);
+        for (int i = 0; i < nodes.size(); i++) {
+            if (nodes.get(i).children != null && nodes.get(i).value.compareTo(parent) == 0) {
+                List<E> temp = nodes.get(i).children;
+                temp.add(child);
+                nodes.set(i, new Node<>(parent, temp));
+                result = true;
+                break;
             }
-            result = true;
-        } else if (node.value.compareTo(parent) == 0) {
-            node.children.add(new Node<>(child));
-            result = true;
+        }
+        if (!result) {
+            List<E> temp = new ArrayList<E>();
+            temp.add(child);
+            nodes.add(new Node<>(parent, temp));
 
         }
         return result;
     }
-
 
     @Override
     public Iterator<E> iterator() throws NoSuchElementException {
         nodesIndex = 0;
-        fillRoot(this.first);
         return new Iterator<E>() {
 
             @Override
             public boolean hasNext() {
-                return nodesIndex < nodes.size();
+                return nodesIndex < nodes.size() && !nodes.isEmpty();
             }
 
             @Override
             public E next() {
-
-                if (nodesIndex < nodes.size()) {
-                    if (!nodes.get(nodesIndex).children.isEmpty()) {
-                        nodes.addAll(nodes.get(nodesIndex).children);
-                    }
+                if (hasNext()) {
                     return nodes.get(nodesIndex++).value;
                 } else {
                     throw new NoSuchElementException();
@@ -79,22 +62,25 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         };
     }
 
-    private void fillRoot(Node<E> node) {
-        if (nodesIndex == 0 && node != null) {
-            nodes.clear();
-            nodes.add(node);
+    public List<E> getChild(E parent) {
+        List<E> buff = null;
+        for (Node<E> node : nodes) {
+            if (node.value.equals(parent)) {
+                buff = node.children;
+            }
         }
+        return buff;
     }
-
 
     class Node<E> {
 
-        List<Node<E>> children = new ArrayList<>();
+        List<E> children;
 
         E value;
 
-        Node(E value) {
+        Node(E value, List<E> children) {
             this.value = value;
+            this.children = children;
         }
     }
 }
