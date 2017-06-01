@@ -1,12 +1,13 @@
 package ru.agolovin;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author agolovin (agolovin@list.ru)
@@ -15,25 +16,47 @@ import static org.junit.Assert.*;
  */
 public class TreeTest {
 
-    /**
-     * whenWeManipulateWithTree.
-     */
     @Test
-    public void whenWeManipulateWithTree() {
+    public void whenAddTwoSameParentThenResultTwoChild() {
         Tree<String> tree = new Tree<>();
 
-        tree.add("111", "333");
-        tree.add("111", "222");
-        tree.add("222", "111");
+        String parentOne = "par1";
 
-        String[] target = new String[]{"111", "333"};
+        tree.add(parentOne, "childOne");
+        tree.add(parentOne, "childTwo");
 
-        ArrayList<String> result = new ArrayList<>();
-        for (String s : tree) {
-            result.add(s);
-        }
+        List<String> answer = new ArrayList<>();
+        answer.add("childOne");
+        answer.add("childTwo");
 
-        Assert.assertThat(result.toArray(), is(target));
+        assertThat(tree.getChild(parentOne), is(answer));
     }
 
+    @Test
+    public void whenAddToTreeThenReturnResult() {
+
+        Tree<String> tree = new Tree<>();
+
+        String childOne = "B";
+        String childTwo = "C";
+        String childThree = "D";
+
+        tree.add("A", childOne);
+        tree.add("A", childTwo);
+        tree.add("A", childThree);
+
+        tree.add(childOne, "E");
+        tree.add(childOne, "F");
+        tree.add(childTwo, "G");
+        tree.add(childThree, "H");
+
+        Iterator<String> iter = tree.iterator();
+
+        StringBuilder result = new StringBuilder();
+        while (iter.hasNext()) {
+            result.append(iter.next());
+
+        }
+        assertThat(result.toString(), is("EFBGCHDA"));
+    }
 }
