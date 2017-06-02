@@ -47,14 +47,18 @@ public class TreeTest {
         Tree<String> tree = new Tree<>();
 
         String parentOne = "par1";
+        String parentTwo = "par2";
 
         tree.add(parentOne, "childOne");
         tree.add(parentOne, "childTwo");
+        tree.add(parentTwo, "childTwo");
+        tree.add(parentTwo, "childTwo");
 
         Iterator<String> iter = tree.iterator();
 
         assertThat(iter.hasNext(), is(true));
         assertThat(iter.next(), is("par1"));
+        assertThat(iter.next(), is("par2"));
         assertThat(iter.hasNext(), is(false));
     }
 }
