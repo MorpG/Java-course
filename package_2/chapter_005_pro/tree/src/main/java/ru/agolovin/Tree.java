@@ -30,6 +30,22 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         nodes = new ArrayList<>();
     }
 
+    /**
+     * Check for binary tree.
+     *
+     * @return boolean result
+     */
+    public boolean isBinary() {
+        boolean result = true;
+        for (Node<E> node : nodes) {
+            if (node.children.size() > 2) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
     @Override
     public boolean add(E parent, E child) {
         boolean result = false;

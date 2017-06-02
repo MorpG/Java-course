@@ -37,6 +37,7 @@ public class TreeTest {
         answer.add("childFour");
 
         assertThat(tree.getChild(parentOne), is(answer));
+        assertThat(tree.isBinary(), is(false));
     }
 
     /**
@@ -60,5 +61,7 @@ public class TreeTest {
         assertThat(iter.next(), is("par1"));
         assertThat(iter.next(), is("par2"));
         assertThat(iter.hasNext(), is(false));
+
+        assertThat(tree.isBinary(), is(true));
     }
 }
