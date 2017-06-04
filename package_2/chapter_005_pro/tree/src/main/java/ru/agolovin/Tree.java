@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * @param <E> generic value
@@ -41,6 +42,22 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             if (node.children.size() > 2) {
                 result = false;
                 break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Find element by value.
+     *
+     * @param value Generic
+     * @return Element
+     */
+    Node<E> findElement(E value) {
+        Node<E> result = null;
+        for (Node<E> node : nodes) {
+            if (value.equals(node.value)) {
+                result = node;
             }
         }
         return result;
@@ -110,13 +127,11 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      *
      * @param <E> Generic.
      */
-    class Node<E> {
-
+    static class Node<E> {
         /**
          * List children.
          */
         private List<E> children;
-
         /**
          * Inner value.
          */
@@ -131,6 +146,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         Node(E value, List<E> children) {
             this.value = value;
             this.children = children;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Node<?> node = (Node<?>) o;
+            return Objects.equals(children, node.children)
+                    && Objects.equals(value, node.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(children, value);
         }
     }
 }

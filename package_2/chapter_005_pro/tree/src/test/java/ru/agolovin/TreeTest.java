@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -38,6 +39,41 @@ public class TreeTest {
 
         assertThat(tree.getChild(parentOne), is(answer));
         assertThat(tree.isBinary(), is(false));
+    }
+
+    /**
+     * Test findElement method.
+     */
+    @Test
+    public void thenFindElementTheResultIs() {
+        Tree<String> tree = new Tree<>();
+        String parentOne = "par1";
+        tree.add(parentOne, "childOne");
+        tree.add("par2", "childOne");
+        tree.add("par3", "childOne");
+        Tree.Node node = tree.findElement("par1");
+        Tree.Node nullResult = tree.findElement("par555");
+        ArrayList<String> list = new ArrayList<>();
+        list.add("childOne");
+        Tree.Node answer = new Tree.Node(parentOne, list);
+        assertThat(answer, is(node));
+        assertNull(nullResult);
+
+    }
+
+    /**
+     * Test node class.
+     */
+    @Test
+    public void whenThen() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("w");
+        Tree.Node<String> node1 = new Tree.Node<>("par1", list);
+        Tree.Node<String> node2 = new Tree.Node<>("par2", list);
+        boolean res = node1.equals(node2);
+        boolean res1 = node2.equals(node1);
+        assertThat(res, is(false));
+        assertThat(res1, is(false));
     }
 
     /**
