@@ -65,7 +65,7 @@ public class TreeTest {
      * Test node class.
      */
     @Test
-    public void whenThen() {
+    public void whenNodeNotEqualsThenResultFalse() {
         ArrayList<String> list = new ArrayList<>();
         list.add("w");
         Tree.Node<String> node1 = new Tree.Node<>("par1", list);
