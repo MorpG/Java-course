@@ -15,20 +15,50 @@ import java.util.Objects;
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     /**
-     * index add nodes.
-     */
-    private int nodesIndex;
-
-    /**
      * Nodes array.
      */
-    private List<Node<E>> nodes;
+    private Node<E> node;
 
     /**
-     * Constructor.
+     * index parent.
      */
-    Tree() {
-        nodes = new ArrayList<>();
+    private int index;
+
+    @Override
+    public boolean add(E parent, E child) {
+        if (node == null) {
+            node = new Node<>(parent);
+            node.children.add(new Node<>(child));
+            index++;
+        } else if (node.value.equals(parent)) {
+            node.children.add(new Node<>(child));
+            index++;
+        } else {
+            addToTree(node, parent, child);
+        }
+        return true;
+    }
+
+    /**
+     * Recursive add to tree.
+     *
+     * @param node   Node
+     * @param parent Value
+     * @param child  Value
+     */
+    private void addToTree(Node<E> node, E parent, E child) {
+        E tempValue;
+        for (int i = 0; i < node.children.size(); i++) {
+            tempValue = node.children.get(i).value;
+            if (tempValue.compareTo(parent) == 0) {
+                node = node.children.get(i);
+                node.children.add(new Node<>(child));
+                index++;
+                break;
+            } else if (node.children.get(i).children.size() != 0) {
+                addToTree(node.children.get(i), parent, child);
+            }
+        }
     }
 
     /**
@@ -36,90 +66,123 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      *
      * @return boolean result
      */
-    public boolean isBinary() {
+    boolean isBinary() {
+        return checkForBinary(node);
+    }
+
+    /**
+     * Recursive check for binary tree.
+     *
+     * @param node Node.
+     * @return boolean result of adding
+     */
+    private boolean checkForBinary(Node<E> node) {
         boolean result = true;
-        for (Node<E> node : nodes) {
+        for (int i = 0; i < node.children.size(); i++) {
             if (node.children.size() > 2) {
                 result = false;
                 break;
+            } else if (node.children.get(i).children.size() != 0) {
+                result = true;
+                checkForBinary(node.children.get(i));
+            } else {
+                result = true;
             }
         }
         return result;
     }
 
     /**
-     * Find element by value.
+     * Find element in a tree by value.
      *
-     * @param value Generic
-     * @return Element
+     * @param value generic
+     * @return Node<E>
      */
     Node<E> findElement(E value) {
-        Node<E> result = null;
-        for (Node<E> node : nodes) {
-            if (value.equals(node.value)) {
-                result = node;
-            }
-        }
-        return result;
+        return findNode(node, value);
     }
 
-    @Override
-    public boolean add(E parent, E child) {
-        boolean result = false;
-        int i = 0;
-        while (i < nodes.size()) {
-            if (nodes.get(i).children != null && nodes.get(i).value.compareTo(parent) == 0) {
-                List<E> temp = nodes.get(i).children;
-                temp.add(child);
-                nodes.set(i, new Node<>(parent, temp));
-                result = true;
-                break;
+    /**
+     * Recursive find in a tree.
+     *
+     * @param node  Node
+     * @param value Generic
+     * @return Node<E>
+     */
+    private Node<E> findNode(Node<E> node, E value) {
+        Node<E> res = null;
+        if (node.value.equals(value)) {
+            res = node;
+        } else if (node.children.size() != 0) {
+            for (int i = 0; i < node.children.size(); i++) {
+                Node<E> temp = findNode(node.children.get(i), value);
+                if (temp != null) {
+                    res = temp;
+                }
             }
-            i++;
         }
-        if (!result) {
-            List<E> temp = new ArrayList<E>();
-            temp.add(child);
-            nodes.add(new Node<>(parent, temp));
-        }
-        return result;
+        return res;
     }
 
     @Override
     public Iterator<E> iterator() throws NoSuchElementException {
-        nodesIndex = 0;
         return new Iterator<E>() {
+
+            /**
+             * iterIndex.
+             */
+            private int iterIndex = 0;
+            /**
+             * hasIterator.
+             */
+            private int next = 0;
+
+            /**
+             * iterNode.
+             */
+            private Node<E> iterNode = node;
+
 
             @Override
             public boolean hasNext() {
-                return nodesIndex < nodes.size();
+                return iterIndex <= index;
             }
 
             @Override
             public E next() {
-                if (hasNext()) {
-                    return nodes.get(nodesIndex++).value;
-                } else {
+                E res;
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
+                if (iterIndex == 0) {
+                    iterIndex++;
+                    res = node.value;
+                } else {
+                    next = 0;
+                    getValueIterator(node);
+                    iterIndex++;
+                    res = iterNode.value;
+                }
+                return res;
             }
-        };
-    }
 
-    /**
-     * Get child for current parent.
-     *
-     * @param parent Generic node
-     * @return list of children
-     */
-    public List<E> getChild(E parent) {
-        List<E> result = null;
-        for (Node<E> node : nodes) {
-            if (parent.equals(node.value)) {
-                result = node.children;
+            /**
+             * @param node node.
+             */
+            private void getValueIterator(Node<E> node) {
+                for (int i = 0; i < node.children.size(); i++) {
+                    if (++next == iterIndex) {
+                        iterNode = node.children.get(i);
+                        break;
+                    }
+                    if (node.children.get(i).children.size() != 0) {
+                        getValueIterator(node.children.get(i));
+                    }
+                }
+
             }
-        }
-        return result;
+
+        };
     }
 
     /**
@@ -128,24 +191,33 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      * @param <E> Generic.
      */
     static class Node<E> {
+
         /**
          * List children.
          */
-        private List<E> children;
+        private List<Node<E>> children = new ArrayList<>();
+
         /**
          * Inner value.
          */
         private E value;
 
         /**
+         * Get.
+         * @return List
+         */
+        List<Node<E>> getChildren() {
+            return children;
+        }
+
+        /**
          * Constructor.
          *
-         * @param value    Generic
-         * @param children Generic
+         * @param value generic.
          */
-        Node(E value, List<E> children) {
+        Node(E value) {
             this.value = value;
-            this.children = children;
+            this.children = new ArrayList<>();
         }
 
         @Override
