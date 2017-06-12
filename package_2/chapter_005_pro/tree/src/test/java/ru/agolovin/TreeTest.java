@@ -2,11 +2,11 @@ package ru.agolovin;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
@@ -18,86 +18,119 @@ import static org.junit.Assert.assertThat;
 public class TreeTest {
 
     /**
-     * Test.
+     * Test for add and for iteration.
      */
     @Test
     public void whenAddTwoSameParentThenResultTwoChild() {
         Tree<String> tree = new Tree<>();
 
         String parentOne = "par1";
+        String childOne = "childOne";
+        String childTwo = "childTwo";
+        String subChildOne = "subChildOne";
 
-        tree.add(parentOne, "childOne");
-        tree.add(parentOne, "childTwo");
-        tree.add(parentOne, "childThree");
-        tree.add(parentOne, "childFour");
+        tree.add(parentOne, childOne);
+        tree.add(parentOne, childTwo);
+        tree.add(childOne, subChildOne);
 
-        List<String> answer = new ArrayList<>();
-        answer.add("childOne");
-        answer.add("childTwo");
-        answer.add("childThree");
-        answer.add("childFour");
+        Iterator<String> iter = tree.iterator();
 
-        assertThat(tree.getChild(parentOne), is(answer));
+        assertThat(iter.next(), is(parentOne));
+        assertThat(iter.next(), is(childOne));
+        assertThat(iter.next(), is(subChildOne));
+        assertThat(iter.next(), is(childTwo));
+    }
+
+    /**
+     * Check for binary tree.
+     */
+    @Test
+    public void thenCheckForBinaryThenResultFalse() {
+        Tree<String> tree = new Tree<>();
+
+        String parentOne = "par1";
+        String childOne = "childOne";
+        String childTwo = "childTwo";
+        String subChildOne = "subChildOne";
+
+        tree.add(parentOne, childOne);
+        tree.add(parentOne, childTwo);
+        tree.add(parentOne, childTwo);
+        tree.add(parentOne, subChildOne);
         assertThat(tree.isBinary(), is(false));
     }
 
     /**
-     * Test findElement method.
+     * Check for binary tree.
      */
     @Test
-    public void thenFindElementTheResultIs() {
-        Tree<String> tree = new Tree<>();
-        String parentOne = "par1";
-        tree.add(parentOne, "childOne");
-        tree.add("par2", "childOne");
-        tree.add("par3", "childOne");
-        Tree.Node node = tree.findElement("par1");
-        Tree.Node nullResult = tree.findElement("par555");
-        ArrayList<String> list = new ArrayList<>();
-        list.add("childOne");
-        Tree.Node answer = new Tree.Node(parentOne, list);
-        assertThat(answer, is(node));
-        assertNull(nullResult);
-
-    }
-
-    /**
-     * Test node class.
-     */
-    @Test
-    public void whenNodeNotEqualsThenResultFalse() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("w");
-        Tree.Node<String> node1 = new Tree.Node<>("par1", list);
-        Tree.Node<String> node2 = new Tree.Node<>("par2", list);
-        boolean res = node1.equals(node2);
-        boolean res1 = node2.equals(node1);
-        assertThat(res, is(false));
-        assertThat(res1, is(false));
-    }
-
-    /**
-     * Test iterator.
-     */
-    @Test
-    public void whenIteratorWork() {
+    public void thenCheckForBinaryThenResultTrue() {
         Tree<String> tree = new Tree<>();
 
         String parentOne = "par1";
-        String parentTwo = "par2";
+        String childOne = "childOne";
+        String childTwo = "childTwo";
 
-        tree.add(parentOne, "childOne");
-        tree.add(parentOne, "childTwo");
-        tree.add(parentTwo, "childTwo");
-        tree.add(parentTwo, "childTwo");
-
-        Iterator<String> iter = tree.iterator();
-
-        assertThat(iter.hasNext(), is(true));
-        assertThat(iter.next(), is("par1"));
-        assertThat(iter.next(), is("par2"));
-        assertThat(iter.hasNext(), is(false));
-
+        tree.add(parentOne, childOne);
+        tree.add(parentOne, childTwo);
         assertThat(tree.isBinary(), is(true));
     }
+
+    /**
+     * Test for find element.
+     */
+    @Test
+    public void whenFindElementThenResultIs() {
+        Tree<Integer> tree = new Tree<>();
+        Tree.Node<Integer> node = new Tree.Node<>(1);
+        Tree.Node<Integer> node2 = new Tree.Node<>(2);
+        Tree.Node<Integer> node3 = new Tree.Node<>(3);
+        node.getChildren().add(node2);
+        node.getChildren().add(node3);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        Tree.Node<Integer> res = tree.findElement(2);
+        assertThat(res, is(node2));
+    }
+
+    /**
+     * Test if element not contains in a tree.
+     */
+    @Test
+    public void whenFindElementThenResultIsNull() {
+        Tree<Integer> tree = new Tree<>();
+        Tree.Node<Integer> node = new Tree.Node<>(1);
+        Tree.Node<Integer> node2 = new Tree.Node<>(2);
+        node.getChildren().add(node2);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        Tree.Node<Integer> res = tree.findElement(5);
+        assertNull(res);
+    }
+
+    /**
+     * Test for equals.
+     */
+    @Test
+    public void whenEqualsThenResultTrue() {
+        Tree.Node<Integer> node = new Tree.Node<>(1);
+        Tree.Node<Integer> node2 = new Tree.Node<>(1);
+        assertEquals(node, node2);
+        assertEquals(node2, node);
+    }
+
+    /**
+     * Test for NOT equals.
+     */
+    @Test
+    public void whenNotEqualsThenResultTrue() {
+        Tree.Node<Integer> node = new Tree.Node<>(1);
+        Tree.Node<Integer> node2 = new Tree.Node<>(2);
+        Tree.Node<Integer> nodeNull = new Tree.Node<>(2);
+        assertNotEquals(node, node2);
+        assertNotEquals(node2, node);
+        assertNotEquals(nodeNull, node);
+    }
+
+
 }
