@@ -7,7 +7,7 @@ package ru.agolovin;
  * @since 0.1
  */
 
-public class BinarySearchTree<E extends Comparable> {
+class BinarySearchTree<E extends Comparable> {
 
     /**
      * root of tree.
@@ -20,7 +20,7 @@ public class BinarySearchTree<E extends Comparable> {
      * @param e added e.
      * @return true if successful.
      */
-    public boolean add(E e) {
+    boolean add(E e) {
         Node<E> temp = this.mainNode;
         Node<E> previousNode = null;
 
