@@ -16,5 +16,6 @@
         <module>set</module>
         <module>map</module>
         <module>tree</module>
+        <module>testTaskCollectionPro</module>
     </modules>
 </project>
