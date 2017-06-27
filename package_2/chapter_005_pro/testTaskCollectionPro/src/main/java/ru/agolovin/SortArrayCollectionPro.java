@@ -1,7 +1,5 @@
 package ru.agolovin;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 
 /**
@@ -10,32 +8,48 @@ import java.util.Arrays;
  * @since 0.1
  */
 
-public class SortArrayCollectionPro<T> {
+class SortArrayCollectionPro {
 
-    private T[] firstArray;
 
-    private T[] secondArray;
+    /**
+     * main array.
+     */
+    private Integer[] mainArray;
 
-//    SortArrayCollectionPro(T[] firstArrayIn, T[] secondArrayIn) {
-//        this.firstArray = firstArrayIn;
-//        this.secondArray = secondArrayIn;
-//    }
+    /**
+     * Create one sorted array from two sorted.
+     *
+     * @param arrOne Array
+     * @param arrTwo Array
+     * @return array
+     */
+    Integer[] createNewArrayFromEntry(Integer[] arrOne, Integer[] arrTwo) {
+        mainArray = new Integer[arrOne.length + arrTwo.length];
+        Arrays.sort(arrTwo);
+        int mainLength = mainArray.length;
+        int i = 0;
+        int j = 0;
+        int n;
+        for (n = 0; n < mainLength; n++) {
+            if (arrOne[i] < arrTwo[j]) {
+                mainArray[n] = arrOne[i];
+                if (i < arrOne.length - 1) {
+                    i++;
+                } else {
+                    System.arraycopy(arrTwo, j, mainArray, n, arrTwo.length - 1);
+                    break;
+                }
+            } else {
+                mainArray[n] = arrTwo[j];
+                if (j < arrTwo.length - 1) {
+                    j++;
+                } else {
+                    System.arraycopy(arrOne, i, mainArray, n + 1, arrOne.length - 1);
+                    break;
+                }
+            }
 
-    void sortArray(T[] arr) {
-        Arrays.sort(arr);
-    }
-
-    T[] createNewArrayFromEntry(T[] arrOne, T[] arrTwo) {
-        Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getClass();
-        T[] arr = null;
-        try {
-            arr = (T[]) t.newInstance();
-            System.arraycopy(arrOne, 0, arr, 0, arrOne.length - 1);
-            System.arraycopy(arrTwo, 0, arr, arrOne.length, arrTwo.length - 1);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
         }
-        return arr;
+        return this.mainArray;
     }
-
 }
