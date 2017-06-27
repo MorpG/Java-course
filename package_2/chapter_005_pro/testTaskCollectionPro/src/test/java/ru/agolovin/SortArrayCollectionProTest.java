@@ -20,7 +20,7 @@ public class SortArrayCollectionProTest {
     public void whenFirstEndSecondThenResultIs() {
         SortArrayCollectionPro sort = new SortArrayCollectionPro();
         Integer[] arrOne = {1, 5, 6};
-        Integer[] arrTwo = {2, 3, 4};
+        Integer[] arrTwo = {4, 2, 3};
         Integer[] res = {1, 2, 3, 4, 5, 6};
         Integer[] answer = sort.createNewArrayFromEntry(arrOne, arrTwo);
         assertThat(answer, is(res));
