@@ -17,5 +17,6 @@
         <module>map</module>
         <module>tree</module>
         <module>testTaskCollectionPro</module>
+        <module>testTaskMain</module>
     </modules>
 </project>
