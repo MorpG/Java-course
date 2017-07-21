@@ -17,6 +17,6 @@
         <module>map</module>
         <module>tree</module>
         <module>testTaskCollectionPro</module>
-        <module>testTaskMain</module>
+        <module>testTaskOrderBook</module>
     </modules>
 </project>
