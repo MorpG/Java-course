@@ -25,16 +25,16 @@ public class ReadFromXML {
     void readXML(File path) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory xml = XMLInputFactory.newInstance();
         XMLStreamReader reader = xml.createXMLStreamReader(new FileInputStream(path));
-        while (reader.hasNext()) {
+        String line;
+        while (reader.hasNext())
             if (reader.isStartElement()) {
-                if ("AddOrder".equals(reader.getLocalName())) {
+                line = reader.getLocalName();
+                if (line.equals("AddOrder")) {
                     //TODO
                 }
-                if ("DeleteOrder".equals(reader.getLocalName())) {
+                if (line.equals("DeleteOrder")) {
                     //TODO
                 }
             }
-        }
     }
-
 }
