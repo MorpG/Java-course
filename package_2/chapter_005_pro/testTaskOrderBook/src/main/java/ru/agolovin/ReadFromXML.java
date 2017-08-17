@@ -14,11 +14,11 @@ import java.util.Map;
  * @since 0.1
  */
 public class ReadFromXML {
-    private Map<String, Order> order;
+    private Map<String, Book> orders;
     private File path;
 
-    ReadFromXML(Map<String, Order> inpMap, File inpPath) {
-        this.order = inpMap;
+    ReadFromXML(Map<String, Book> inpMap, File inpPath) {
+        this.orders = inpMap;
         this.path = inpPath;
     }
 
@@ -30,11 +30,30 @@ public class ReadFromXML {
             if (reader.isStartElement()) {
                 line = reader.getLocalName();
                 if (line.equals("AddOrder")) {
-                    //TODO
+                    addFromXml(reader);
                 }
                 if (line.equals("DeleteOrder")) {
-                    //TODO
+                    deleteFromXml(reader);
                 }
             }
+    }
+
+    private void addFromXml(XMLStreamReader reader) {
+        String bookName = reader.getAttributeValue(0);
+        String type = reader.getAttributeValue(1);
+        float price = Float.valueOf(reader.getAttributeValue(2));
+        int value = Integer.valueOf(reader.getAttributeValue(3));
+        long id = Long.valueOf(reader.getAttributeValue(4));
+        Order order = new Order(id, value, price, type);
+        Book book = this.orders.get(bookName);
+        if (book == null) {
+            book = new Book();
+            this.orders.put(bookName, book);
+        }
+        book.add(order);
+    }
+
+    private void deleteFromXml(XMLStreamReader reader) {
+//        TODO
     }
 }
