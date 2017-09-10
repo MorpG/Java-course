@@ -10,20 +10,36 @@ import java.util.Objects;
 
 public class Order {
 
-    private long id;
+    private int id;
     private int volume;
     private float price;
     private String type;
 
-    Order(long id, int volume, float price, String type) {
+    Order(int id, int volume, float price, String type) {
         this.id = id;
         this.volume = volume;
         this.price = price;
         this.type = type;
     }
 
-    public long getId() {
+    int getId() {
         return id;
+    }
+
+    void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    int getVolume() {
+        return volume;
+    }
+
+    float getPrice() {
+        return price;
+    }
+
+    String getType() {
+        return type;
     }
 
     @Override

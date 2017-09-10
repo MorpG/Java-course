@@ -13,13 +13,11 @@ import java.util.Map;
  * @version $Id$
  * @since 0.1
  */
-public class ReadFromXML {
+class ReadFromXML {
     private Map<String, Book> orders;
-    private File path;
 
-    ReadFromXML(Map<String, Book> inpMap, File inpPath) {
+    ReadFromXML(Map<String, Book> inpMap) {
         this.orders = inpMap;
-        this.path = inpPath;
     }
 
     void readXML(File path) throws FileNotFoundException, XMLStreamException {
@@ -43,17 +41,14 @@ public class ReadFromXML {
         String type = reader.getAttributeValue(1);
         float price = Float.valueOf(reader.getAttributeValue(2));
         int value = Integer.valueOf(reader.getAttributeValue(3));
-        long id = Long.valueOf(reader.getAttributeValue(4));
+        int id = Integer.valueOf(reader.getAttributeValue(4));
         Order order = new Order(id, value, price, type);
-        Book book = this.orders.get(bookName);
-        if (book == null) {
-            book = new Book();
-            this.orders.put(bookName, book);
-        }
+        Book book = this.orders.computeIfAbsent(bookName, k -> new Book());
         book.add(order);
     }
 
     private void deleteFromXml(XMLStreamReader reader) {
-//        TODO
+        Book book = this.orders.get(reader.getAttributeValue(0));
+        book.delete(Integer.valueOf(reader.getAttributeValue(1)));
     }
 }
