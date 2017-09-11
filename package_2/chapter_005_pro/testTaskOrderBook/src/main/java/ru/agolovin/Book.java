@@ -38,10 +38,18 @@ class Book {
                     newOrder.setVolume(newOrder.getVolume()
                             + element.getValue().getVolume());
                 } else {
+                    buyBook.put(element.getValue().getPrice(), element.getValue());
+                }
+            } else {
+                Order temp = sellBook.get(element.getValue().getPrice());
+                if (temp != null) {
+                    temp.setVolume(temp.getVolume() + element.getValue().getVolume());
+                } else {
                     sellBook.put(element.getValue().getPrice(), element.getValue());
                 }
             }
         }
+
     }
 
     private void work() {
@@ -103,10 +111,12 @@ class Book {
 
             System.out.print(
                     String.format(
-                            "%7s@%s", buyOrder.getVolume(), buyOrder.getPrice()));
+                            "%7s @ %s", buyOrder.getVolume(),
+                            buyOrder.getPrice()));
             System.out.println(
                     String.format(
-                            " - %s@%s", sellOrder.getPrice(), sellOrder.getVolume()));
+                            " - %s @ %s", sellOrder.getPrice(),
+                            sellOrder.getVolume()));
 
         }
 

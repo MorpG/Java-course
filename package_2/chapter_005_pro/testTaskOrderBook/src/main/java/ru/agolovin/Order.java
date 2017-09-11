@@ -26,12 +26,12 @@ public class Order {
         return id;
     }
 
-    void setVolume(int volume) {
-        this.volume = volume;
-    }
-
     int getVolume() {
         return volume;
+    }
+
+    void setVolume(int volume) {
+        this.volume = volume;
     }
 
     float getPrice() {

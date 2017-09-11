@@ -24,7 +24,8 @@ class ReadFromXML {
         XMLInputFactory xml = XMLInputFactory.newInstance();
         XMLStreamReader reader = xml.createXMLStreamReader(new FileInputStream(path));
         String line;
-        while (reader.hasNext())
+        while (reader.hasNext()) {
+            reader.next();
             if (reader.isStartElement()) {
                 line = reader.getLocalName();
                 if (line.equals("AddOrder")) {
@@ -34,6 +35,7 @@ class ReadFromXML {
                     deleteFromXml(reader);
                 }
             }
+        }
     }
 
     private void addFromXml(XMLStreamReader reader) {
@@ -43,6 +45,7 @@ class ReadFromXML {
         int value = Integer.valueOf(reader.getAttributeValue(3));
         int id = Integer.valueOf(reader.getAttributeValue(4));
         Order order = new Order(id, value, price, type);
+
         Book book = this.orders.computeIfAbsent(bookName, k -> new Book());
         book.add(order);
     }

@@ -21,14 +21,15 @@ public class BookTest {
         File file = new File("D:\\Project\\orders.xml");
         ReadFromXML reader = new ReadFromXML(book);
         reader.readXML(file);
-        for (String e : book.keySet()) {
-            System.out.println("Book name: " + e);
-            System.out.println("\tBUY" + "\t\tPRICE" + "\tSELL");
-            book.get(e).init();
+        for (String element : book.keySet()) {
+            System.out.println("Book name: " + element);
+            System.out.println("      BUY             SELL");
+            System.out.println("Volume @ Price - Volume @ Price");
+            book.get(element).init();
             System.out.println();
         }
-        System.out.println("Time: " + (System.currentTimeMillis() - startTime));
-        boolean res = true;
+        long elapsed = System.currentTimeMillis() - startTime;
+        System.out.println(String.format("Time: %s (milli seconds)",  elapsed));
     }
 
 }
