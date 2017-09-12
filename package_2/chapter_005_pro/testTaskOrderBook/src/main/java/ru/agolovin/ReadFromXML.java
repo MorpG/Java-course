@@ -14,12 +14,28 @@ import java.util.Map;
  * @since 0.1
  */
 class ReadFromXML {
+
+    /**
+     * Order map.
+     */
     private Map<String, Book> orders;
 
+    /**
+     * constructor.
+     *
+     * @param inpMap Map<String, Map>
+     */
     ReadFromXML(Map<String, Book> inpMap) {
         this.orders = inpMap;
     }
 
+    /**
+     * Read from xml.
+     *
+     * @param path File
+     * @throws FileNotFoundException exception
+     * @throws XMLStreamException    exception
+     */
     void readXML(File path) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory xml = XMLInputFactory.newInstance();
         XMLStreamReader reader = xml.createXMLStreamReader(new FileInputStream(path));
@@ -38,6 +54,11 @@ class ReadFromXML {
         }
     }
 
+    /**
+     * add into map from xml.
+     *
+     * @param reader XMLStreamReader
+     */
     private void addFromXml(XMLStreamReader reader) {
         String bookName = reader.getAttributeValue(0);
         String type = reader.getAttributeValue(1);
@@ -50,6 +71,11 @@ class ReadFromXML {
         book.add(order);
     }
 
+    /**
+     * delete in map.
+     *
+     * @param reader XMLStreamReader.
+     */
     private void deleteFromXml(XMLStreamReader reader) {
         Book book = this.orders.get(reader.getAttributeValue(0));
         book.delete(Integer.valueOf(reader.getAttributeValue(1)));

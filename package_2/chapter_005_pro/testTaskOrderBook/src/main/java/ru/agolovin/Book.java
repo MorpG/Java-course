@@ -16,20 +16,52 @@ import java.util.TreeMap;
 
 class Book {
 
+    /**
+     * All orders.
+     */
     private Map<Integer, Order> orders = new HashMap<>();
 
+    /**
+     * sell book.
+     */
     private Map<Float, Order> sellBook = new TreeMap<>();
 
+    /**
+     * buy book.
+     */
     private Map<Float, Order> buyBook = new TreeMap<>(Comparator.reverseOrder());
 
+    /**
+     * Buy order.
+     */
+    private Order buyOrder;
+
+    /**
+     * sell order.
+     */
+    private Order sellOrder;
+
+    /**
+     * add order to map.
+     *
+     * @param order Order.
+     */
     void add(Order order) {
         orders.put(order.getId(), order);
     }
 
+    /**
+     * delete order in the map by id.
+     *
+     * @param orderId int.
+     */
     void delete(Integer orderId) {
         orders.remove(orderId);
     }
 
+    /**
+     * replace orders.
+     */
     private void replace() {
         for (Map.Entry<Integer, Order> element : orders.entrySet()) {
             if ("BUY".equals(element.getValue().getType())) {
@@ -52,6 +84,9 @@ class Book {
 
     }
 
+    /**
+     * set orders.
+     */
     private void work() {
         Iterator<Float> buyIterator = buyBook.keySet().iterator();
         Iterator<Float> sellIterator = sellBook.keySet().iterator();
@@ -65,20 +100,20 @@ class Book {
         boolean flag = false;
 
         do {
-            Order buyOrder = buyBook.get(nextBuy);
-            Order sellOrder = sellBook.get(nextSell);
-            if (buyOrder.getPrice() >= sellOrder.getPrice()) {
-                if (buyOrder.getVolume() > sellOrder.getVolume()) {
-                    buyOrder.setVolume(buyOrder.getVolume() - sellOrder.getVolume());
+            this.buyOrder = this.buyBook.get(nextBuy);
+            this.sellOrder = this.sellBook.get(nextSell);
+            if (this.buyOrder.getPrice() >= this.sellOrder.getPrice()) {
+                if (this.buyOrder.getVolume() > this.sellOrder.getVolume()) {
+                    this.buyOrder.setVolume(this.buyOrder.getVolume() - this.sellOrder.getVolume());
                     nextSell = sellIterator.next();
-                    sellDel.add(buyOrder.getPrice());
-                } else if (buyOrder.getVolume() < sellOrder.getVolume()) {
-                    sellOrder.setVolume(sellOrder.getVolume() - buyOrder.getVolume());
+                    sellDel.add(this.buyOrder.getPrice());
+                } else if (this.buyOrder.getVolume() < this.sellOrder.getVolume()) {
+                    this.sellOrder.setVolume(this.sellOrder.getVolume() - this.buyOrder.getVolume());
                     nextBuy = buyIterator.next();
-                    buyDel.add(buyOrder.getPrice());
+                    buyDel.add(this.buyOrder.getPrice());
                 } else {
-                    buyBook.remove(buyOrder.getPrice());
-                    sellBook.remove(sellOrder.getPrice());
+                    this.buyBook.remove(this.buyOrder.getPrice());
+                    this.sellBook.remove(this.sellOrder.getPrice());
                     nextBuy = buyIterator.next();
                     nextSell = sellIterator.next();
                 }
@@ -87,27 +122,43 @@ class Book {
             }
         } while (!flag);
 
-        for (Float element : buyDel) {
-            buyBook.remove(element);
-        }
+        this.buyBook = removeUnused(buyDel, buyBook);
 
-        for (Float element : sellDel) {
-            sellBook.remove(element);
-        }
+        this.sellBook = removeUnused(sellDel, sellBook);
     }
 
+    /**
+     * removeunused orders.
+     *
+     * @param list List
+     * @param book Map
+     * @return Map
+     */
+    private Map<Float, Order> removeUnused(List<Float> list, Map<Float, Order> book) {
+        for (Float element : list) {
+            book.remove(element);
+        }
+        return book;
+    }
+
+    /**
+     * initialization.
+     */
     void init() {
         replace();
         work();
         Iterator<Float> buyIterator = buyBook.keySet().iterator();
         Iterator<Float> sellIterator = sellBook.keySet().iterator();
 
-        while (buyIterator.hasNext() && sellIterator.hasNext()) {
-            Float nextBuy = buyIterator.next();
-            Float nextSell = sellIterator.next();
+        Float nextBuy;
+        Float nextSell;
 
-            Order buyOrder = buyBook.get(nextBuy);
-            Order sellOrder = sellBook.get(nextSell);
+        while (buyIterator.hasNext() && sellIterator.hasNext()) {
+            nextBuy = buyIterator.next();
+            nextSell = sellIterator.next();
+
+            buyOrder = buyBook.get(nextBuy);
+            sellOrder = sellBook.get(nextSell);
 
             System.out.print(
                     String.format(
@@ -117,8 +168,6 @@ class Book {
                     String.format(
                             " - %s @ %s", sellOrder.getPrice(),
                             sellOrder.getVolume()));
-
         }
-
     }
 }

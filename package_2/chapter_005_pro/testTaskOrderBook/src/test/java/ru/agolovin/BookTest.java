@@ -14,6 +14,11 @@ import java.util.Map;
 
 public class BookTest {
 
+    /**
+     * Test method work.
+     *
+     * @throws Exception exception
+     */
     @Test
     public void testBook() throws Exception {
         long startTime = System.currentTimeMillis();
@@ -29,7 +34,7 @@ public class BookTest {
             System.out.println();
         }
         long elapsed = System.currentTimeMillis() - startTime;
-        System.out.println(String.format("Time: %s (milli seconds)",  elapsed));
+        System.out.println(String.format("Time: %s (milliseconds)", elapsed));
     }
 
 }
