@@ -106,7 +106,7 @@ class Book {
                 if (this.buyOrder.getVolume() > this.sellOrder.getVolume()) {
                     this.buyOrder.setVolume(this.buyOrder.getVolume() - this.sellOrder.getVolume());
                     nextSell = sellIterator.next();
-                    sellDel.add(this.buyOrder.getPrice());
+                    sellDel.add(this.sellOrder.getPrice());
                 } else if (this.buyOrder.getVolume() < this.sellOrder.getVolume()) {
                     this.sellOrder.setVolume(this.sellOrder.getVolume() - this.buyOrder.getVolume());
                     nextBuy = buyIterator.next();
@@ -166,8 +166,30 @@ class Book {
                             buyOrder.getPrice()));
             System.out.println(
                     String.format(
-                            " - %s @ %s", sellOrder.getPrice(),
-                            sellOrder.getVolume()));
+                            " - %s @ %s", sellOrder.getVolume(),
+                            sellOrder.getPrice()));
+        }
+
+        if (buyIterator.hasNext()) {
+            do {
+                buyOrder = buyBook.get(buyIterator.next());
+                System.out.print(
+                        String.format(
+                                "%7s @ %s", buyOrder.getVolume(),
+                                buyOrder.getPrice()));
+                System.out.println(
+                        String.format(
+                                " - %6s", "------"));
+            } while (buyIterator.hasNext());
+        } else if (sellIterator.hasNext()) {
+            do {
+                sellOrder = sellBook.get(sellIterator.next());
+                System.out.print(String.format("%14s", "------"));
+                System.out.println(
+                        String.format(
+                                " - %s @ %s", sellOrder.getVolume(),
+                                sellOrder.getPrice()));
+            } while (sellIterator.hasNext());
         }
     }
 }
