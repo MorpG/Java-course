@@ -47,7 +47,7 @@ class Book {
      * @param order Order.
      */
     void add(Order order) {
-        orders.put(order.getId(), order);
+        this.orders.put(order.getId(), order);
     }
 
     /**
@@ -56,28 +56,28 @@ class Book {
      * @param orderId int.
      */
     void delete(Integer orderId) {
-        orders.remove(orderId);
+        this.orders.remove(orderId);
     }
 
     /**
      * replace orders.
      */
     private void replace() {
-        for (Map.Entry<Integer, Order> element : orders.entrySet()) {
+        for (Map.Entry<Integer, Order> element : this.orders.entrySet()) {
             if ("BUY".equals(element.getValue().getType())) {
-                Order newOrder = buyBook.get(element.getValue().getPrice());
+                Order newOrder = this.buyBook.get(element.getValue().getPrice());
                 if (newOrder != null) {
                     newOrder.setVolume(newOrder.getVolume()
                             + element.getValue().getVolume());
                 } else {
-                    buyBook.put(element.getValue().getPrice(), element.getValue());
+                    this.buyBook.put(element.getValue().getPrice(), element.getValue());
                 }
             } else {
-                Order temp = sellBook.get(element.getValue().getPrice());
+                Order temp = this.sellBook.get(element.getValue().getPrice());
                 if (temp != null) {
                     temp.setVolume(temp.getVolume() + element.getValue().getVolume());
                 } else {
-                    sellBook.put(element.getValue().getPrice(), element.getValue());
+                    this.sellBook.put(element.getValue().getPrice(), element.getValue());
                 }
             }
         }
@@ -88,8 +88,8 @@ class Book {
      * set orders.
      */
     private void work() {
-        Iterator<Float> buyIterator = buyBook.keySet().iterator();
-        Iterator<Float> sellIterator = sellBook.keySet().iterator();
+        Iterator<Float> buyIterator = this.buyBook.keySet().iterator();
+        Iterator<Float> sellIterator = this.sellBook.keySet().iterator();
 
         Float nextBuy = buyIterator.next();
         Float nextSell = sellIterator.next();
@@ -122,9 +122,9 @@ class Book {
             }
         } while (!flag);
 
-        this.buyBook = removeUnused(buyDel, buyBook);
+        this.buyBook = removeUnused(buyDel, this.buyBook);
 
-        this.sellBook = removeUnused(sellDel, sellBook);
+        this.sellBook = removeUnused(sellDel, this.sellBook);
     }
 
     /**
@@ -147,49 +147,53 @@ class Book {
     void init() {
         replace();
         work();
-        Iterator<Float> buyIterator = buyBook.keySet().iterator();
-        Iterator<Float> sellIterator = sellBook.keySet().iterator();
+        Iterator<Float> buyIterator = this.buyBook.keySet().iterator();
+        Iterator<Float> sellIterator = this.sellBook.keySet().iterator();
 
         Float nextBuy;
         Float nextSell;
+
+        System.out.println("      BID             ASK");
+        System.out.println("Volume @ Price - Volume @ Price");
 
         while (buyIterator.hasNext() && sellIterator.hasNext()) {
             nextBuy = buyIterator.next();
             nextSell = sellIterator.next();
 
-            buyOrder = buyBook.get(nextBuy);
-            sellOrder = sellBook.get(nextSell);
+            this.buyOrder = this.buyBook.get(nextBuy);
+            this.sellOrder = this.sellBook.get(nextSell);
 
             System.out.print(
                     String.format(
-                            "%7s @ %s", buyOrder.getVolume(),
-                            buyOrder.getPrice()));
+                            "%7s @ %s", this.buyOrder.getVolume(),
+                            this.buyOrder.getPrice()));
             System.out.println(
                     String.format(
-                            " - %s @ %s", sellOrder.getVolume(),
-                            sellOrder.getPrice()));
+                            " - %s @ %s", this.sellOrder.getVolume(),
+                            this.sellOrder.getPrice()));
         }
 
         if (buyIterator.hasNext()) {
             do {
-                buyOrder = buyBook.get(buyIterator.next());
+                this.buyOrder = this.buyBook.get(buyIterator.next());
                 System.out.print(
                         String.format(
-                                "%7s @ %s", buyOrder.getVolume(),
-                                buyOrder.getPrice()));
+                                "%7s @ %s", this.buyOrder.getVolume(),
+                                this.buyOrder.getPrice()));
                 System.out.println(
                         String.format(
                                 " - %6s", "------"));
             } while (buyIterator.hasNext());
         } else if (sellIterator.hasNext()) {
             do {
-                sellOrder = sellBook.get(sellIterator.next());
+                this.sellOrder = this.sellBook.get(sellIterator.next());
                 System.out.print(String.format("%14s", "------"));
                 System.out.println(
                         String.format(
-                                " - %s @ %s", sellOrder.getVolume(),
-                                sellOrder.getPrice()));
+                                " - %s @ %s", this.sellOrder.getVolume(),
+                                this.sellOrder.getPrice()));
             } while (sellIterator.hasNext());
         }
+        System.out.println();
     }
 }

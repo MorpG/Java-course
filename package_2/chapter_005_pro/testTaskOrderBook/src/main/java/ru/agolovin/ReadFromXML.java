@@ -36,7 +36,7 @@ class ReadFromXML {
      * @throws FileNotFoundException exception
      * @throws XMLStreamException    exception
      */
-    void readXML(File path) throws FileNotFoundException, XMLStreamException {
+    void fillFromXML(File path) throws FileNotFoundException, XMLStreamException {
         XMLInputFactory xml = XMLInputFactory.newInstance();
         XMLStreamReader reader = xml.createXMLStreamReader(new FileInputStream(path));
         String line;

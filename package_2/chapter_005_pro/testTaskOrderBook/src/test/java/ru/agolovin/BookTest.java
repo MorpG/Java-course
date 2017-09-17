@@ -25,16 +25,14 @@ public class BookTest {
         Map<String, Book> book = new HashMap<>();
         File file = new File("D:\\Project\\orders.xml");
         ReadFromXML reader = new ReadFromXML(book);
-        reader.readXML(file);
+        reader.fillFromXML(file);
         for (String element : book.keySet()) {
-            System.out.println("Book name: " + element);
-            System.out.println("      BUY             SELL");
-            System.out.println("Volume @ Price - Volume @ Price");
+            System.out.println("Order book: " + element);
             book.get(element).init();
-            System.out.println();
         }
         long elapsed = System.currentTimeMillis() - startTime;
-        System.out.println(String.format("Time: %s (milliseconds)", elapsed));
+
+        System.out.println(String.format("Elapsed time: %s (s)", elapsed / 1000));
     }
 
 }
