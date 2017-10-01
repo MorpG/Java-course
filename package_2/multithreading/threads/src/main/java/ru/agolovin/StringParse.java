@@ -29,12 +29,51 @@ public class StringParse {
      */
     public static void main(String[] args) {
         String str = "word word2      word3";
+        System.out.println("Start");
         System.out.println(String.format("Incoming string: %s", str));
         StringParse stringParse = new StringParse(str);
-        new Thread(stringParse.new CountWords()).start();
-        new Thread(stringParse.new CountWhiteSpace()).start();
+        Thread threadOne = new Thread(stringParse.new CountWords());
+        Thread threadTwo = new Thread(stringParse.new CountWhiteSpace());
+        long startTime = System.currentTimeMillis();
+        threadOne.start();
+        try {
+            threadOne.join(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        threadTwo.start();
+        try {
+            threadTwo.join(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        while (threadOne.isAlive() || threadTwo.isAlive()) {
+            if ((threadOne.isAlive() || threadTwo.isAlive()) && (startTime - System.currentTimeMillis() < 1000)) {
+                if (threadOne.isAlive()) {
+                    stopThread(threadOne);
+                }
 
+                if (threadTwo.isAlive()) {
+                    stopThread(threadTwo);
+                }
+            }
+        }
+        System.out.println("Finish");
+    }
+
+    /**
+     * @param thread Thread
+     */
+    private static void stopThread(Thread thread) {
+        thread.interrupt();
+        if (thread.isInterrupted()) {
+            try {
+                throw new InterruptedException();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
