@@ -49,7 +49,7 @@ public class StringParse {
         }
 
         while (threadOne.isAlive() || threadTwo.isAlive()) {
-            if ((threadOne.isAlive() || threadTwo.isAlive()) && (startTime - System.currentTimeMillis() < 1000)) {
+            if ((threadOne.isAlive() || threadTwo.isAlive()) && (startTime - System.currentTimeMillis() > 1000)) {
                 if (threadOne.isAlive()) {
                     stopThread(threadOne);
                 }
