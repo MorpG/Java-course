@@ -23,7 +23,7 @@ public class StringParse {
     }
 
     /**
-     * Main nethod.
+     * Main method.
      *
      * @param args String array
      */
@@ -77,7 +77,7 @@ public class StringParse {
     }
 
     /**
-     * Show whiteSpaces count in the String
+     * Show whiteSpaces count in the String.
      */
     public class CountWhiteSpace implements Runnable {
         @Override
