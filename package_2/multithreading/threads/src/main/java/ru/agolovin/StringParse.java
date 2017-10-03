@@ -82,10 +82,15 @@ public class StringParse {
     public class CountWhiteSpace implements Runnable {
         @Override
         public void run() {
-            int count = str.replaceAll("\\S+", "").toCharArray().length;
+            int count = 0;
+            char[] arr = str.toCharArray();
+            for (char element : arr) {
+                if (element == ' ') {
+                    count++;
+                }
+            }
             System.out.println(String.format("Whitespace count: %s", count));
         }
-
     }
 
     /**
@@ -94,7 +99,18 @@ public class StringParse {
     public class CountWords implements Runnable {
         @Override
         public void run() {
-            int count = str.split("\\s+").length;
+            boolean flag = false;
+            int count = 0;
+            char[] arr = str.toCharArray();
+            for (char element : arr) {
+                if ((element != ' ') && !flag) {
+                    flag = true;
+                    count++;
+                }
+                if (element == ' ') {
+                    flag = false;
+                }
+            }
             System.out.println(String.format("Words count: %s", count));
         }
     }
