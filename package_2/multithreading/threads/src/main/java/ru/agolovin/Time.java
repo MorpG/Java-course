@@ -48,14 +48,6 @@ public class Time implements Runnable {
         while (threadIn.isAlive()) {
             if (threadIn.isAlive() && ((startTime - System.currentTimeMillis()) > 1000)) {
                 threadIn.interrupt();
-                if (threadIn.isInterrupted()) {
-                    try {
-                        throw new InterruptedException() {
-                        };
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }

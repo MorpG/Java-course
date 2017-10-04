@@ -32,6 +32,10 @@ public class CountChar implements Runnable {
             if (element == ' ') {
                 count++;
             }
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println("Thread interrupted");
+                return;
+            }
         }
         System.out.println(String.format("Whitespace count: %s", count));
     }
@@ -56,6 +60,10 @@ public class CountChar implements Runnable {
             }
             if (element == ' ') {
                 flag = false;
+            }
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println("Thread interrupted");
+                return;
             }
         }
         System.out.println(String.format("Words count: %s", count));
