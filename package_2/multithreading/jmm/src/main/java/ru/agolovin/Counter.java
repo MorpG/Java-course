@@ -46,7 +46,8 @@ class Counter {
         thread.start();
         thread2.start();
         try {
-            Thread.sleep(1000);
+            thread.join();
+            thread2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
