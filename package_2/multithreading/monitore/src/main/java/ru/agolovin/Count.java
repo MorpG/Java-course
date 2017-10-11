@@ -22,7 +22,8 @@ class Count {
     /**
      * Count.
      */
-    private static int anInt = 0;
+    @GuardedBy("This")
+    private int anInt = 0;
 
     /**
      * Count hits.
@@ -56,7 +57,7 @@ class Count {
             e.printStackTrace();
         }
         System.out.println(String.format("Expected %s", LIMIT));
-        System.out.println(String.format("Result %s", anInt));
+        System.out.println(String.format("Result %s", count.anInt));
     }
 
     /**
@@ -68,10 +69,12 @@ class Count {
         return lim.incrementAndGet() > LIMIT;
     }
 
-    @GuardedBy("this")
+    /**
+     * Increment value.
+     */
     private void increment() {
         synchronized (this) {
-            anInt++;
+            this.anInt++;
         }
     }
 }
