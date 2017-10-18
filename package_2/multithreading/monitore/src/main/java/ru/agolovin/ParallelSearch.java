@@ -1,10 +1,9 @@
 package ru.agolovin;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -19,33 +18,40 @@ public class ParallelSearch {
 
     private List<String> listFiles = new CopyOnWriteArrayList<>();
 
+    private List<String> exts;
+
     public void parallelSearch(String root, String text, List<String> ext) {
         File[] files = new File(root).listFiles();
 
     }
 
-    private void searchInDirectories(File file) {
-        for (final File element : file.listFiles()) {
+    private void searchInDirectories(String directory, List<String> exts) {
+        File file = new File(directory);
+        for (File element : file.listFiles()) {
             if (element.isDirectory()) {
-                searchInDirectories(element);
+                searchInDirectories(element.getAbsolutePath(), exts);
             } else {
-                listFiles.add(element.getAbsolutePath());
+                for (String name : exts) {
+                    if (element.getName().endsWith(name)) {
+                        listFiles.add(element.getAbsolutePath());
+                    }
+                }
             }
         }
     }
 
     private void searchTextInFile(final String text, final List<String> fileList) {
         for (String element : fileList) {
-            if (element != null) {
-                try {
-                    byte[] bytes = Files.readAllBytes(Paths.get(element));
-                    String str = new String(bytes);
-                    if (str.contains(text)) {
-                        this.result.add(element);
+            File file = new File(element);
+            try {
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNext()) {
+                    if (scanner.nextLine().equals(text)) {
+                        result.add(element);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
