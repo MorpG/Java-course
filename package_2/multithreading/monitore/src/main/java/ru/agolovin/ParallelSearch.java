@@ -17,9 +17,21 @@ public class ParallelSearch {
 
     private List<String> result = new CopyOnWriteArrayList<>();
 
-    public void parallelSearch(String root, String text, List<String> exts) {
+    private List<String> listFiles = new CopyOnWriteArrayList<>();
+
+    public void parallelSearch(String root, String text, List<String> ext) {
         File[] files = new File(root).listFiles();
 
+    }
+
+    private void searchInDirectories(File file) {
+        for (final File element : file.listFiles()) {
+            if (element.isDirectory()) {
+                searchInDirectories(element);
+            } else {
+                listFiles.add(element.getAbsolutePath());
+            }
+        }
     }
 
     private void searchTextInFile(final String text, final List<String> fileList) {
