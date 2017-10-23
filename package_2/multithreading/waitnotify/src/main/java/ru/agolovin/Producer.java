@@ -9,11 +9,16 @@ import java.util.LinkedList;
  */
 
 public class Producer implements Runnable{
-    private LinkedList list;
+    private LinkedList<String> list;
 
     @Override
     public void run() {
-
+        int i = 0;
+        while (true) {
+            synchronized (list) {
+                while (true);
+            }
+        }
     }
 
     public Producer(LinkedList list) {
