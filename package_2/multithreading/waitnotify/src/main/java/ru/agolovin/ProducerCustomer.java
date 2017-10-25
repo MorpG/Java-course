@@ -3,8 +3,6 @@ package ru.agolovin;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static java.lang.Thread.sleep;
-
 /**
  * @author agolovin (agolovin@list.ru)
  * @version $Id$
@@ -13,30 +11,70 @@ import static java.lang.Thread.sleep;
 
 public class ProducerCustomer {
 
-    private int quant = 5;
+    /**
+     * Queue.
+     */
+    private final Queue<Integer> queue = new LinkedBlockingQueue<>();
 
+    /**
+     * Element amount.
+     */
+    private int amount;
+
+    /**
+     * Marker.
+     */
     private boolean flag = false;
 
-    private Queue<Integer> queue = new LinkedBlockingQueue<>();
-
-    public void init() {
-
+    /**
+     * Constructor.
+     *
+     * @param amount int
+     */
+    public ProducerCustomer(int amount) {
+        this.amount = amount;
     }
 
+    /**
+     * Main method.
+     *
+     * @param args String[]
+     */
+    public static void main(String[] args) {
+        new ProducerCustomer(20).init();
+    }
+
+    /**
+     * ProducerCustomer start.
+     */
+    private void init() {
+        Thread threadOne = this.producer();
+        Thread threadTwo = this.customer();
+        threadOne.start();
+        threadTwo.start();
+    }
+
+    /**
+     * Thread producer.
+     *
+     * @return Thread.
+     */
     private Thread producer() {
         Thread thread = new Thread(() -> {
-            for (int i = 0; i < quant; i++) {
+            int i = 0;
+            while (i < amount) {
                 synchronized (queue) {
-                    queue.add(i++);
+                    queue.add(i);
                     queue.notify();
                     System.out.println(String.format(
-                            "Thread %s added %s", Thread.currentThread().getId(), i));
+                            "Added %s by producer", i));
+                    i++;
                 }
-                if ( i == (quant - 1)) {
+                if (i == (amount - 1)) {
                     flag = true;
                 }
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(35);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -46,5 +84,27 @@ public class ProducerCustomer {
         return thread;
     }
 
+    /**
+     * Thread customer.
+     *
+     * @return Thread
+     */
+    private Thread customer() {
+        Thread thread = new Thread(() -> {
+            synchronized (queue) {
+                while (!flag) {
+                    while (queue.isEmpty()) {
+                        try {
+                            queue.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println(String.format("Removed %s by customer", queue.remove()));
+                }
+            }
+        });
+        return thread;
+    }
 
 }
