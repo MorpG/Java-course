@@ -79,9 +79,7 @@ public class ThreadPool {
                         }
                     }
                 }
-                synchronized (this.lock) {
-                    work = this.queue.poll();
-                }
+                work = this.queue.poll();
                 if (work != null) {
                     work.run();
                 }
@@ -107,9 +105,8 @@ public class ThreadPool {
     private void stopWork() {
         synchronized (this.lock) {
             this.lock.notifyAll();
-            this.flag = true;
-
         }
+        this.flag = true;
     }
 
     /**
