@@ -63,13 +63,11 @@ public class ProducerCustomer {
         Thread thread = new Thread(() -> {
             int i = 0;
             while (i < amount) {
-                synchronized (queue) {
                     queue.add(i);
                     queue.notify();
                     System.out.println(String.format(
                             "Added %s by producer", i));
                     i++;
-                }
                 if (i == (amount - 1)) {
                     flag = true;
                 }
@@ -91,7 +89,6 @@ public class ProducerCustomer {
      */
     private Thread customer() {
         Thread thread = new Thread(() -> {
-            synchronized (queue) {
                 while (!flag) {
                     while (queue.isEmpty()) {
                         try {
@@ -102,7 +99,6 @@ public class ProducerCustomer {
                     }
                     System.out.println(String.format("Removed %s by customer", queue.remove()));
                 }
-            }
         });
         return thread;
     }

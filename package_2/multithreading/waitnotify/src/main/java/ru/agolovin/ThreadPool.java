@@ -79,7 +79,7 @@ public class ThreadPool {
                         }
                     }
                 }
-                synchronized (this.queue) {
+                synchronized (this.lock) {
                     work = this.queue.poll();
                 }
                 if (work != null) {
@@ -95,8 +95,8 @@ public class ThreadPool {
      * @param work Work
      */
     private void addWork(Work work) {
+        this.queue.add(work);
         synchronized (this.lock) {
-            this.queue.add(work);
             this.lock.notifyAll();
         }
     }
