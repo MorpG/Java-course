@@ -6,5 +6,14 @@ package ru.agolovin;
  * @since 0.1
  */
 
-public class OplimisticException {
+public class OplimisticException extends RuntimeException {
+
+    /**
+     * Constructor.
+     *
+     * @param msg String
+     */
+    public OplimisticException(String msg) {
+        super(msg);
+    }
 }
