@@ -1,5 +1,6 @@
 package ru.agolovin;
 
+import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -21,7 +22,22 @@ public class Player implements Runnable {
 
     @Override
     public void run() {
+        this.lock.lock();
+        int xNew, yNew;
 
+        while (!flag) {
+            do {
+                xNew = this.xCell + new Random().nextInt(2);
+                yNew = this.yCell + new Random().nextInt(2);
+            } while (isCorrectMove(xNew, yNew));
+        }
+    }
+
+    public boolean isStopped() {
+        if (!this.flag) {
+            this.flag = true;
+        }
+        return true;
     }
 
     private boolean isCorrectMove(int xCell, int yCell) {
