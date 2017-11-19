@@ -1,6 +1,7 @@
 package ru.agolovin;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -11,14 +12,18 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Player implements Runnable {
 
-    private ReentrantLock[][] board;
+    private final ReentrantLock[][] board;
+    private final String name;
 
     private int xCell;
     private int yCell;
-
     private ReentrantLock lock;
-
     private boolean flag;
+
+    public Player(ReentrantLock[][] board, String name) {
+        this.board = board;
+        this.name = name;
+    }
 
     @Override
     public void run() {
@@ -30,8 +35,27 @@ public class Player implements Runnable {
                 xNew = this.xCell + new Random().nextInt(2);
                 yNew = this.yCell + new Random().nextInt(2);
             } while (isCorrectMove(xNew, yNew));
+            try {
+                if (this.board[xNew][yNew].
+                        tryLock(500, TimeUnit.MILLISECONDS)) {
+                    this.lock.unlock();
+                    this.lock = this.board[xNew][yNew];
+                    this.xCell = xNew;
+                    this.yCell = yNew;
+                    showCurrentPosition();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 
     public boolean isStopped() {
         if (!this.flag) {
@@ -49,5 +73,16 @@ public class Player implements Runnable {
         }
 
         return result;
+    }
+
+    private void showCurrentPosition() {
+        System.out.println(
+                String.format(
+                        "Bysu cell by %s now in %d, %d",
+                        this.name, this.xCell, this.yCell));
+    }
+
+    void  interrupt() {
+        this.flag = true;
     }
 }

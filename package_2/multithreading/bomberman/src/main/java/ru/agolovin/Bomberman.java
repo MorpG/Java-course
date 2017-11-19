@@ -32,4 +32,32 @@ public class Bomberman {
             }
         }
     }
+
+    private void init() {
+
+    }
+
+    public static void main(String[] args) {
+        int size = 7;
+        int bots = 2;
+        long time = 10_000;
+
+        Bomberman bomb = new Bomberman(7,2);
+        bomb.init();
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            bomb.stop();
+        }
+
+    }
+
+    private void stop() {
+        for (Player player : this.players) {
+            player.interrupt();
+        }
+
+    }
 }
