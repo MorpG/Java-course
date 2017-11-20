@@ -20,13 +20,14 @@ public class Player implements Runnable {
     private ReentrantLock lock;
     private boolean flag;
 
-    public Player(ReentrantLock[][] board, String name) {
+    Player(ReentrantLock[][] board, String name) {
         this.board = board;
         this.name = name;
     }
 
     @Override
     public void run() {
+        boolean marker;
         this.lock.lock();
         int xNew, yNew;
 
@@ -56,12 +57,10 @@ public class Player implements Runnable {
         }
     }
 
-
-    public boolean isStopped() {
-        if (!this.flag) {
-            this.flag = true;
-        }
-        return true;
+    void setPlayersPosition(ReentrantLock lock, int x, int y) {
+        this.lock = lock;
+        this.xCell = x;
+        this.yCell = y;
     }
 
     private boolean isCorrectMove(int xCell, int yCell) {
@@ -78,11 +77,11 @@ public class Player implements Runnable {
     private void showCurrentPosition() {
         System.out.println(
                 String.format(
-                        "Bysu cell by %s now in %d, %d",
+                        "Busy cell by %s now in %d, %d",
                         this.name, this.xCell, this.yCell));
     }
 
-    void  interrupt() {
+    void interrupt() {
         this.flag = true;
     }
 }
