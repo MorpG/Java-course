@@ -17,7 +17,7 @@ public class Bomberman {
     private final Player[] players;
     private final Boolean cellStatus[][];
 
-    Bomberman(int size, int bots) {
+    private Bomberman(int size, int bots) {
         this.size = size;
         this.board = new ReentrantLock[size][size];
         this.bots = bots;
@@ -52,23 +52,21 @@ public class Bomberman {
         prepareBoard();
         createPlayersOnBoard();
 
-        int count = this.bots - 1;
+        for (int i = 0; i < this.bots;){
 
-        while (count >= 0) {
+            int xCell = random.nextInt(this.size);
+            int yCell = random.nextInt(this.size);
 
-            int xCoord = random.nextInt(this.size);
-            int yCoord = random.nextInt(this.size);
-
-            if (!this.cellStatus[xCoord][yCoord]) {
-                this.players[count].
-                        setPlayersPosition(this.board[xCoord][yCoord],
-                                xCoord, yCoord);
-                this.cellStatus[xCoord][yCoord] = true;
+            if (!this.cellStatus[xCell][yCell]) {
+                this.players[i].
+                        setPlayersPosition(this.board[xCell][yCell],
+                                xCell, yCell);
+                this.cellStatus[xCell][yCell] = true;
                 System.out.println(
                         String.format(
-                                "Players %s set up in %d, %d",
-                                this.players[count], xCoord, yCoord));
-                count--;
+                                "Players %s start in %d, %d",
+                                this.players[i].getName(), xCell, yCell));
+                i++;
             }
         }
 
@@ -77,7 +75,7 @@ public class Bomberman {
 
     private void createPlayersOnBoard() {
         for (int i = 0; i < this.players.length; i++) {
-            this.players[i] = new Player(this.board, String.valueOf(i));
+            this.players[i] = new Player(this.board, Integer.toString(i));
         }
     }
 

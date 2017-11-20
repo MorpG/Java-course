@@ -25,17 +25,20 @@ public class Player implements Runnable {
         this.name = name;
     }
 
+    private int nexIter() {
+        return (new Random().nextInt(3) + (-1));
+    }
+
     @Override
     public void run() {
-        boolean marker;
         this.lock.lock();
         int xNew, yNew;
 
         while (!flag) {
             do {
-                xNew = this.xCell + new Random().nextInt(2);
-                yNew = this.yCell + new Random().nextInt(2);
-            } while (isCorrectMove(xNew, yNew));
+                xNew = this.xCell + nexIter();
+                yNew = this.yCell + nexIter();
+            } while (!isCorrectMove(xNew, yNew));
             try {
                 if (this.board[xNew][yNew].
                         tryLock(500, TimeUnit.MILLISECONDS)) {
@@ -55,6 +58,10 @@ public class Player implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    String getName() {
+        return this.name;
     }
 
     void setPlayersPosition(ReentrantLock lock, int x, int y) {
@@ -77,7 +84,7 @@ public class Player implements Runnable {
     private void showCurrentPosition() {
         System.out.println(
                 String.format(
-                        "Busy cell by %s now in %d, %d",
+                        "Busy cell by player %s in %d, %d",
                         this.name, this.xCell, this.yCell));
     }
 
