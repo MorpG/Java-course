@@ -35,18 +35,22 @@ public class Bomberman {
      */
     private final Boolean[][] cellStatus;
 
+    private final int blocks;
+
     /**
      * Constructor.
      *
      * @param size int
      * @param bots int
      */
-    private Bomberman(int size, int bots) {
+    private Bomberman(int size, int bots, int blocks) {
+
         this.size = size;
         this.board = new ReentrantLock[size][size];
         this.bots = bots;
         this.players = new Player[bots];
         this.cellStatus = new Boolean[size][size];
+        this.blocks = blocks;
     }
 
     /**
@@ -55,7 +59,7 @@ public class Bomberman {
      * @param args String[]
      */
     public static void main(String[] args) {
-        Bomberman bomb = new Bomberman(7, 2);
+        Bomberman bomb = new Bomberman(7, 2, 2);
         bomb.init();
         try {
             Thread.sleep(10_000);
@@ -87,7 +91,7 @@ public class Bomberman {
         prepareBoard();
         createPlayersOnBoard();
 
-        for (int i = 0; i < this.bots;) {
+        for (int i = 0; i < this.bots; ) {
 
             int xCell = random.nextInt(this.size);
             int yCell = random.nextInt(this.size);
@@ -104,8 +108,23 @@ public class Bomberman {
                 i++;
             }
         }
-
+        setUpBlockCell();
         createThreads();
+    }
+
+    private void setUpBlockCell() {
+        int xPos, yPos;
+        for (int i = 0; i < this.blocks; i++) {
+            xPos = getRandomCell(cellStatus);
+            yPos = getRandomCell(cellStatus);
+            if (cellStatus[xPos][yPos].equals(false)) {
+                cellStatus[xPos][yPos] = true;
+            }
+        }
+    }
+
+    private int getRandomCell(Boolean[][] cellStatus) {
+        return new Random().nextInt(cellStatus.length);
     }
 
     /**
