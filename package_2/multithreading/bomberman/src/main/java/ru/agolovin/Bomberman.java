@@ -66,7 +66,7 @@ public class Bomberman {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            bomb.stop();
+//            bomb.stop();
         }
 
     }
@@ -115,10 +115,10 @@ public class Bomberman {
     private void setUpBlockCell() {
         int xPos, yPos;
         for (int i = 0; i < this.blocks; i++) {
-            xPos = getRandomCell(cellStatus);
-            yPos = getRandomCell(cellStatus);
-            if (cellStatus[xPos][yPos].equals(false)) {
-                cellStatus[xPos][yPos] = true;
+            xPos = getRandomCell(this.cellStatus);
+            yPos = getRandomCell(this.cellStatus);
+            if (this.cellStatus[xPos][yPos].equals(false)) {
+                this.cellStatus[xPos][yPos] = true;
             }
         }
     }
@@ -132,7 +132,7 @@ public class Bomberman {
      */
     private void createPlayersOnBoard() {
         for (int i = 0; i < this.players.length; i++) {
-            this.players[i] = new Player(this.board, Integer.toString(i));
+//            this.players[i] = new Player(this.board, Integer.toString(i));
         }
     }
 
@@ -145,13 +145,13 @@ public class Bomberman {
         }
     }
 
-    /**
-     * Stop game.
-     */
-    private void stop() {
-        for (Player player : this.players) {
-            player.interrupt();
-        }
-
-    }
+//    /**
+//     * Stop game.
+//     */
+//    private void stop() {
+//        for (Player player : this.players) {
+//            player.interrupt();
+//        }
+//
+//    }
 }
