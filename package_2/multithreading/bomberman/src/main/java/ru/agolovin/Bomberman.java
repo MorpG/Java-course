@@ -11,38 +11,22 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Bomberman {
 
-    /**
-     * Concurrent game board.
-     */
+
     private final ReentrantLock[][] board;
-    /**
-     * Size game board.
-     */
+
     private final int size;
 
-    /**
-     * Number of players in the game.
-     */
+
     private final int bots;
 
-    /**
-     * Players array.
-     */
+
     private final Player[] players;
 
-    /**
-     * Cell status.
-     */
+
     private final Boolean[][] cellStatus;
 
     private final int blocks;
 
-    /**
-     * Constructor.
-     *
-     * @param size int
-     * @param bots int
-     */
     private Bomberman(int size, int bots, int blocks) {
 
         this.size = size;
@@ -53,11 +37,7 @@ public class Bomberman {
         this.blocks = blocks;
     }
 
-    /**
-     * Main method.
-     *
-     * @param args String[]
-     */
+
     public static void main(String[] args) {
         Bomberman bomb = new Bomberman(7, 2, 2);
         bomb.init();
@@ -71,9 +51,7 @@ public class Bomberman {
 
     }
 
-    /**
-     * Prepare game board.
-     */
+
     private void prepareBoard() {
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
@@ -83,9 +61,7 @@ public class Bomberman {
         }
     }
 
-    /**
-     * Initialization.
-     */
+
     private void init() {
         Random random = new Random();
         prepareBoard();
@@ -96,17 +72,17 @@ public class Bomberman {
             int xCell = random.nextInt(this.size);
             int yCell = random.nextInt(this.size);
 
-            if (!this.cellStatus[xCell][yCell]) {
-                this.players[i]
-                        .setPlayersPosition(this.board[xCell][yCell],
-                                xCell, yCell);
-                this.cellStatus[xCell][yCell] = true;
-                System.out.println(
-                        String.format(
-                                "Players %s start in %d, %d",
-                                this.players[i].getName(), xCell, yCell));
-                i++;
-            }
+//            if (!this.cellStatus[xCell][yCell]) {
+//                this.players[i]
+//                        .setPlayersPosition(this.board[xCell][yCell],
+//                                xCell, yCell);
+//                this.cellStatus[xCell][yCell] = true;
+//                System.out.println(
+//                        String.format(
+//                                "Players %s start in %d, %d",
+//                                this.players[i].getName(), xCell, yCell));
+//                i++;
+//            }
         }
         setUpBlockCell();
         createThreads();
@@ -127,31 +103,19 @@ public class Bomberman {
         return new Random().nextInt(cellStatus.length);
     }
 
-    /**
-     * Create players on board.
-     */
+
     private void createPlayersOnBoard() {
         for (int i = 0; i < this.players.length; i++) {
 //            this.players[i] = new Player(this.board, Integer.toString(i));
         }
     }
 
-    /**
-     * Start players running.
-     */
+
     private void createThreads() {
         for (Player player : this.players) {
             new Thread(player).start();
         }
     }
 
-//    /**
-//     * Stop game.
-//     */
-//    private void stop() {
-//        for (Player player : this.players) {
-//            player.interrupt();
-//        }
-//
-//    }
+
 }

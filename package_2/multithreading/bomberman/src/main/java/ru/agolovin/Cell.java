@@ -11,8 +11,9 @@ public class Cell {
     private int xCell;
     private int yCell;
     private volatile boolean isStop = false;
+    private Figure figure;
 
-    public Cell(int xCell, int yCell) {
+    Cell(int xCell, int yCell) {
         this.xCell = xCell;
         this.yCell = yCell;
     }
@@ -25,11 +26,21 @@ public class Cell {
         this.isStop = stop;
     }
 
-    public int getxCell() {
+    public int getXCell() {
         return this.xCell;
     }
 
-    public int getyCell() {
+    public int getYCell() {
         return this.yCell;
+    }
+
+    public Figure getFigure() {
+        synchronized (this) {
+            return figure;
+        }
+    }
+
+    public void setFigure(Figure figure) {
+        this.figure = figure;
     }
 }
