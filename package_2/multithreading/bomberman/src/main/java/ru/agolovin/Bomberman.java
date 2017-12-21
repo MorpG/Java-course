@@ -1,7 +1,6 @@
 package ru.agolovin;
 
 import java.util.Random;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author agolovin (agolovin@list.ru)
@@ -12,34 +11,34 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Bomberman {
 
 
-    private final ReentrantLock[][] board;
-
+    private static volatile boolean stop;
+    private final Cell[][] board;
     private final int size;
-
-
     private final int bots;
-
-
-    private final Player[] players;
-
-
-    private final Boolean[][] cellStatus;
-
     private final int blocks;
+    private Figure[] warriors;
+    private Random rnd;
 
     private Bomberman(int size, int bots, int blocks) {
 
         this.size = size;
-        this.board = new ReentrantLock[size][size];
+        this.board = new Cell[size][size];
         this.bots = bots;
-        this.players = new Player[bots];
-        this.cellStatus = new Boolean[size][size];
         this.blocks = blocks;
+        stop = false;
+        rnd = new Random();
     }
 
+    public static boolean isStop() {
+        return stop;
+    }
+
+    public static synchronized void setStop(boolean stop) {
+        Bomberman.stop = stop;
+    }
 
     public static void main(String[] args) {
-        Bomberman bomb = new Bomberman(7, 2, 2);
+        Bomberman bomb = new Bomberman(7, 3, 4);
         bomb.init();
         try {
             Thread.sleep(10_000);
@@ -51,69 +50,85 @@ public class Bomberman {
 
     }
 
+    private void setUpMonsters() {
+        this.warriors = new Warrior[this.bots];
+        Warrior warrior;
+        Cell cell;
+        int count = 0;
+        while (count != this.bots) {
+            cell = getRandomCell();
+            if (!cell.getIsStop() && cell.getFigure() == null) {
+                warrior = new Warrior(String.valueOf(count), this.board, cell);
+                this.warriors[count] = warrior;
+                count++;
+            }
+        }
+    }
 
     private void prepareBoard() {
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
-                this.board[i][j] = new ReentrantLock();
-                this.cellStatus[i][j] = false;
+                this.board[i][j] = new Cell(i, j);
             }
         }
     }
 
 
     private void init() {
-        Random random = new Random();
         prepareBoard();
-        createPlayersOnBoard();
-
-        for (int i = 0; i < this.bots; ) {
-
-            int xCell = random.nextInt(this.size);
-            int yCell = random.nextInt(this.size);
-
-//            if (!this.cellStatus[xCell][yCell]) {
-//                this.players[i]
-//                        .setPlayersPosition(this.board[xCell][yCell],
-//                                xCell, yCell);
-//                this.cellStatus[xCell][yCell] = true;
-//                System.out.println(
-//                        String.format(
-//                                "Players %s start in %d, %d",
-//                                this.players[i].getName(), xCell, yCell));
-//                i++;
-//            }
-        }
         setUpBlockCell();
+        createBomberman();
         createThreads();
+        setUpMonsters();
     }
 
+    private Player createBomberman() {
+        Player player = null;
+        Cell cell;
+        boolean result = false;
+        while (!result) {
+            cell = getRandomCell();
+            if (!cell.getIsStop() && cell.getFigure() == null) {
+                player = new Player("Bomberman", this.board, cell);
+                System.out.println(
+                        String.format("Bomberman %s setUp in %d, %d", player.id()
+                                , cell.getXCell(), cell.getYCell())
+                );
+                result = true;
+            }
+        }
+        return player;
+    }
+
+
     private void setUpBlockCell() {
-        int xPos, yPos;
-        for (int i = 0; i < this.blocks; i++) {
-            xPos = getRandomCell(this.cellStatus);
-            yPos = getRandomCell(this.cellStatus);
-            if (this.cellStatus[xPos][yPos].equals(false)) {
-                this.cellStatus[xPos][yPos] = true;
+        Cell cell;
+        int count = this.blocks;
+        while (count != 0) {
+            cell = getRandomCell();
+
+            if (!cell.getIsStop()) {
+                cell.setIsStop(true);
+                count--;
             }
         }
     }
 
-    private int getRandomCell(Boolean[][] cellStatus) {
-        return new Random().nextInt(cellStatus.length);
-    }
+    private Cell getRandomCell() {
 
+        int xCrd;
+        int yCrd;
+        xCrd = rnd.nextInt() * this.size;
+        yCrd = rnd.nextInt() * this.size;
 
-    private void createPlayersOnBoard() {
-        for (int i = 0; i < this.players.length; i++) {
-//            this.players[i] = new Player(this.board, Integer.toString(i));
-        }
+        return this.board[xCrd][yCrd];
     }
 
 
     private void createThreads() {
-        for (Player player : this.players) {
-            new Thread(player).start();
+        new Thread(this.createBomberman()).start();
+        for (Figure figure : this.warriors) {
+            new Thread(figure).start();
         }
     }
 

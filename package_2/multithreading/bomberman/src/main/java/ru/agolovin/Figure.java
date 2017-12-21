@@ -8,7 +8,7 @@ abstract class Figure implements Runnable {
     final Cell[][] board;
     Cell current;
 
-    public Figure(String name, Cell[][] board, Cell current) {
+    Figure(String name, Cell[][] board, Cell current) {
         this.name = name;
         this.board = board;
         this.current = current;
@@ -21,10 +21,10 @@ abstract class Figure implements Runnable {
     List<Cell> move(Cell out) {
         List<Cell> result = new ArrayList<>();
 
-        result.add(validateNextStep(out.getXCell() - 1, out.getYCell()));
         result.add(validateNextStep(out.getXCell() + 1, out.getYCell()));
-        result.add(validateNextStep(out.getXCell(), out.getYCell() - 1));
+        result.add(validateNextStep(out.getXCell() - 1, out.getYCell()));
         result.add(validateNextStep(out.getXCell(), out.getYCell() + 1));
+        result.add(validateNextStep(out.getXCell(), out.getYCell() - 1));
 
         return result;
     }
@@ -44,7 +44,7 @@ abstract class Figure implements Runnable {
         this.current = cell;
         this.current.setFigure(this);
         System.out.println(
-                String.format("%s %s is now in cell %d %d",
+                String.format("%s %s now in cell %d %d",
                         id(), this.getName(), this.current.getXCell(),
                         this.current.getYCell()));
     }
