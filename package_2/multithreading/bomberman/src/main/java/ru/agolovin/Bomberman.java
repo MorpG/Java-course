@@ -17,7 +17,6 @@ public class Bomberman {
     private final int bots;
     private final int blocks;
     private Figure[] warriors;
-    private Random rnd;
 
     private Bomberman(int size, int bots, int blocks) {
 
@@ -26,7 +25,6 @@ public class Bomberman {
         this.bots = bots;
         this.blocks = blocks;
         stop = false;
-        rnd = new Random();
     }
 
     public static boolean isStop() {
@@ -53,12 +51,12 @@ public class Bomberman {
     private void setUpMonsters() {
         this.warriors = new Warrior[this.bots];
         Warrior warrior;
-        Cell cell;
         int count = 0;
         while (count != this.bots) {
-            cell = getRandomCell();
-            if (!cell.getIsStop() && cell.getFigure() == null) {
-                warrior = new Warrior(String.valueOf(count), this.board, cell);
+            int x = getRandomNumber();
+            int y = getRandomNumber();
+            if (!this.board[x][y].getIsStop() && this.board[x][y].getFigure() == null) {
+                warrior = new Warrior(String.valueOf(count), this.board, this.board[x][y]);
                 this.warriors[count] = warrior;
                 count++;
             }
@@ -77,22 +75,21 @@ public class Bomberman {
     private void init() {
         prepareBoard();
         setUpBlockCell();
-        createBomberman();
-        createThreads();
         setUpMonsters();
+        createThreads();
     }
 
     private Player createBomberman() {
         Player player = null;
-        Cell cell;
         boolean result = false;
         while (!result) {
-            cell = getRandomCell();
-            if (!cell.getIsStop() && cell.getFigure() == null) {
-                player = new Player("Bomberman", this.board, cell);
+            int x = getRandomNumber();
+            int y = getRandomNumber();
+            if (!this.board[x][y].getIsStop() && this.board[x][y].getFigure() == null) {
+                player = new Player("Bomberman", this.board, this.board[x][y]);
                 System.out.println(
                         String.format("Bomberman %s setUp in %d, %d", player.id()
-                                , cell.getXCell(), cell.getYCell())
+                                , this.board[x][y].getXCell(), this.board[x][y].getYCell())
                 );
                 result = true;
             }
@@ -102,33 +99,31 @@ public class Bomberman {
 
 
     private void setUpBlockCell() {
-        Cell cell;
         int count = this.blocks;
         while (count != 0) {
-            cell = getRandomCell();
-
-            if (!cell.getIsStop()) {
-                cell.setIsStop(true);
+            int x = getRandomNumber();
+            int y = getRandomNumber();
+            if (!this.board[x][y].getIsStop()) {
+                this.board[x][y].setIsStop(true);
+                System.out.println(
+                        String.format(
+                                "Block setUp in %s, %s",
+                                this.board[x][y].getXCell(), this.board[x][y].getYCell()));
                 count--;
             }
         }
     }
 
-    private Cell getRandomCell() {
+    private int getRandomNumber() {
 
-        int xCrd;
-        int yCrd;
-        xCrd = rnd.nextInt() * this.size;
-        yCrd = rnd.nextInt() * this.size;
-
-        return this.board[xCrd][yCrd];
+        return (int) (Math.random() * this.size);   //rnd.nextInt(1) * this.size;
     }
 
 
     private void createThreads() {
         new Thread(this.createBomberman()).start();
-        for (Figure figure : this.warriors) {
-            new Thread(figure).start();
+        for (Figure warrior : this.warriors) {
+            new Thread(warrior).start();
         }
     }
 

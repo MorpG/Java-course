@@ -5,7 +5,7 @@ import java.util.List;
 
 abstract class Figure implements Runnable {
     final String name;
-    final Cell[][] board;
+    private final Cell[][] board;
     Cell current;
 
     Figure(String name, Cell[][] board, Cell current) {
@@ -30,12 +30,13 @@ abstract class Figure implements Runnable {
     }
 
     private Cell validateNextStep(int xCrd, int yCrd) {
-        Cell result;
+        Cell result = null;
         if ((xCrd < this.board.length && xCrd >= 0)
                 && (yCrd < this.board.length && yCrd >= 0)) {
             result = this.board[xCrd][yCrd];
-        } else
-            result = new Cell(-1, -1);
+        }
+//        else
+//            result = new Cell(-1, -1);
         return result;
     }
 

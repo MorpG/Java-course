@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Warrior extends Figure {
 
-    public Warrior(String name, Cell[][] board, Cell current) {
+    Warrior(String name, Cell[][] board, Cell current) {
         super(name, board, current);
     }
 
