@@ -18,9 +18,9 @@ public class Bomberman {
     private final int blocks;
     private Figure[] warriors;
     private Random random;
+    private Thread player;
 
     private Bomberman(int size, int bots, int blocks) {
-
         this.size = size;
         this.board = new Cell[size][size];
         this.bots = bots;
@@ -33,12 +33,12 @@ public class Bomberman {
         return stop;
     }
 
-    public static synchronized void setStop(boolean stop) {
+    public static void setStop(boolean stop) {
         Bomberman.stop = stop;
     }
 
     public static void main(String[] args) {
-        Bomberman bomb = new Bomberman(3, 2, 1);
+        Bomberman bomb = new Bomberman(3, 3, 1);
         bomb.init();
     }
 
@@ -71,6 +71,12 @@ public class Bomberman {
         setUpBlockCell();
         setUpMonsters();
         createThreads();
+        try {
+            player.join();
+            System.out.println("Game over");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private Player createBomberman() {
@@ -109,14 +115,15 @@ public class Bomberman {
     }
 
     private int getRandomNumber() {
-
         return random.nextInt(this.size);
     }
 
     private void createThreads() {
-        new Thread(this.createBomberman()).start();
+        this.player = new Thread(this.createBomberman());
+        this.player.start();
         for (Figure warrior : this.warriors) {
             new Thread(warrior).start();
         }
+
     }
 }
