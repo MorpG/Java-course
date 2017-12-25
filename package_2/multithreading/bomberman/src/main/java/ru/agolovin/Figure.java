@@ -35,12 +35,10 @@ abstract class Figure implements Runnable {
                 && (yCrd < this.board.length && yCrd >= 0)) {
             result = this.board[xCrd][yCrd];
         }
-//        else
-//            result = new Cell(-1, -1);
         return result;
     }
 
-    synchronized void tryStep(Cell cell) {
+    synchronized void tryMakeStep(Cell cell) {
         this.current.setFigure(null);
         this.current = cell;
         this.current.setFigure(this);

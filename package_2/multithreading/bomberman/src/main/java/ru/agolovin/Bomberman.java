@@ -17,6 +17,7 @@ public class Bomberman {
     private final int bots;
     private final int blocks;
     private Figure[] warriors;
+    private Random random;
 
     private Bomberman(int size, int bots, int blocks) {
 
@@ -25,9 +26,10 @@ public class Bomberman {
         this.bots = bots;
         this.blocks = blocks;
         stop = false;
+        this.random = new Random();
     }
 
-    public static boolean isStop() {
+    public synchronized static boolean isStop() {
         return stop;
     }
 
@@ -36,16 +38,8 @@ public class Bomberman {
     }
 
     public static void main(String[] args) {
-        Bomberman bomb = new Bomberman(7, 3, 4);
+        Bomberman bomb = new Bomberman(3, 2, 1);
         bomb.init();
-        try {
-            Thread.sleep(10_000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-//            bomb.stop();
-        }
-
     }
 
     private void setUpMonsters() {
@@ -86,10 +80,10 @@ public class Bomberman {
             int x = getRandomNumber();
             int y = getRandomNumber();
             if (!this.board[x][y].getIsStop() && this.board[x][y].getFigure() == null) {
-                player = new Player("Bomberman", this.board, this.board[x][y]);
+                player = new Player("0", this.board, this.board[x][y]);
                 System.out.println(
-                        String.format("Bomberman %s setUp in %d, %d", player.id()
-                                , this.board[x][y].getXCell(), this.board[x][y].getYCell())
+                        String.format("Bomberman %s start game in %d, %d", player.id(),
+                                this.board[x][y].getXCell(), this.board[x][y].getYCell())
                 );
                 result = true;
             }
@@ -116,9 +110,8 @@ public class Bomberman {
 
     private int getRandomNumber() {
 
-        return (int) (Math.random() * this.size);   //rnd.nextInt(1) * this.size;
+        return random.nextInt(this.size);
     }
-
 
     private void createThreads() {
         new Thread(this.createBomberman()).start();
@@ -126,6 +119,4 @@ public class Bomberman {
             new Thread(warrior).start();
         }
     }
-
-
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Player extends Figure {
 
-    public Player(String name, Cell[][] board, Cell cell) {
+    Player(String name, Cell[][] board, Cell cell) {
         super(name, board, cell);
     }
 
@@ -26,6 +26,7 @@ public class Player extends Figure {
 
     @Override
     public void run() {
+        System.out.println("Bomberman start moving");
         List<Cell> allowed;
 
         while (!Bomberman.isStop()) {
@@ -34,23 +35,23 @@ public class Player extends Figure {
                 if (element != null) {
                     synchronized (element) {
                         if (!element.getIsStop() && element.getFigure() == null) {
-                            tryStep(element);
+                            tryMakeStep(element);
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            break;
+                            if (Bomberman.isStop()) {
+                                Thread.interrupted();
+                                break;
+                            }
                         }
                     }
                 }
-            }
-            if (Bomberman.isStop()) {
-                break;
+                if (Bomberman.isStop()) {
+                    break;
+                }
             }
         }
-
     }
-
-
 }

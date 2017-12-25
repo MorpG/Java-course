@@ -21,6 +21,7 @@ public class Warrior extends Figure {
 
     @Override
     public void run() {
+        System.out.println(String.format("Warrior %s start", this.name));
         List<Cell> allowed;
         Random rnd;
 
@@ -37,15 +38,13 @@ public class Warrior extends Figure {
                         Cell dest = allowed.get(select);
                         synchronized (dest) {
                             if (!dest.getIsStop() && dest.getFigure() == null) {
-                                tryStep(dest);
+                                tryMakeStep(dest);
                                 break;
                             } else if (dest.getFigure() != null
-                                    && dest.getFigure().id().equals(
-                                    "Bomberman")) {
-                                System.out.println("Game over");
+                                    && dest.getFigure().id().equals("Bomberman")) {
+                                System.out.println(String.format("Warrior %s damage player", this.getName()));
                                 Bomberman.setStop(true);
                                 break;
-
                             }
                             if (dest.getFigure() != null
                                     && dest.getFigure().id().equals("Warrior")) {
@@ -59,7 +58,6 @@ public class Warrior extends Figure {
                                 }
 
                             }
-
                         }
                     }
                 }
