@@ -5,12 +5,19 @@ import java.util.Random;
 
 public class Warrior extends Figure {
 
+    /**
+     * Constructor.
+     *
+     * @param name    String
+     * @param board   Cell[][]
+     * @param current Cell
+     */
     Warrior(String name, Cell[][] board, Cell current) {
         super(name, board, current);
     }
 
     @Override
-    String id() {
+    String type() {
         return "Warrior";
     }
 
@@ -32,17 +39,17 @@ public class Warrior extends Figure {
                 if (allowed.get(select) != null) {
                     Cell dest = allowed.get(select);
                     synchronized (dest) {
-                        if (!dest.getIsStop() && dest.getFigure() == null) {
+                        if (dest.getIsStop() && dest.getFigure() == null) {
                             tryMakeStep(dest);
                             break;
                         } else if (dest.getFigure() != null
-                                && dest.getFigure().id().equals("Bomberman")) {
+                                && dest.getFigure().type().equals("Bomberman")) {
                             System.out.println(String.format("Warrior %s damage player", this.getName()));
                             Bomberman.setStop(true);
                             break;
                         }
                         if (dest.getFigure() != null
-                                && dest.getFigure().id().equals("Warrior") && !Bomberman.isStop()) {
+                                && dest.getFigure().type().equals("Warrior") && !Bomberman.isStop()) {
                             try {
                                 Thread.sleep(5000);
                                 System.out.println(

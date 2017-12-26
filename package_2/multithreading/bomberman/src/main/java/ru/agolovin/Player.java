@@ -10,13 +10,20 @@ import java.util.List;
 
 public class Player extends Figure {
 
+    /**
+     * Constructor.
+     *
+     * @param name  String
+     * @param board Cell[][]
+     * @param cell  Cell
+     */
     Player(String name, Cell[][] board, Cell cell) {
         super(name, board, cell);
     }
 
 
     @Override
-    String id() {
+    String type() {
         return "Bomberman";
     }
 
@@ -34,7 +41,7 @@ public class Player extends Figure {
             for (Cell element : allowed) {
                 if (element != null) {
                     synchronized (element) {
-                        if (!element.getIsStop() && element.getFigure() == null) {
+                        if (element.getIsStop() && element.getFigure() == null) {
                             tryMakeStep(element);
                             try {
                                 Thread.sleep(1000);
