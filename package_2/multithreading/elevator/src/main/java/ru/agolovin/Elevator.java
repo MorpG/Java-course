@@ -2,14 +2,25 @@ package ru.agolovin;
 
 //Симулятор лифта
 
-public class Elevator {
+public class Elevator implements Runnable{
 
+    private int maxFloor;
+    private int height;
     private int speed;
+    private int stopTime;
 
     private int currentFloor;
 
-    private int maxFloor;
+    public Elevator(int maxFloor, int height, int speed, int stopTime) {
+        this.maxFloor = maxFloor;
+        this.height = height;
+        this.speed = speed;
+        this.stopTime = stopTime;
+    }
 
-    private int stopTime;
 
+    @Override
+    public void run() {
+
+    }
 }
