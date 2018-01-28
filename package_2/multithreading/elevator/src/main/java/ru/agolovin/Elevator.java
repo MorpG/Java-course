@@ -25,17 +25,16 @@ public class Elevator implements Runnable {
 
     private void init() {
         this.currentFloor = 1;
-
     }
 
-    private int speedDelay() {
+    private float speedDelay() {
         return height / speed;
     }
 
     @Override
     public void run() {
         do {
-            move(targetFloor);
+            move(getFloorByPriority());
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -43,6 +42,20 @@ public class Elevator implements Runnable {
             }
 
         } while (allowed);
+    }
+
+    private int getFloorByPriority() {
+        int temp = -1, result = -1;
+
+        for (int iter : calls) {
+            int div = Math.abs(iter - currentFloor);
+            if (div < temp) {
+                temp = div;
+                result = iter;
+            }
+        }
+
+        return result;
     }
 
     private void move(int targetFloor) {
@@ -72,13 +85,13 @@ public class Elevator implements Runnable {
     private void moveDown(int targetFloor) throws InterruptedException {
         for (int i = currentFloor; i > targetFloor; i--) {
             messageCurrentFloor(i);
-            TimeUnit.SECONDS.sleep(speedDelay());
+            TimeUnit.SECONDS.sleep((int)speedDelay());
         }
     }
 
     private void moveUP(int targetFloor) throws InterruptedException {
         for (int i = currentFloor; i < targetFloor; i++) {
-            TimeUnit.SECONDS.sleep(speedDelay());
+            TimeUnit.SECONDS.sleep((int)speedDelay());
             messageCurrentFloor(i);
         }
 

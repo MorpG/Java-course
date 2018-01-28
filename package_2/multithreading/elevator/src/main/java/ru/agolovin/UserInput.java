@@ -3,11 +3,14 @@ package ru.agolovin;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class UserInput implements Runnable {
 
     private int maxFloor;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private ConcurrentSkipListSet<Integer> callsInside = new ConcurrentSkipListSet<>();
+    private ConcurrentSkipListSet<Integer> callsOutside = new ConcurrentSkipListSet<>();
 
     @Override
     public void run() {
