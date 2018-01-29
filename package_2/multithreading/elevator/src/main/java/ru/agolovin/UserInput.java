@@ -3,18 +3,25 @@ package ru.agolovin;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class UserInput implements Runnable {
 
     private int maxFloor;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private ConcurrentSkipListSet<Integer> callsInside = new ConcurrentSkipListSet<>();
-    private ConcurrentSkipListSet<Integer> callsOutside = new ConcurrentSkipListSet<>();
+    private PriorityBlockingQueue<Integer> calls;
+
+    public UserInput(int maxFloor, PriorityBlockingQueue<Integer> calls) {
+        this.maxFloor = maxFloor;
+        this.calls = calls;
+    }
 
     @Override
     public void run() {
-        ask("S");
+//        do {
+//            //if () {};
+//            ask("S");
+//        } while ()
     }
 
     public int ask(String s) {

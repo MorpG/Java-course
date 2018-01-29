@@ -2,7 +2,7 @@ package ru.agolovin;
 
 //Симулятор лифта
 
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Elevator implements Runnable {
@@ -13,29 +13,21 @@ public class Elevator implements Runnable {
     private int maxFloor;
     private int currentFloor;
     private boolean allowed;
-    private ConcurrentSkipListSet<Integer> calls;
+    private PriorityBlockingQueue<Integer> calls;
 
-    public Elevator(int maxFloor, int height, int speed, int stopTime) {
+    public Elevator(int maxFloor, int height, int speed, int stopTime, PriorityBlockingQueue<Integer> calls) {
         this.maxFloor = maxFloor;
         this.height = height;
         this.speed = speed;
         this.stopTime = stopTime;
-        calls = new ConcurrentSkipListSet<>();
+        this.calls = calls;
     }
 
     private void init() {
         this.currentFloor = 1;
-    }
-
-    private float speedDelay() {
-        return height / speed;
-    }
-
-    @Override
-    public void run() {
         do {
-            move(getFloorByPriority());
             try {
+                move(calls.take());
                 Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -44,23 +36,14 @@ public class Elevator implements Runnable {
         } while (allowed);
     }
 
-    private int getFloorByPriority() {
-        int temp = -1, result = -1;
 
-        for (int iter : calls) {
-            int div = Math.abs(iter - currentFloor);
-            if (div < temp) {
-                temp = div;
-                result = iter;
-            }
-        }
-
-        return result;
+    @Override
+    public void run() {
+        init();
     }
 
     private void move(int targetFloor) {
         try {
-            targetFloor--;
             if (targetFloor == 0) {
                 this.allowed = false;
             }
@@ -83,28 +66,32 @@ public class Elevator implements Runnable {
     }
 
     private void moveDown(int targetFloor) throws InterruptedException {
-        for (int i = currentFloor; i > targetFloor; i--) {
+        for (int i = currentFloor; i >= targetFloor; i--) {
             messageCurrentFloor(i);
-            TimeUnit.SECONDS.sleep((int)speedDelay());
+            TimeUnit.MICROSECONDS.sleep(speedDelay());
         }
     }
 
     private void moveUP(int targetFloor) throws InterruptedException {
-        for (int i = currentFloor; i < targetFloor; i++) {
-            TimeUnit.SECONDS.sleep((int)speedDelay());
+        for (int i = currentFloor; i <= targetFloor; i++) {
             messageCurrentFloor(i);
+            TimeUnit.MICROSECONDS.sleep(speedDelay());
         }
 
     }
 
+    private int speedDelay() {
+        return height / speed;
+    }
+
     private void turnDoor() {
+        System.out.println("Лифт открывает двери");
         try {
-            System.out.println("Лифт открывает двери");
             TimeUnit.SECONDS.sleep(stopTime);
-            System.out.println("Лифт закрывает двери");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("Лифт закрывает двери");
     }
 
     private void messageCurrentFloor(int i) {
