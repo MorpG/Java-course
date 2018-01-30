@@ -11,20 +11,27 @@ public class UserInput implements Runnable {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private PriorityBlockingQueue<Integer> calls;
 
-    public UserInput(int maxFloor, PriorityBlockingQueue<Integer> calls) {
+    UserInput(int maxFloor, PriorityBlockingQueue<Integer> calls) {
         this.maxFloor = maxFloor;
         this.calls = calls;
     }
 
     @Override
     public void run() {
-//        do {
-//            //if () {};
-//            ask("S");
-//        } while ()
+        boolean flag = true;
+        do {
+            System.out.println("1 - Вызов из кабины");
+            System.out.println("2 - Вызов с этажа");
+            System.out.println("0 - Остановка прогрраммы");
+            int a = ask("Введите этаж");
+            calls.put(a);
+            if (a == 0) {
+                flag = false;
+            }
+        } while (flag);
     }
 
-    public int ask(String s) {
+    private int ask(String s) {
         boolean flag = false;
         int level = -1;
         System.out.println(s);
