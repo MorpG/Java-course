@@ -47,7 +47,7 @@ public class UserInput implements Runnable {
                 if (level >= 0 && level <= maxFloor) {
                     flag = true;
                 } else {
-                    System.out.println("Несущестующий этаж");
+                    System.out.println("Несуществующий этаж");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
