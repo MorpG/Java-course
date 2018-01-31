@@ -22,7 +22,7 @@ public class UserInput implements Runnable {
         do {
             System.out.println("1 - Вызов из кабины");
             System.out.println("2 - Вызов с этажа");
-            System.out.println("0 - Остановка прогрраммы");
+            System.out.println("0 - Остановка программы");
             int a = ask("Введите этаж");
             calls.put(a);
             if (a == 0) {
@@ -44,7 +44,7 @@ public class UserInput implements Runnable {
                     System.out.println("Ошибка ввода");
                     continue;
                 }
-                if (level > 0 && level <= maxFloor) {
+                if (level >= 0 && level <= maxFloor) {
                     flag = true;
                 } else {
                     System.out.println("Несущестующий этаж");
@@ -52,7 +52,7 @@ public class UserInput implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } while (flag);
+        } while (!flag);
         return level;
     }
 

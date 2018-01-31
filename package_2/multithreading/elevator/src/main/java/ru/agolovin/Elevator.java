@@ -10,25 +10,29 @@ public class Elevator implements Runnable {
     private final int height;
     private final int speed;
     private final int stopTime;
-    private int maxFloor;
     private int currentFloor;
     private boolean allowed;
     private PriorityBlockingQueue<Integer> calls;
 
-    public Elevator(int maxFloor, int height, int speed, int stopTime, PriorityBlockingQueue<Integer> calls) {
-        this.maxFloor = maxFloor;
+    Elevator(int height, int speed, int stopTime, PriorityBlockingQueue<Integer> calls) {
         this.height = height;
         this.speed = speed;
         this.stopTime = stopTime;
         this.calls = calls;
+        this.allowed = true;
     }
 
     private void init() {
         this.currentFloor = 1;
         do {
             try {
-                move(calls.take());
-                Thread.sleep(200);
+                if (!calls.isEmpty()) {
+                    move(calls.take());
+                    Thread.sleep(200);
+                } else {
+                    TimeUnit.SECONDS.sleep(1);
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

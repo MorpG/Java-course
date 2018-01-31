@@ -28,7 +28,7 @@ public class ElevatorMain {
         int waitingTime = Integer.parseInt(args[3]);
         PriorityBlockingQueue<Integer> calls = new PriorityBlockingQueue<>();
 
-        Elevator elevator = new Elevator(maxFloor, heightLevel, speed, waitingTime, calls);
+        Elevator elevator = new Elevator(heightLevel, speed, waitingTime, calls);
         UserInput input = new UserInput(maxFloor, calls);
         ElevatorMain elevatorMain = new ElevatorMain(elevator, input);
         elevatorMain.startMain();
