@@ -2,17 +2,40 @@ package ru.agolovin;
 
 import java.util.concurrent.PriorityBlockingQueue;
 
+/**
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
+ */
+
 public class ElevatorMain {
 
+    /**
+     * Лифт.
+     */
     private Elevator elevator;
 
+    /**
+     * Ввод данных.
+     */
     private UserInput input;
 
+    /**
+     * Конструктор.
+     *
+     * @param elevator Elevator
+     * @param input    UserInput
+     */
     private ElevatorMain(Elevator elevator, UserInput input) {
         this.elevator = elevator;
         this.input = input;
     }
 
+    /**
+     * Main.
+     *
+     * @param args String[]
+     */
     public static void main(String[] args) {
         try {
             if (args.length < 4) {
@@ -34,6 +57,9 @@ public class ElevatorMain {
         elevatorMain.startMain();
     }
 
+    /**
+     * Запуск.
+     */
     private void startMain() {
         new Thread(this.elevator).start();
         new Thread(this.input).start();

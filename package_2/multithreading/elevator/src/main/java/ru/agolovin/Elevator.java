@@ -5,15 +5,52 @@ package ru.agolovin;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author agolovin (agolovin@list.ru)
+ * @version $Id$
+ * @since 0.1
+ */
+
 public class Elevator implements Runnable {
 
+    /**
+     * Высота этажа.
+     */
     private final int height;
+
+    /**
+     * Скорость лифта.
+     */
     private final int speed;
+
+    /**
+     * Время между открытием и закрытием дверей
+     */
     private final int stopTime;
+
+    /**
+     * Текущий этаж.
+     */
     private int currentFloor;
+
+    /**
+     * Текущий этаж.
+     */
     private boolean allowed;
+
+    /**
+     * Очередь заявок.
+     */
     private PriorityBlockingQueue<Integer> calls;
 
+    /**
+     * Конструктор.
+     *
+     * @param height   int
+     * @param speed    int
+     * @param stopTime int
+     * @param calls    PriorityBlockingQueue
+     */
     Elevator(int height, int speed, int stopTime, PriorityBlockingQueue<Integer> calls) {
         this.height = height;
         this.speed = speed;
@@ -22,6 +59,9 @@ public class Elevator implements Runnable {
         this.allowed = true;
     }
 
+    /**
+     * Инициализация метода.
+     */
     private void init() {
         this.currentFloor = 1;
         do {
@@ -46,6 +86,11 @@ public class Elevator implements Runnable {
         init();
     }
 
+    /**
+     * Перемещение лифта между этажами.
+     *
+     * @param targetFloor int
+     */
     private void move(int targetFloor) {
         try {
             if (targetFloor == 0) {
@@ -69,6 +114,12 @@ public class Elevator implements Runnable {
         }
     }
 
+    /**
+     * Смещение лифта вниз.
+     *
+     * @param targetFloor int
+     * @throws InterruptedException Exception
+     */
     private void moveDown(int targetFloor) throws InterruptedException {
         for (int i = currentFloor; i >= targetFloor; i--) {
             messageCurrentFloor(i);
@@ -76,6 +127,12 @@ public class Elevator implements Runnable {
         }
     }
 
+    /**
+     * Смещение лифта вверх.
+     *
+     * @param targetFloor int
+     * @throws InterruptedException Exception
+     */
     private void moveUP(int targetFloor) throws InterruptedException {
         for (int i = currentFloor; i <= targetFloor; i++) {
             messageCurrentFloor(i);
@@ -84,10 +141,18 @@ public class Elevator implements Runnable {
 
     }
 
+    /**
+     * Временная пауза.
+     *
+     * @return int
+     */
     private int speedDelay() {
         return height / speed;
     }
 
+    /**
+     * Открытие/закрытие дверей.
+     */
     private void turnDoor() {
         System.out.println("Лифт открывает двери");
         try {
@@ -98,6 +163,11 @@ public class Elevator implements Runnable {
         System.out.println("Лифт закрывает двери");
     }
 
+    /**
+     * Отображение текущего этажа.
+     *
+     * @param i int
+     */
     private void messageCurrentFloor(int i) {
         System.out.println(String.format("Лифт проехал %d этаж", i));
     }
