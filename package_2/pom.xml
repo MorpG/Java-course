@@ -12,5 +12,6 @@
     <modules>
         <module>chapter_005_pro</module>
         <module>multithreading</module>
+        <module>sql</module>
     </modules>
 </project>
