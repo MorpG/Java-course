@@ -1,10 +1,19 @@
 package ru.agolovin.start;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.agolovin.models.Filter;
 import ru.agolovin.models.Item;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -17,17 +26,63 @@ import java.util.Random;
  * @version $Id$
  * @since 0.1
  */
-public class Tracker {
-
+public class Tracker implements AutoCloseable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Tracker.class);
     /**
      * RN Random.
      */
     private static final Random RN = new Random();
-
+    private static final String DB_CONF_PROPERTIES = "db_conf.properties";
+    private Properties properties;
+    private Connection connection;
     /**
      * List Items.
      */
     private List<Item> items = new ArrayList<>();
+
+//    public void init() {
+//        try (InputStream reader = getClass().getClassLoader().getResourceAsStream(DB_CONF_PROPERTIES)) {
+//            this.properties = new Properties();
+//            this.properties.load(reader);
+//            try (PreparedStatement preparedStatement = connect("create")) {
+//                preparedStatement.execute();
+//            }
+//        } catch (IOException | SQLException e) {
+//            LOGGER.error(e.getMessage(), e);
+//        } finally {
+//            try {
+//                this.close();
+//            } catch (Exception e) {
+//                LOGGER.error(e.getMessage(), e);
+//            }
+//        }
+//    }
+//
+//    private PreparedStatement connect(String s) {
+//        PreparedStatement temp = null;
+//        try {
+//            this.connection = DriverManager.getConnection(
+//                    this.properties.getProperty("url"),
+//                    this.properties.getProperty("username"),
+//                    this.properties.getProperty("password")
+//            );
+//        } catch (SQLException e) {
+//            LOGGER.error(e.getMessage(), e);
+//        }
+//        return temp;
+//    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (this.connection != null) {
+                this.connection.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+    }
 
     /**
      * add Item into tacker.
@@ -36,7 +91,14 @@ public class Tracker {
      */
     final void addItem(final Item item) {
         item.setId(this.generateId());
-        this.items.add(item);
+        try (PreparedStatement ps = this.connection.prepareStatement("insert into items (id, name, description) values (?, ?, ?)")) {
+            ps.setString(1, item.getId());
+            ps.setString(2, item.getName());
+            ps.setString(3, item.getDescription());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     /**
