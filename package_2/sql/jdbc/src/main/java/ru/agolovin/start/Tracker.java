@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -33,7 +34,7 @@ public class Tracker implements AutoCloseable {
      * RN Random.
      */
     private static final Random RN = new Random();
-    private static final String DB_CONF_PROPERTIES = "db_conf.properties";
+    private static final String DB_PROPERTIES = "db.properties";
     private Properties properties;
     private Connection connection;
     /**
@@ -41,8 +42,13 @@ public class Tracker implements AutoCloseable {
      */
     private List<Item> items = new ArrayList<>();
 
-    public void initProperties() {
-        try (InputStream reader = getClass().getClassLoader().getResourceAsStream(DB_CONF_PROPERTIES)) {
+    public Tracker() {
+        this.initProperties();
+        this.prepareData();
+    }
+
+    private void initProperties() {
+        try (InputStream reader = getClass().getClassLoader().getResourceAsStream(DB_PROPERTIES)) {
             this.properties = new Properties();
             try {
                 this.connection = DriverManager.getConnection(
@@ -65,7 +71,7 @@ public class Tracker implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         try {
             if (this.connection != null) {
                 this.connection.close();
@@ -74,6 +80,15 @@ public class Tracker implements AutoCloseable {
             LOGGER.error(e.getMessage(), e);
         }
 
+    }
+
+    private void prepareData() {
+        try (Statement statement = this.connection.createStatement()) {
+            statement.execute("CREATE TABLE IF NOT EXISTS items (id VARCHAR(20), name VARCHAR(120), description TEXT);");
+            statement.execute("DELETE FROM items");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -114,11 +129,11 @@ public class Tracker implements AutoCloseable {
      * @param item Item
      */
     final void deleteItem(final Item item) {
-        try (PreparedStatement ps = this.connection.prepareStatement("delete from items where id = ?")) {
+        try (PreparedStatement ps = this.connection.prepareStatement("DELETE FROM items WHERE id = ?")) {
             ps.setString(1, item.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -155,7 +170,7 @@ public class Tracker implements AutoCloseable {
      */
     final List<Item> getAll() {
         List<Item> result = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement("select * from items")) {
+        try (PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM items")) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Item item = new Item(resultSet.getString(2), resultSet.getString(3), 123l);

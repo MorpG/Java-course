@@ -38,6 +38,7 @@ public class TrackerTest {
         tracker.addItem(item);
         result.add(item);
         assertThat(tracker.getAll(), is(result));
+        tracker.close();
 
     }
 
