@@ -36,7 +36,7 @@ class EditItem extends BaseAction {
         long timeCreate = MenuTracker.setTimeCreate(input);
         Item item = new Item(name, desc, timeCreate);
         item.setId(id);
-        tracker.updateItem(item);
+//        tracker.updateItem(item);
     }
 
 }

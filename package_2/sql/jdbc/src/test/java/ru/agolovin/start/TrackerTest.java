@@ -39,7 +39,6 @@ public class TrackerTest {
         result.add(item);
         assertThat(tracker.getAll(), is(result));
         tracker.close();
-
     }
 
     /**
@@ -50,9 +49,11 @@ public class TrackerTest {
         Item item = new Item("testName", "testDescription", 1);
         Item updateItem = new Item("updateName", "updateDescription", 2);
         tracker.addItem(item);
-        updateItem.setId(tracker.findById(item.getId()).getId());
+        String id = tracker.findById(item.getId()).getId();
+        updateItem.setId(id);
         tracker.updateItem(updateItem);
         result.add(updateItem);
+        List<Item> temp = tracker.getAll();
         assertThat(tracker.getAll(), is(result));
 
     }

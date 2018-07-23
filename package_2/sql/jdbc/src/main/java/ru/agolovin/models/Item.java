@@ -1,5 +1,7 @@
 package ru.agolovin.models;
 
+import java.util.Objects;
+
 /**
  * Base Item methods.
  *
@@ -107,4 +109,23 @@ public class Item {
     public final void setId(final String sId) {
         this.id = sId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return timeCreate == item.timeCreate &&
+                Objects.equals(id, item.id) &&
+                Objects.equals(name, item.name) &&
+                Objects.equals(description, item.description);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, description, timeCreate);
+    }
 }
+
+
