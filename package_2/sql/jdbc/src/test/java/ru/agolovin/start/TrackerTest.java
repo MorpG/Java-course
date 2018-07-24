@@ -37,6 +37,7 @@ public class TrackerTest {
         Item item = new Item("testName", "testDescription", 1);
         tracker.addItem(item);
         result.add(item);
+        List<Item> temp = tracker.getAll();
         assertThat(tracker.getAll(), is(result));
         tracker.close();
     }
@@ -53,8 +54,8 @@ public class TrackerTest {
         updateItem.setId(id);
         tracker.updateItem(updateItem);
         result.add(updateItem);
-        List<Item> temp = tracker.getAll();
         assertThat(tracker.getAll(), is(result));
+        tracker.close();
 
     }
 

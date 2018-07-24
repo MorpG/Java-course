@@ -96,7 +96,11 @@ public class Tracker implements AutoCloseable {
 
     private void prepareData() {
         try (Statement statement = this.connection.createStatement()) {
-            statement.execute("CREATE TABLE IF NOT EXISTS items (id VARCHAR(20), name VARCHAR(120), description TEXT, timeCreate BIGINT);");
+            statement.execute(
+                    "CREATE TABLE IF NOT EXISTS items (" +
+                            "id CHARACTER VARYING(50) PRIMARY KEY, name CHARACTER VARYING(50)," +
+                            " description CHARACTER VARYING(50), " +
+                            "timeCreate BIGINT);");
             statement.execute("DELETE FROM items");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,12 +138,11 @@ public class Tracker implements AutoCloseable {
     final void updateItem(final Item item) {
         try (PreparedStatement ps = this.connection.prepareStatement
                 ("UPDATE items SET name = ?, description = ?, timeCreate = ? WHERE id = ?")) {
-            ps.setString(1, item.getId());
-            ps.setString(2, item.getName());
-            ps.setString(3, item.getDescription());
-            ps.setLong(4, item.getTimeCreate());
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getDescription());
+            ps.setLong(3, item.getTimeCreate());
+            ps.setString(4, item.getId());
             ps.executeUpdate();
-//            addToItem(item, ps);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
