@@ -13,28 +13,28 @@ import java.util.Objects;
 public class Item {
     /**
      * variable class Item.
-     *
+     * <p>
      * id String.
      */
     private String id;
 
     /**
      * variable class Item.
-     *
+     * <p>
      * name String.
      */
     private String name;
 
     /**
      * variable class Item.
-     *
+     * <p>
      * description String.
      */
     private String description;
 
     /**
      * variable class Item.
-     *
+     * <p>
      * timeCreate long.
      */
     private long timeCreate;
@@ -112,13 +112,17 @@ public class Item {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Item item = (Item) o;
-        return timeCreate == item.timeCreate &&
-                Objects.equals(id, item.id) &&
-                Objects.equals(name, item.name) &&
-                Objects.equals(description, item.description);
+        return timeCreate == item.timeCreate
+                && Objects.equals(id, item.id)
+                && Objects.equals(name, item.name)
+                && Objects.equals(description, item.description);
     }
 
     @Override
