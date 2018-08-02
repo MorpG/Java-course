@@ -104,8 +104,6 @@ public class Tracker implements AutoCloseable {
             statement.execute("DELETE FROM items");
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            close();
         }
     }
 
@@ -115,7 +113,6 @@ public class Tracker implements AutoCloseable {
      * @param item Item
      */
     final void addItem(final Item item) {
-        getConnection();
         item.setId(this.generateId());
         try (PreparedStatement ps = this.connection.prepareStatement(
                 "INSERT INTO items (id, name, description, timeCreate) VALUES (?, ?, ?, ?)")) {
@@ -126,8 +123,6 @@ public class Tracker implements AutoCloseable {
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close();
         }
     }
 
@@ -137,7 +132,6 @@ public class Tracker implements AutoCloseable {
      * @param item Item
      */
     final void updateItem(final Item item) {
-        getConnection();
         try (PreparedStatement ps = this.connection.prepareStatement(
                 "UPDATE items SET name = ?, description = ?, timeCreate = ? WHERE id = ?")) {
             ps.setString(1, item.getName());
@@ -147,8 +141,6 @@ public class Tracker implements AutoCloseable {
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close();
         }
     }
 
@@ -158,14 +150,11 @@ public class Tracker implements AutoCloseable {
      * @param item Item
      */
     final void deleteItem(final Item item) {
-        getConnection();
         try (PreparedStatement ps = this.connection.prepareStatement("DELETE FROM items WHERE id = ?")) {
             ps.setString(1, item.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close();
         }
     }
 
@@ -176,7 +165,6 @@ public class Tracker implements AutoCloseable {
      * @return item Item
      */
     final Item findById(final String id) {
-        getConnection();
         Item result = null;
         try (PreparedStatement ps = this.connection.prepareStatement("SELECT * FROM items WHERE id = ?")) {
             ps.setString(1, id);
@@ -190,8 +178,6 @@ public class Tracker implements AutoCloseable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            close();
         }
         return result;
     }
@@ -211,7 +197,6 @@ public class Tracker implements AutoCloseable {
      * @return result Array of Items
      */
     final List<Item> getAll() {
-        getConnection();
         List<Item> result = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM items")) {
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -225,8 +210,6 @@ public class Tracker implements AutoCloseable {
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close();
         }
 
         return result;
@@ -254,8 +237,6 @@ public class Tracker implements AutoCloseable {
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close();
         }
         return result;
     }
