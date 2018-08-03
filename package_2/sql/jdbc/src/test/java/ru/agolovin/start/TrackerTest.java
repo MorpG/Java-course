@@ -38,6 +38,7 @@ public class TrackerTest {
         tracker.addItem(item);
         result.add(item);
         assertThat(tracker.getAll(), is(result));
+        tracker.close();
     }
 
     /**
@@ -53,6 +54,7 @@ public class TrackerTest {
         tracker.updateItem(updateItem);
         result.add(updateItem);
         assertThat(tracker.getAll(), is(result));
+        tracker.close();
     }
 
     /**
@@ -67,6 +69,7 @@ public class TrackerTest {
         tracker.deleteItem(itemOne);
         result.add(itemTwo);
         assertThat(tracker.getAll(), is(result));
+        tracker.close();
     }
 
     /**
@@ -79,6 +82,7 @@ public class TrackerTest {
         result.add(itemOne);
         Filter filter = new Filter("testName");
         assertThat(tracker.getByFilter(filter), is(result));
+        tracker.close();
     }
 
 }
