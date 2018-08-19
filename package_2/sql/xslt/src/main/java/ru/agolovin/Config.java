@@ -1,7 +1,7 @@
 package ru.agolovin;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -11,21 +11,45 @@ import java.util.Properties;
  */
 public class Config {
 
-    Properties prop = new Properties();
+    private Properties prop = new Properties();
+    private String driverName;
+    private String url;
+    private String create;
+    private String clear;
+    private String insert;
+
+    public Config(String file) {
+        load(file);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getCreate() {
+        return create;
+    }
+
+    public String getClear() {
+        return clear;
+    }
+
+    public String getInsert() {
+        return insert;
+    }
 
     Config load(String file) {
-        try {
-            this.prop.load(new FileInputStream(file));
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream(file)) {
+            prop.load(in);
+            this.driverName = prop.getProperty("drivername");
+            this.url = prop.getProperty("url");
+            this.create = prop.getProperty("create");
+            this.clear = prop.getProperty("clear");
+            this.insert = prop.getProperty("insert");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return this;
-
     }
-
-    String confData(String data) {
-        return this.prop.getProperty(data);
-    }
-
-
 }
