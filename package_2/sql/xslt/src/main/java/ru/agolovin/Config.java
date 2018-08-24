@@ -17,25 +17,34 @@ public class Config {
     private String create;
     private String clear;
     private String insert;
+    private String select;
 
-    public Config(String file) {
+    Config(String file) {
         load(file);
     }
 
+    public String getSelect() {
+        return select;
+    }
+
+    public void setSelect(String select) {
+        this.select = select;
+    }
+
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public String getCreate() {
-        return create;
+        return this.create;
     }
 
     public String getClear() {
-        return clear;
+        return this.clear;
     }
 
     public String getInsert() {
-        return insert;
+        return this.insert;
     }
 
     Config load(String file) {
@@ -46,6 +55,7 @@ public class Config {
             this.create = prop.getProperty("create");
             this.clear = prop.getProperty("clear");
             this.insert = prop.getProperty("insert");
+            this.select = prop.getProperty("select");
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -40,7 +40,7 @@ public class StoreXML {
         public Entry() {
         }
 
-        public Entry(int field) {
+        Entry(int field) {
             this.field = field;
         }
 
@@ -77,7 +77,7 @@ public class StoreXML {
         public Entries() {
         }
 
-        public Entries(List<Entry> entry) {
+        Entries(List<Entry> entry) {
             this.entry = entry;
         }
 

@@ -3,6 +3,7 @@ package ru.agolovin;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ public class StorageSQL implements AutoCloseable {
 
     private Config config;
 
-    public StorageSQL(Config config) {
+    StorageSQL(Config config) {
         this.config = config;
     }
 
-    public void connect() {
+    private void connect() {
         try {
             connection = DriverManager.getConnection(config.getUrl());
         } catch (SQLException e) {
@@ -33,18 +34,12 @@ public class StorageSQL implements AutoCloseable {
     public void createTable() {
         try (Statement statement = connection.createStatement()) {
             statement.execute(config.getCreate());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearTable() {
-        try (Statement statement = connection.createStatement()) {
             statement.execute(config.getClear());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public void generate(int number) {
         try (PreparedStatement statement = connection.prepareStatement(
@@ -60,7 +55,15 @@ public class StorageSQL implements AutoCloseable {
 
     public List<StoreXML.Entry> getData() {
         List<StoreXML.Entry> result = new ArrayList<>();
-        return null;
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(this.config.getSelect())) {
+            while (resultSet.next()) {
+                result.add(new StoreXML.Entry(Integer.valueOf(resultSet.getString(1))));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public void init() {
@@ -70,7 +73,7 @@ public class StorageSQL implements AutoCloseable {
 
 
     @Override
-    public void close() throws Exception {
+    public void close(){
         if (this.connection != null) {
             try {
                 this.connection.close();

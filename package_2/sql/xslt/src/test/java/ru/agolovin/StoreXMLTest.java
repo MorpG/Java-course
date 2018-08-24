@@ -18,7 +18,7 @@ public class StoreXMLTest {
 
     @Test
     public void methodTest() {
-        List<StoreXML.Entry> methodData = new ArrayList<StoreXML.Entry>();
+        List<StoreXML.Entry> methodData = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             methodData.add(new StoreXML.Entry(i));
         }
