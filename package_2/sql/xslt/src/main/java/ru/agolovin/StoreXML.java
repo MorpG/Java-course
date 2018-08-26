@@ -17,7 +17,7 @@ public class StoreXML {
 
     private final File file;
 
-    public StoreXML(File file) {
+    StoreXML(File file) {
         this.file = file;
     }
 
@@ -37,7 +37,7 @@ public class StoreXML {
     public static class Entry {
         private int field;
 
-        public Entry() {
+        Entry() {
         }
 
         Entry(int field) {
@@ -74,7 +74,7 @@ public class StoreXML {
     public static class Entries {
         List<Entry> entry;
 
-        public Entries() {
+        Entries() {
         }
 
         Entries(List<Entry> entry) {
