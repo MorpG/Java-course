@@ -1,5 +1,6 @@
 package ru.agolovin;
 
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -45,5 +46,9 @@ public class ConvertXSQTTest {
         assertThat(result.toString(), is(expect));
     }
 
-
+    @After
+    public void clean() {
+        this.dest.delete();
+        this.file.delete();
+    }
 }

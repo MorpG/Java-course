@@ -15,12 +15,25 @@ import java.util.Objects;
  */
 public class StoreXML {
 
+    /**
+     * File.
+     */
     private final File file;
 
+    /**
+     * Constructor.
+     *
+     * @param file File
+     */
     StoreXML(File file) {
         this.file = file;
     }
 
+    /**
+     * Save to XML.
+     *
+     * @param list List
+     */
     void save(List<Entry> list) {
         JAXBContext jaxbContext;
         try {

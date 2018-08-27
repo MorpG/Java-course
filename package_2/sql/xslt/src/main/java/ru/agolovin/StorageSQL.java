@@ -15,14 +15,29 @@ import java.util.List;
  * @since 0.1
  */
 public class StorageSQL implements AutoCloseable {
+
+    /**
+     * Connection.
+     */
     private Connection connection;
 
+    /**
+     * Config.
+     */
     private Config config;
 
+    /**
+     * Constructor.
+     *
+     * @param config Config
+     */
     StorageSQL(Config config) {
         this.config = config;
     }
 
+    /**
+     * Connect to DB.
+     */
     private void connect() {
         try {
             connection = DriverManager.getConnection(config.getUrl());
@@ -31,6 +46,9 @@ public class StorageSQL implements AutoCloseable {
         }
     }
 
+    /**
+     * Create table in DB.
+     */
     public void createTable() {
         try (Statement statement = connection.createStatement()) {
             statement.execute(config.getCreate());
@@ -41,6 +59,11 @@ public class StorageSQL implements AutoCloseable {
     }
 
 
+    /**
+     * Geterate n rows in DB.
+     *
+     * @param number int
+     */
     public void generate(int number) {
         try (PreparedStatement statement = connection.prepareStatement(
                 config.getInsert())) {
@@ -53,6 +76,11 @@ public class StorageSQL implements AutoCloseable {
         }
     }
 
+    /**
+     * Get List from DB.
+     *
+     * @return List
+     */
     public List<StoreXML.Entry> getData() {
         List<StoreXML.Entry> result = new ArrayList<>();
         try (Statement statement = connection.createStatement();
@@ -66,14 +94,16 @@ public class StorageSQL implements AutoCloseable {
         return result;
     }
 
+    /**
+     * Initialization.
+     */
     public void init() {
         connect();
-
     }
 
 
     @Override
-    public void close(){
+    public void close() {
         if (this.connection != null) {
             try {
                 this.connection.close();

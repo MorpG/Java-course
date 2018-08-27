@@ -53,5 +53,4 @@ public class StoreXMLTest {
     public void delete() {
         this.file.delete();
     }
-
 }

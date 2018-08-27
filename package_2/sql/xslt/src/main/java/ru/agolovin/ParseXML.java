@@ -17,16 +17,21 @@ import java.io.IOException;
  */
 public class ParseXML {
 
+    /**
+     * Total count from XML field.
+     */
     private int count;
-    private SAXParserFactory parserFactory;
-    private SAXParser parser;
-    private Handler handler;
 
+    /**
+     * Constructor.
+     *
+     * @param file File.
+     */
     ParseXML(File file) {
-        this.parserFactory = SAXParserFactory.newInstance();
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         try {
-            this.parser = this.parserFactory.newSAXParser();
-            this.handler = new Handler();
+            SAXParser parser = parserFactory.newSAXParser();
+            Handler handler = new Handler();
             parser.parse(file, handler);
 
         } catch (SAXException | ParserConfigurationException | IOException e) {
@@ -34,14 +39,22 @@ public class ParseXML {
         }
     }
 
+    /**
+     * Get total count.
+     *
+     * @return int result
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * Handler.
+     */
     class Handler extends DefaultHandler {
         @Override
         public void startElement(String url, String localName, String name,
-                                 Attributes attributes) throws SAXException {
+                                 Attributes attributes) {
             int length = attributes.getLength();
             for (int i = 0; i < length; i++) {
                 String atrName = attributes.getQName(i);

@@ -1,5 +1,6 @@
 package ru.agolovin;
 
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -44,5 +45,11 @@ public class ParseXMLTest {
             res += i;
         }
         return res;
+    }
+
+    @After
+    public void clean() {
+        this.dest.delete();
+        this.file.delete();
     }
 }

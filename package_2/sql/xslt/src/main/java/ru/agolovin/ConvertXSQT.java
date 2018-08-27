@@ -15,6 +15,13 @@ import java.io.File;
  */
 public class ConvertXSQT {
 
+    /**
+     * Convert xml by scheme and write to file.
+     *
+     * @param source File
+     * @param dest   File
+     * @param scheme File
+     */
     public void convert(File source, File dest, File scheme) {
         TransformerFactory factory = TransformerFactory.newInstance();
         try {

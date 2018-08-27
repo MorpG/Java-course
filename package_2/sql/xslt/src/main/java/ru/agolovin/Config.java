@@ -11,46 +11,98 @@ import java.util.Properties;
  */
 public class Config {
 
+    /**
+     * Properties.
+     */
     private Properties prop = new Properties();
-    private String driverName;
+
+    /**
+     * Url database.
+     */
     private String url;
+
+    /**
+     * Create script.
+     */
     private String create;
+
+    /**
+     * Clear script.
+     */
     private String clear;
+
+    /**
+     * Insert script.
+     */
     private String insert;
+
+    /**
+     * Select script.
+     */
     private String select;
 
+    /**
+     * Constructor.
+     *
+     * @param file string filename
+     */
     Config(String file) {
         load(file);
     }
 
+    /**
+     * get select script.
+     *
+     * @return String
+     */
     public String getSelect() {
         return select;
     }
 
-    public void setSelect(String select) {
-        this.select = select;
-    }
-
+    /**
+     * Get url.
+     *
+     * @return string
+     */
     public String getUrl() {
         return this.url;
     }
 
+    /**
+     * Get create.
+     *
+     * @return string.
+     */
     public String getCreate() {
         return this.create;
     }
 
+    /**
+     * Get clear.
+     *
+     * @return String.
+     */
     public String getClear() {
         return this.clear;
     }
 
+    /**
+     * Get insert.
+     *
+     * @return String
+     */
     public String getInsert() {
         return this.insert;
     }
 
-    Config load(String file) {
+    /**
+     * Load config from property file.
+     *
+     * @param file File
+     */
+    private void load(String file) {
         try (InputStream in = getClass().getClassLoader().getResourceAsStream(file)) {
             prop.load(in);
-            this.driverName = prop.getProperty("drivername");
             this.url = prop.getProperty("url");
             this.create = prop.getProperty("create");
             this.clear = prop.getProperty("clear");
@@ -60,6 +112,5 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return this;
     }
 }

@@ -22,8 +22,8 @@ public class StorageSQLTest {
         for (int i = 1; i <= limit; i++) {
             answer.add(new StoreXML.Entry(i));
         }
-        List<StoreXML.Entry> resu = sql.getData();
-        assertThat(resu, is(answer));
+        List<StoreXML.Entry> res = sql.getData();
+        assertThat(res, is(answer));
     }
 
 
