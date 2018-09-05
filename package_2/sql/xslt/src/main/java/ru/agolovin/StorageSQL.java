@@ -24,14 +24,14 @@ public class StorageSQL implements AutoCloseable {
     /**
      * Config.
      */
-    private Config config;
+    private final Config config;
 
     /**
      * Constructor.
      *
      * @param config Config
      */
-    StorageSQL(Config config) {
+    public StorageSQL(Config config) {
         this.config = config;
     }
 
@@ -60,7 +60,7 @@ public class StorageSQL implements AutoCloseable {
 
 
     /**
-     * Geterate n rows in DB.
+     * Generate n rows in DB.
      *
      * @param number int
      */

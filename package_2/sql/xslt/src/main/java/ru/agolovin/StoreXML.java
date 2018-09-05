@@ -25,7 +25,7 @@ public class StoreXML {
      *
      * @param file File
      */
-    StoreXML(File file) {
+    public StoreXML(File file) {
         this.file = file;
     }
 
@@ -50,10 +50,10 @@ public class StoreXML {
     public static class Entry {
         private int field;
 
-        Entry() {
+        public Entry() {
         }
 
-        Entry(int field) {
+        public Entry(int field) {
             this.field = field;
         }
 
@@ -85,12 +85,12 @@ public class StoreXML {
 
     @XmlRootElement
     public static class Entries {
-        List<Entry> entry;
+        private List<Entry> entry;
 
-        Entries() {
+        public Entries() {
         }
 
-        Entries(List<Entry> entry) {
+        public Entries(List<Entry> entry) {
             this.entry = entry;
         }
 

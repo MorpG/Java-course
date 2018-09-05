@@ -13,9 +13,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class ConvertXSQTTest {
-    private File file = new File("test.xml");
+    private final File file = new File("test.xml");
 
-    private File dest = new File("destTest.xml");
+    private final File dest = new File("destTest.xml");
 
     @Test
     public void methodTest() {

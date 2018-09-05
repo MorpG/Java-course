@@ -27,7 +27,7 @@ public class ParseXML {
      *
      * @param file File.
      */
-    ParseXML(File file) {
+    public ParseXML(File file) {
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         try {
             SAXParser parser = parserFactory.newSAXParser();
@@ -51,7 +51,7 @@ public class ParseXML {
     /**
      * Handler.
      */
-    class Handler extends DefaultHandler {
+    public class Handler extends DefaultHandler {
         @Override
         public void startElement(String url, String localName, String name,
                                  Attributes attributes) {

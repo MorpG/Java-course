@@ -12,8 +12,8 @@ import static org.hamcrest.core.Is.is;
 
 public class ParseXMLTest {
 
-    private File file = new File("ParseXMLTest.xml");
-    private File dest = new File("destTestParseXML.xml");
+    private final File file = new File("ParseXMLTest.xml");
+    private final File dest = new File("destTestParseXML.xml");
 
     @Test
     public void methodTest() {

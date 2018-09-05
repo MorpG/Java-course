@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 
 public class StoreXMLTest {
 
-    private File file = new File("StoreXMLTest.xml");
+    private final File file = new File("StoreXMLTest.xml");
 
     @Test
     public void methodTest() {

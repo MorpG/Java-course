@@ -14,7 +14,7 @@ public class Config {
     /**
      * Properties.
      */
-    private Properties prop = new Properties();
+    private final Properties prop = new Properties();
 
     /**
      * Url database.
@@ -46,7 +46,7 @@ public class Config {
      *
      * @param file string filename
      */
-    Config(String file) {
+    public Config(String file) {
         load(file);
     }
 
