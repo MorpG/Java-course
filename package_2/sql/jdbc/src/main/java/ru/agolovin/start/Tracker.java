@@ -53,7 +53,7 @@ public class Tracker implements AutoCloseable {
     /**
      * Constructor.
      */
-    Tracker() {
+    public Tracker() {
         this.getConnection();
         this.prepareData();
     }

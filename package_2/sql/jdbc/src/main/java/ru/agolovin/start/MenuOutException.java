@@ -10,6 +10,7 @@ package ru.agolovin.start;
 public class MenuOutException extends RuntimeException {
     /**
      * Return message to parent.
+     *
      * @param msg String
      */
     public MenuOutException(String msg) {

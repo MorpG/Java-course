@@ -14,7 +14,7 @@ class EditItem extends BaseAction {
     /**
      * Extends info from BaseAction.
      */
-    EditItem() {
+    public EditItem() {
         super("Edit item");
     }
 
@@ -51,15 +51,13 @@ class EditItem extends BaseAction {
 class MenuTracker {
 
     /**
+     * tracker Tracker.
+     */
+    private final Tracker tracker;
+    /**
      * input Input.
      */
     private Input input;
-
-    /**
-     * tracker Tracker.
-     */
-    private Tracker tracker;
-
     /**
      * actions User actions array.
      */
@@ -69,17 +67,18 @@ class MenuTracker {
      * @param sInput   Input
      * @param sTracker Tracker
      */
-    MenuTracker(final Input sInput, final Tracker sTracker) {
+    public MenuTracker(final Input sInput, final Tracker sTracker) {
         this.input = sInput;
         this.tracker = sTracker;
     }
 
     /**
      * Set time create.
+     *
      * @param sInput Input
      * @return long TimeCreate
      */
-    static long setTimeCreate(final Input sInput) {
+    public static long setTimeCreate(final Input sInput) {
         long timeCreate = 0;
         boolean flag = true;
         do {
@@ -96,7 +95,7 @@ class MenuTracker {
     /**
      * Actions for menu.
      */
-    void fillActions() {
+    public void fillActions() {
         this.actions.add(new AddItem());
         this.actions.add(new MenuTracker.ShowItems());
         this.actions.add(new EditItem());
@@ -108,14 +107,14 @@ class MenuTracker {
     /**
      * @param key int
      */
-    void select(final int key) {
+    public void select(final int key) {
         this.actions.get(key).execute(this.input, this.tracker);
     }
 
     /**
      * Method for show menu.
      */
-    void show() {
+    public void show() {
         for (UserAction action : this.actions) {
             if (action != null) {
                 System.out.println(action.info());
@@ -131,7 +130,7 @@ class MenuTracker {
         /**
          * Extends info from BaseAction.
          */
-        ShowItems() {
+        public ShowItems() {
             super("Show all items");
         }
 
@@ -173,7 +172,7 @@ class MenuTracker {
         /**
          * Extends info from BaseAction.
          */
-        AddItem() {
+        public AddItem() {
             super("Add the new item");
         }
 
@@ -212,8 +211,7 @@ class MenuTracker {
          * @return keyThree
          */
         public int key() {
-            final int keyThree = 3;
-            return keyThree;
+            return 3;
         }
 
         /**
@@ -250,8 +248,7 @@ class MenuTracker {
          * @return keyFour int
          */
         public int key() {
-            final int keyFour = 4;
-            return keyFour;
+            return 4;
         }
 
         /**
@@ -280,8 +277,7 @@ class MenuTracker {
          * @return keyFive int
          */
         public int key() {
-            final int keyFive = 5;
-            return keyFive;
+            return 5;
         }
 
         /**

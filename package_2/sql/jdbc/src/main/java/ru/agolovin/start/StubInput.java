@@ -10,7 +10,7 @@ package ru.agolovin.start;
 public class StubInput implements Input {
 
     /**
-     * nswers String array.
+     * answers String array.
      */
     private String[] answers;
 
@@ -22,7 +22,7 @@ public class StubInput implements Input {
     /**
      * @param sAnswers String array
      */
-    StubInput(final String[] sAnswers) {
+    public StubInput(final String[] sAnswers) {
         this.answers = sAnswers;
     }
 

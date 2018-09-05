@@ -22,7 +22,7 @@ public class TrackerTest {
     /**
      * Tracker for tests.
      */
-    private Tracker tracker = new Tracker();
+    private final Tracker tracker = new Tracker();
 
     /**
      * List.

@@ -53,7 +53,7 @@ public final class StartUI {
      *
      * @param sInput Input
      */
-    StartUI(final Input sInput) {
+    public StartUI(final Input sInput) {
         this.input = sInput;
     }
 
@@ -73,7 +73,7 @@ public final class StartUI {
      *
      * @param nTracker Tracker
      */
-    void init(final Tracker nTracker) {
+    public void init(final Tracker nTracker) {
         this.tracker = nTracker;
         MenuTracker menu = new MenuTracker(this.input, tracker);
         menu.fillActions();
@@ -86,7 +86,7 @@ public final class StartUI {
     /**
      * @return tracker
      */
-    Tracker getTracker() {
+    public Tracker getTracker() {
         return this.tracker;
     }
 }

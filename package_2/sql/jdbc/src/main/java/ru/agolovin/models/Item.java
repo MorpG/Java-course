@@ -42,7 +42,7 @@ public class Item {
     /**
      * base method Item.
      */
-    Item() {
+    public Item() {
     }
 
     /**

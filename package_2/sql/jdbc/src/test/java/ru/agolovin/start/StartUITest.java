@@ -23,7 +23,7 @@ public class StartUITest {
     /**
      * Tracker for testes.
      */
-    private Tracker tracker = new Tracker();
+    private final Tracker tracker = new Tracker();
 
     /**
      * OutPutStream.
