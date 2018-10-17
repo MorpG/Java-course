@@ -17,6 +17,7 @@
         <module>nonblocking</module>
         <module>bomberman</module>
         <module>elevator</module>
+        <module>testTaskLock</module>
     </modules>
 
     <artifactId>multithreading</artifactId>
