@@ -18,6 +18,7 @@
         <module>bomberman</module>
         <module>elevator</module>
         <module>testTaskLock</module>
+        <module>testTaskString</module>
     </modules>
 
     <artifactId>multithreading</artifactId>
