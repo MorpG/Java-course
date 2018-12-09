@@ -24,8 +24,19 @@ public class Config {
 
     private String password;
 
+    private String create;
+    private String insert;
+
     public Config(String file) {
         load(file);
+    }
+
+    public String getCreate() {
+        return create;
+    }
+
+    public String getInsert() {
+        return insert;
     }
 
     public String getDriver() {
@@ -51,6 +62,8 @@ public class Config {
             this.url = prop.getProperty("jdbc.url");
             this.username = prop.getProperty("jdbc.username");
             this.password = prop.getProperty("jdbc.password");
+            this.create = prop.getProperty("create");
+            this.insert = prop.getProperty("insert");
 
         } catch (IOException e) {
             e.printStackTrace();
